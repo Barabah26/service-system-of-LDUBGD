@@ -1,0 +1,74 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/aws.xml
+.idea/**/contentModel.xml
+.idea/**/dataSources/
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+.idea/**/gradle.xml
+.idea/**/libraries
+.idea_modules/
+atlassian-ide-plugin.xml
+.idea/**/httpRequests
+.idea/codestream.xml
+.idea/**/azureSettings.xml
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+replay_pid*
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.stackdump
+*.lnk
+
+# Logs
+*.log
+logs/
+
+# Maven
+target/
+.mvn/
+mvnw
+mvnw.cmd
+!.mvn/wrapper/maven-wrapper.jar
+
+# Docker
+pgdata/
+dockerConfig/.env
+
+# PostgreSQL
+.data/
+.logs/
+
+# VS Code
+.vscode/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+node_modules/
+
+
+# Build directories
+build/
+dist/
+!**/src/main/**/build/
+!**/src/test/**/build/
