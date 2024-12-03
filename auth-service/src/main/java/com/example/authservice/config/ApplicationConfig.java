@@ -27,8 +27,7 @@ public class ApplicationConfig {
     public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("User Profile Service")
-                        .description("Social Network Information System sample application")
+                        .title("Auth Service")
                         .version("v0.0.1")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org"))
                         .description("SpringShop Wiki Documentation")
