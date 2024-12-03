@@ -27,7 +27,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.ldubgd.restService" level="info" additivity="false">
+    <logger name="com.ldubgd.fileService" level="info" additivity="false">
         <appender-ref ref="FILE" />
         <appender-ref ref="STDOUT" />
     </logger>

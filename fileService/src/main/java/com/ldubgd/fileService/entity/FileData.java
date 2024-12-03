@@ -1,4 +1,4 @@
-package com.ldubgd.restService.entity;
+package com.ldubgd.fileService.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 

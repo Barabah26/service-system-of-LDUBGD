@@ -1,6 +1,6 @@
-package com.ldubgd.restService.dao;
+package com.ldubgd.fileService.dao;
 
-import com.ldubgd.restService.entity.FileInfo;
+import com.ldubgd.fileService.entity.FileInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

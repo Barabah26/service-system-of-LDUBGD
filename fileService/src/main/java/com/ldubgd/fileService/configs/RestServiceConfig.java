@@ -1,4 +1,4 @@
-package com.ldubgd.restService.configs;
+package com.ldubgd.fileService.configs;
 
 import com.ldubgd.utils.CryptoTool;
 import org.springframework.beans.factory.annotation.Value;

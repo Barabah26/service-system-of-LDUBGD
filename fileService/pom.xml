@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ldubgd</groupId>
-	<artifactId>restService</artifactId>
+	<artifactId>fileService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>restFileService</name>
 	<description>rest service  for sending file </description>

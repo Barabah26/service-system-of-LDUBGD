@@ -1,8 +1,8 @@
-package com.ldubgd.restService.fileService.impl;
+package com.ldubgd.fileService.fileService.impl;
 
-import com.ldubgd.restService.dao.JpaAppDocumentRepository;
-import com.ldubgd.restService.entity.FileInfo;
-import com.ldubgd.restService.fileService.FileService;
+import com.ldubgd.fileService.dao.JpaAppDocumentRepository;
+import com.ldubgd.fileService.entity.FileInfo;
+import com.ldubgd.fileService.fileService.FileService;
 import com.ldubgd.utils.CryptoTool;
 import lombok.AllArgsConstructor;
 

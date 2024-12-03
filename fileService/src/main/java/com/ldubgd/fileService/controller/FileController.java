@@ -1,7 +1,7 @@
-package com.ldubgd.restService.controller;
+package com.ldubgd.fileService.controller;
 
-import com.ldubgd.restService.entity.FileInfo;
-import com.ldubgd.restService.fileService.FileService;
+import com.ldubgd.fileService.entity.FileInfo;
+import com.ldubgd.fileService.fileService.FileService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
