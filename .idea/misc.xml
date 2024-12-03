@@ -6,6 +6,7 @@
       <list>
         <option value="$PROJECT_DIR$/utils/pom.xml" />
         <option value="$PROJECT_DIR$/auth-service/pom.xml" />
+        <option value="$PROJECT_DIR$/sql-initializer/pom.xml" />
       </list>
     </option>
   </component>
