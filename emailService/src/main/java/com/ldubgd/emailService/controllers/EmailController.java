@@ -15,13 +15,15 @@ public class EmailController {
     @Autowired
     EmailSenderService emailSenderService;
 
-    @PatchMapping
-    public ResponseEntity<?> emailNotification(
-            @RequestParam("id") String idOfStatement,
-            @RequestParam("email") String emailOfUser){
+    @PatchMapping("/send/status")
+    public ResponseEntity<?> notificationAboutStatementStatus(
+            @RequestParam("id") String idOfStatement, @RequestParam("email") String emailOfUser){
 
 
-        emailSenderService.sendSimpleEmail("serhiikmyta@gmail.com",
+
+
+        emailSenderService.sendSimpleEmail(
+                "serhiikmyta@gmail.com",
                 "your id: "+idOfStatement,
                 "email "+emailOfUser);
 

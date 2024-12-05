@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/sql-initializer/pom.xml" />
         <option value="$PROJECT_DIR$/emailService/pom.xml" />
         <option value="$PROJECT_DIR$/restService/pom.xml" />
+        <option value="$PROJECT_DIR$/fileService/pom.xml" />
       </list>
     </option>
   </component>
