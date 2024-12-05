@@ -1,7 +1,5 @@
 package com.example.authservice.service;
 
-
-import com.example.authservice.entity.Role;
 import com.example.authservice.entity.User;
 import com.example.authservice.exception.AuthException;
 import com.example.authservice.security.JwtProvider;
@@ -42,7 +40,7 @@ public class AuthService {
             accessTokens.add(accessToken);
             jwtService.getAccessStorage().put(user.getLogin(), accessTokens);
 
-            Role role = user.getRole();
+            String role = user.getRole();
 
             return new JwtResponse(accessToken, refreshToken, role);
         } else {

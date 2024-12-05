@@ -1,5 +1,6 @@
 package com.example.authservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,10 +34,8 @@ public class User {
     @Column(name = "password", length = 128, nullable = false)
     private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id", nullable = false)
-    @JsonIgnore
-    private Role role;
+    @Column(name = "role", length = 128, nullable = false)
+    private String role;
 
 
 }

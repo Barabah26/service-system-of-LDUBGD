@@ -1,6 +1,5 @@
 package com.example.authservice.security;
 
-import com.example.authservice.entity.Role;
 import com.example.authservice.entity.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -38,15 +37,15 @@ public class JwtProvider {
         final Instant accessExpirationInstant = now.plusHours(ACCESS_TOKEN_EXPIRATION_HOURS).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
 
-        Role role = user.getRole();
-        String roleName = role != null ? role.getName() : "USER";
+        String userRole = user.getRole();
+        String roleName = userRole != null ? userRole : "USER";
 
         return Jwts.builder()
                 .setSubject(user.getName())
                 .setExpiration(accessExpiration)
                 .signWith(jwtAccessSecret)
                 .claim("userId", user.getUserId())
-                .claim("role", roleName)
+                .claim("userRole", roleName)
                 .compact();
     }
 

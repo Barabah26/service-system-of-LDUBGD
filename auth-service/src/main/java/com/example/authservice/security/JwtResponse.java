@@ -1,6 +1,5 @@
 package com.example.authservice.security;
 
-import com.example.authservice.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,5 +14,5 @@ public class JwtResponse {
 
     private String refreshToken;
 
-    private Role role;
+    private String role;
 }
