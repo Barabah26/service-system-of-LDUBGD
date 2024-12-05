@@ -1,11 +1,10 @@
 package com.example.authservice.controller;
 
 import com.example.authservice.exception.AuthException;
-import com.example.authservice.exception.RecourseNotFoundException;
 import com.example.authservice.security.JwtRequest;
 import com.example.authservice.security.JwtResponse;
 import com.example.authservice.service.AuthService;
-import com.example.authservice.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody JwtRequest authRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody JwtRequest authRequest) {
         log.info("Attempting login for user: {}", authRequest.getLogin());
         try {
             JwtResponse token = authService.login(authRequest);
