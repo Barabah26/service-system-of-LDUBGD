@@ -13,7 +13,10 @@ public interface FileDataRepository extends JpaRepository<FileData, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO file_data (data, file_info_id) VALUES (:data, :fileInfoId)", nativeQuery = true)
+    @Query(value = "INSERT INTO file_data (data, file_info_id) " +
+            "VALUES (:data, :fileInfoId) " +
+            "ON CONFLICT (file_info_id) DO UPDATE SET data = EXCLUDED.data", nativeQuery = true)
     void saveFileData(@Param("data") byte[] data, @Param("fileInfoId") Long fileInfoId);
+
 }
 

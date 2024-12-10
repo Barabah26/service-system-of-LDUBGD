@@ -19,7 +19,7 @@ public class FileInfo {
 
     private String fileType;
 
-    @Column(name = "statement_id")
+    @Column(name = "statement_id",unique = true)
     private Long statementId;
 
 

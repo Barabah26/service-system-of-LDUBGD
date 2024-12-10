@@ -25,18 +25,19 @@ public class FileController {
     private final FileService fileService;
 
     @GetMapping("/download")
-    public ResponseEntity<byte[]> getDoc(@RequestParam("id") String hashId) {
+    public ResponseEntity<byte[]> getFile(@RequestParam("id") String hashId) {
         log.info("Отримано запит на завантаження файлу з hashId: " + hashId);
 
         FileInfo doc;
         try {
-            doc = fileService.getFile(hashId);
+            doc = fileService.getFile(Long.parseLong(hashId));
+            log.info("Файл успішно знайдено: " + doc.getFileName());
         } catch (RuntimeException e) {
             log.error("Помилка при отриманні файлу: " + e.getMessage());
             return ResponseEntity.badRequest().build();
         }
 
-        log.info("Файл успішно знайдено: " + doc.getFileName());
+
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(doc.getFileType()));
@@ -61,7 +62,7 @@ public class FileController {
 
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam Long statementId, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFile(@RequestParam("id") Long statementId, @RequestParam("file") MultipartFile file) {
         log.info("Uploading file: {} for statement: {}", file.getOriginalFilename(), statementId);
 
         try {
