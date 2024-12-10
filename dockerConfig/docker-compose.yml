@@ -11,7 +11,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
-      - "${DATABASE_PORT}:5454"
+      - "${DATABASE_PORT}:5432"
       
 #  sql-initializer:
 #    env_file:
