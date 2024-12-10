@@ -8,6 +8,7 @@ public class AuthServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AuthServiceApplication.class, args);
+        System.out.println("http://localhost:9000/swagger-ui/index.html");
     }
 
 }
