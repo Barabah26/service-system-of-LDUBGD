@@ -1,0 +1,49 @@
+jwt:
+  secret:
+    access: LejjnLZua6SlR7eZXByD2+9M5P+dYxK3IlfA6XgPksuXijiXMAcpulI03o2Vq+PjYENhgTJGXLNm7YS4f1+IMw==
+    refresh: cRO8f7Q/HaE/X1QjxAHYL8Dm5qkTI68WiNi9elE1NFqsL2up0RlZn/e7aD2R5i8cMvCksBEDhUAOZAhsypQaXw==
+
+server:
+  port: ${STATEMENT_SERVICE_PORT}
+
+
+spring:
+  profiles:
+    active: prod
+
+# Production profile configuration
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  sql:
+    init:
+      mode: always
+#      data-locations: classpath:data.sql
+      schema-locations: classpath:schema-postgres.sql
+  datasource:
+    url: jdbc:postgresql://localhost:${DATABASE_PORT}/${DATABASE_NAME}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        generate_statistics: false
+    show-sql: false
+  logging:
+    level:
+      org: info
+      com: off
+---
+spring:
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+
