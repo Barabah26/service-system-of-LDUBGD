@@ -19,8 +19,8 @@ spring:
       on-profile: prod
   sql:
     init:
-      mode: never
-      data-locations: classpath:data.sql
+      mode: always
+#      data-locations: classpath:data.sql
       schema-locations: classpath:schema-postgres.sql
   datasource:
     url: jdbc:postgresql://localhost:${DATABASE_PORT}/${DATABASE_NAME}
