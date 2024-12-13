@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-@RequestMapping("/email")
+@RequestMapping("api/email")
 @AllArgsConstructor
 @RestController
 public class EmailController {
     @Autowired
     EmailSenderService emailSenderService;
 
-    @PatchMapping("/send/status")
+    @PatchMapping("/send")
     public ResponseEntity<?> notificationAboutStatementStatus(
             @RequestParam("id") String idOfStatement, @RequestParam("email") String emailOfUser){
 
@@ -23,9 +23,9 @@ public class EmailController {
 
 
         emailSenderService.sendSimpleEmail(
-                "serhiikmyta@gmail.com",
-                "your id: "+idOfStatement,
-                "email "+emailOfUser);
+                emailOfUser,
+                "Hell world mail",
+                "yours statement id "+ idOfStatement);
 
 
         return ResponseEntity.ok().body("Email send");
