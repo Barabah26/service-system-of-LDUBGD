@@ -29,7 +29,6 @@ services:
 #      - database
 #
 
-
 #  frontend:
 #    build:
 #      context: ../frontend/stat-frontend  # Коренева директорія фронтенду, де розташований Dockerfile
@@ -53,7 +52,6 @@ services:
 #      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"  # Використання змінної з .env
 #    depends_on:
 #      - database
-
 
 
 volumes:
