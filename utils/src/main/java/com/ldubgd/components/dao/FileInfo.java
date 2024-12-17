@@ -1,14 +1,14 @@
-package com.ldubgd.fileService.entity;
+package com.ldubgd.components.dao;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "file_info")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class FileInfo {
 
     @Id

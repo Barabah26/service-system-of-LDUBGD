@@ -1,10 +1,15 @@
-package com.ldubgd.fileService.entity;
+package com.ldubgd.components.dao;
+
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "file_data")
 @Data
+@Getter
+@Setter
 public class FileData {
 
     @Id

@@ -1,6 +1,6 @@
 package com.ldubgd.fileService.fileService;
 
-import com.ldubgd.fileService.entity.FileInfo;
+import com.ldubgd.components.dao.FileInfo;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {

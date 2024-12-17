@@ -1,6 +1,6 @@
 package com.ldubgd.fileService.dao;
 
-import com.ldubgd.fileService.entity.FileInfo;
+import com.ldubgd.components.dao.FileInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
