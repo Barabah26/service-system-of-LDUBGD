@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS file_info CASCADE;
 DROP TABLE IF EXISTS statement_info CASCADE;
 DROP TABLE IF EXISTS telegram_cache CASCADE;
 DROP TABLE IF EXISTS statement_cache CASCADE;
-DROP SEQUENCE hibernate_sequence;
+DROP SEQUENCE IF EXISTS hibernate_sequence;
 
 -- Створення послідовності для генерації значень ID
 CREATE SEQUENCE hibernate_sequence
