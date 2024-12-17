@@ -3,6 +3,8 @@ package com.example.statementservice.controller;
 import com.example.statementservice.dto.StatementDtoRequest;
 import com.example.statementservice.security.JwtTokenProvider;
 import com.example.statementservice.service.StatementService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,14 +31,18 @@ public class StatementController {
         return null;
     }
 
+    @Operation(summary = "Create a new statement", description = "This endpoint allows users to create a new statement.")
+    @ApiResponse(responseCode = "200", description = "Statement created successfully")
+    @ApiResponse(responseCode = "401", description = "Unauthorized access")
     @PostMapping("/createStatement")
-    public ResponseEntity<Void> createStatement(@RequestBody StatementDtoRequest statementRequestDto, HttpServletRequest request) {
+    public ResponseEntity<String> createStatement(@RequestBody StatementDtoRequest statementRequestDto, HttpServletRequest request) {
         Long currentUserId = getUserIdFromToken(request);
         if (currentUserId != null) {
             statementService.createStatement(statementRequestDto);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Statement created successfully");
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
     }
+
 }
