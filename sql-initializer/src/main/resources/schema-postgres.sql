@@ -1,8 +1,7 @@
--- Видалення таблиць, якщо вони існують
-DROP TABLE IF EXISTS statement CASCADE;
 DROP TABLE IF EXISTS file_data CASCADE;
 DROP TABLE IF EXISTS file_info CASCADE;
 DROP TABLE IF EXISTS statement_info CASCADE;
+DROP TABLE IF EXISTS statement CASCADE;
 DROP SEQUENCE IF EXISTS hibernate_sequence;
 
 -- Створення послідовності для генерації значень ID
@@ -34,7 +33,7 @@ CREATE TABLE statement_info (
 CREATE TABLE file_info (
     id BIGSERIAL PRIMARY KEY,
     file_name VARCHAR(255) NOT NULL,
-    file_type VARCHAR(50) NOT NULL,
+    file_type VARCHAR(255) NOT NULL,
     statement_id BIGINT UNIQUE,
     CONSTRAINT fk_statement_info FOREIGN KEY (statement_id) REFERENCES statement_info(id) ON DELETE CASCADE
 );
