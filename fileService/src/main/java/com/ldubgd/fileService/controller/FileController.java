@@ -1,6 +1,6 @@
 package com.ldubgd.fileService.controller;
 
-import com.ldubgd.fileService.entity.FileInfo;
+import com.ldubgd.components.dao.FileInfo;
 import com.ldubgd.fileService.fileService.FileService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
