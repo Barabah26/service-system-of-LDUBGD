@@ -15,15 +15,13 @@ const RegistrationForm = () => {
   const [errors, setErrors] = useState({});
   const [serverMessage, setServerMessage] = useState('');
 
-  const navigate = useNavigate();  // Ініціалізація navigate для перенаправлення
+  const navigate = useNavigate();
 
-  // Обробка зміни полів форми
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Клієнтська валідація
   const validateForm = () => {
     const newErrors = {};
 
@@ -51,7 +49,6 @@ const RegistrationForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Відправка даних
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -60,10 +57,9 @@ const RegistrationForm = () => {
         const response = await axios.post('http://localhost:9000/api/register', formData);
         setServerMessage('Registration successful!');
         setErrors({});
-        // Перенаправлення на сторінку логіна після успішної реєстрації
         setTimeout(() => {
-          navigate('/');  // Перехід на сторінку логіна
-        }, 2000);  // Пауза перед перенаправленням
+          navigate('/');
+        }, 2000);
       } catch (error) {
         setServerMessage(
           error.response?.data || 'An error occurred during registration. Please try again.'
@@ -73,91 +69,99 @@ const RegistrationForm = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h2 className="mb-4">Registration Form</h2>
-      {serverMessage && (
-        <div className={`alert ${serverMessage.includes('successful') ? 'alert-success' : 'alert-danger'}`}>
-          {serverMessage}
-        </div>
-      )}
-      <form onSubmit={handleSubmit} className="card p-4 shadow-sm">
-        {/* Name */}
-        <div className="form-group mb-3">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            name="name"
-            className="form-control"
-            id="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Enter your name"
-          />
-          {errors.name && <small className="text-danger">{errors.name}</small>}
-        </div>
-
-        {/* Email */}
-        <div className="form-group mb-3">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            name="email"
-            className="form-control"
-            id="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter your email"
-          />
-          {errors.email && <small className="text-danger">{errors.email}</small>}
-        </div>
-
-        {/* Login */}
-        <div className="form-group mb-3">
-          <label htmlFor="login">Login</label>
-          <input
-            type="text"
-            name="login"
-            className="form-control"
-            id="login"
-            value={formData.login}
-            onChange={handleChange}
-            placeholder="Choose a login"
-          />
-          {errors.login && <small className="text-danger">{errors.login}</small>}
-        </div>
-
-        {/* Password */}
-        <div className="form-group mb-3">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            className="form-control"
-            id="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Enter a strong password"
-          />
-        </div>
-
-        {/* Role */}
-        <div className="form-group mb-3">
-          <label htmlFor="role">Role</label>
-          <select
-            name="role"
-            className="form-control"
-            id="role"
-            value={formData.role}
-            onChange={handleChange}
+    <div className="container d-flex justify-content-center align-items-center mt-5">
+      <div className="card shadow p-4" style={{ width: '100%', maxWidth: '400px' }}>
+        <h3 className="text-center mb-4">Реєстрація</h3>
+        {serverMessage && (
+          <div
+            className={`alert ${
+              serverMessage.includes('successful') ? 'alert-success' : 'alert-danger'
+            }`}
           >
-            <option value="STUDENT">STUDENT</option>
-            <option value="EMPLOYEE">EMPLOYEE</option>
-          </select>
-          {errors.role && <small className="text-danger">{errors.role}</small>}
-        </div>
+            {serverMessage}
+          </div>
+        )}
+        <form onSubmit={handleSubmit}>
+          {/* Name */}
+          <div className="form-group mb-3">
+            <label htmlFor="name">Прізвище і ім'я</label>
+            <input
+              type="text"
+              name="name"
+              className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+              id="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Введіть прізвище і ім'я"
+            />
+            {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+          </div>
 
-        <button type="submit" className="btn btn-primary w-100">Register</button>
-      </form>
+          {/* Email */}
+          <div className="form-group mb-3">
+            <label htmlFor="email">Електронна пошта</label>
+            <input
+              type="email"
+              name="email"
+              className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+              id="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Введіть свою електронну пошту"
+            />
+            {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+          </div>
+
+          {/* Login */}
+          <div className="form-group mb-3">
+            <label htmlFor="login">Логін</label>
+            <input
+              type="text"
+              name="login"
+              className={`form-control ${errors.login ? 'is-invalid' : ''}`}
+              id="login"
+              value={formData.login}
+              onChange={handleChange}
+              placeholder="Введіть логін"
+            />
+            {errors.login && <div className="invalid-feedback">{errors.login}</div>}
+          </div>
+
+          {/* Password */}
+          <div className="form-group mb-3">
+            <label htmlFor="password">Пароль</label>
+            <input
+              type="password"
+              name="password"
+              className="form-control"
+              id="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Введіть пароль"
+            />
+          </div>
+
+          {/* Role */}
+          <div className="form-group mb-3">
+            <label htmlFor="role">Роль в системі</label>
+            <select
+              name="role"
+              className={`form-control ${errors.role ? 'is-invalid' : ''}`}
+              id="role"
+              value={formData.role}
+              onChange={handleChange}
+            >
+              <option value="STUDENT">STUDENT</option>
+              <option value="EMPLOYEE">EMPLOYEE</option>
+            </select>
+            {errors.role && <div className="invalid-feedback">{errors.role}</div>}
+          </div>
+
+          <button type="submit" className="btn btn-primary w-100">
+            Зареєструвати
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
