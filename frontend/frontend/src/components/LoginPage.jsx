@@ -32,7 +32,7 @@ function LoginPage() {
       console.log('User role from localStorage:', localStorage.getItem('userRole'));
 
       if (response.role === 'STUDENT') {
-        navigate('/statements');
+        navigate('/user-info');
       }
     } catch (error) {
       console.error('Login failed:', error.message);

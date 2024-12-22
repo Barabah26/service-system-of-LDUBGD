@@ -59,7 +59,7 @@ const RegistrationForm = () => {
         setErrors({});
         setTimeout(() => {
           navigate('/');
-        }, 2000);
+        }, 1000);
       } catch (error) {
         setServerMessage(
           error.response?.data || 'An error occurred during registration. Please try again.'
