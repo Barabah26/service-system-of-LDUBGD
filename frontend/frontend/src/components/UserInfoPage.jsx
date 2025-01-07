@@ -8,11 +8,6 @@ const StudentInfoPage = () => {
     specialty: '122 Комп’ютерні науки',
     degree: 'бакалавр',
     group: 'КН43с',
-    // educationForm: 'Денна',
-    // paymentForm: 'Контракт',
-    // order: '573 о/с від 12.08.2021',
-    // duration: '4 роки',
-    // graduationDate: '13.06.2025',
   };
 
   const links = [
@@ -34,11 +29,6 @@ const StudentInfoPage = () => {
               <p><strong>Спеціальність:</strong> {student.specialty}</p>
               <p><strong>Ступінь / Освітньо-професійний ступінь:</strong> {student.degree}</p>
               <p><strong>Група:</strong> {student.group}</p>
-              {/* <p><strong>Форма навчання:</strong> {student.educationForm}</p>
-              <p><strong>Форма оплати навчання:</strong> {student.paymentForm}</p>
-              <p><strong>Наказ на зарахування:</strong> {student.order}</p>
-              <p><strong>Термін навчання:</strong> {student.duration}</p>
-              <p><strong>Дата закінчення навчання:</strong> {student.graduationDate}</p> */}
             </div>
           </div>
         </div>

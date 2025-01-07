@@ -51,7 +51,7 @@ public class ApplicationConfig {
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*")  );
 
         configuration.setAllowCredentials(true);
 

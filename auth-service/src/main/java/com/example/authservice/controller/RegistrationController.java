@@ -3,7 +3,6 @@ package com.example.authservice.controller;
 import com.example.authservice.dto.UserDtoRequest;
 import com.example.authservice.dto.UserDtoResponse;
 import com.example.authservice.entity.User;
-import com.example.authservice.exception.RecourseNotFoundException;
 import com.example.authservice.mapper.UserMapper;
 import com.example.authservice.service.UserService;
 import jakarta.validation.Valid;

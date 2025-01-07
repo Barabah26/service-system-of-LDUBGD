@@ -1,9 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HeaderComponent from './components/HeaderComponent';
-import ListStatementComponent from './components/ListStatementComponent';
+import ListStatementComponent from './components/StatementRegistrationForm';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
+import StatementRegistrationForm from './components/StatementRegistrationForm'; // Імпорт форми реєстрації
 import StudentInfoPage from './components/UserInfoPage'; // Додано імпорт StudentInfoPage
 import PrivateRoute from './components/PrivateRoute';
 
@@ -17,10 +18,8 @@ function App() {
                     path="/statements"
                     element={
                         <PrivateRoute>
-                            <>
-                                <HeaderComponent />
-                                <ListStatementComponent />
-                            </>
+                            <HeaderComponent />
+                            <ListStatementComponent />
                         </PrivateRoute>
                     }
                 />
@@ -28,10 +27,17 @@ function App() {
                     path="/user-info"
                     element={
                         <PrivateRoute>
-                            <>
-                                <HeaderComponent />
-                                <StudentInfoPage /> {/* Використання компонента StudentInfoPage */}
-                            </>
+                            <HeaderComponent />
+                            <StudentInfoPage />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/statement-registration"
+                    element={
+                        <PrivateRoute>
+                            <HeaderComponent />
+                            <StatementRegistrationForm /> {/* Форма реєстрації */}
                         </PrivateRoute>
                     }
                 />
