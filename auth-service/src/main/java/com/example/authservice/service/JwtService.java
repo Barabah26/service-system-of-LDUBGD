@@ -8,6 +8,7 @@ import com.example.authservice.security.JwtProvider;
 import com.example.authservice.security.JwtResponse;
 import com.example.authservice.service.impl.UserServiceImpl;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -94,4 +95,11 @@ public class JwtService {
         Date expiresAt = decodedJWT.getExpiresAt();
         return expiresAt.before(new Date());
     }
+
+    public Long extractUserIdFromToken(String token) {
+        DecodedJWT decodedJWT = JWT.decode(token);
+        return decodedJWT.getClaim("userId").asLong();
+    }
+
+
 }

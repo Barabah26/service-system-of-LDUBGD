@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserProfileDtoResponse {
-
     private String faculty;
     private String specialty;
     private String degree;
