@@ -10,6 +10,10 @@ const RegistrationForm = () => {
     login: '',
     password: '',
     role: 'STUDENT', // Default value
+    faculty: '',
+    specialty: '',
+    degree: '',
+    group: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -45,6 +49,11 @@ const RegistrationForm = () => {
       newErrors.role = 'Role must be either STUDENT or EMPLOYEE';
     }
 
+    if (!formData.faculty) newErrors.faculty = 'Faculty cannot be blank';
+    if (!formData.specialty) newErrors.specialty = 'Specialty cannot be blank';
+    if (!formData.degree) newErrors.degree = 'Degree cannot be blank';
+    if (!formData.group) newErrors.group = 'Group cannot be blank';
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -70,96 +79,196 @@ const RegistrationForm = () => {
 
   return (
     <div className="container d-flex justify-content-center align-items-center mt-5">
-      <div className="card shadow p-4" style={{ width: '100%', maxWidth: '400px' }}>
+      <div className="card shadow p-4" style={{ width: '100%', maxWidth: '800px' }}> {/* Adjusted maxWidth for two-column layout */}
         <h3 className="text-center mb-4">Реєстрація</h3>
         {serverMessage && (
           <div
-            className={`alert ${
-              serverMessage.includes('successful') ? 'alert-success' : 'alert-danger'
-            }`}
+            className={`alert ${serverMessage.includes('successful') ? 'alert-success' : 'alert-danger'}`}
           >
             {serverMessage}
           </div>
         )}
         <form onSubmit={handleSubmit}>
-          {/* Name */}
-          <div className="form-group mb-3">
-            <label htmlFor="name">Прізвище і ім'я</label>
-            <input
-              type="text"
-              name="name"
-              className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-              id="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Введіть прізвище і ім'я"
-            />
-            {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+          <div className="row">
+            {/* Name and Email */}
+            <div className="col-md-6">
+              <div className="form-group mb-3">
+                <label htmlFor="name">Прізвище і ім'я</label>
+                <input
+                  type="text"
+                  name="name"
+                  className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                  id="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Введіть прізвище і ім'я"
+                />
+                {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="form-group mb-3">
+                <label htmlFor="email">Електронна пошта</label>
+                <input
+                  type="email"
+                  name="email"
+                  className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                  id="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Введіть свою електронну пошту"
+                />
+                {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+              </div>
+            </div>
           </div>
 
-          {/* Email */}
-          <div className="form-group mb-3">
-            <label htmlFor="email">Електронна пошта</label>
-            <input
-              type="email"
-              name="email"
-              className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Введіть свою електронну пошту"
-            />
-            {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+          <div className="row">
+            {/* Login and Password */}
+            <div className="col-md-6">
+              <div className="form-group mb-3">
+                <label htmlFor="login">Логін</label>
+                <input
+                  type="text"
+                  name="login"
+                  className={`form-control ${errors.login ? 'is-invalid' : ''}`}
+                  id="login"
+                  value={formData.login}
+                  onChange={handleChange}
+                  placeholder="Введіть логін"
+                />
+                {errors.login && <div className="invalid-feedback">{errors.login}</div>}
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="form-group mb-3">
+                <label htmlFor="password">Пароль</label>
+                <input
+                  type="password"
+                  name="password"
+                  className="form-control"
+                  id="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Введіть пароль"
+                />
+              </div>
+            </div>
           </div>
 
-          {/* Login */}
-          <div className="form-group mb-3">
-            <label htmlFor="login">Логін</label>
-            <input
-              type="text"
-              name="login"
-              className={`form-control ${errors.login ? 'is-invalid' : ''}`}
-              id="login"
-              value={formData.login}
-              onChange={handleChange}
-              placeholder="Введіть логін"
-            />
-            {errors.login && <div className="invalid-feedback">{errors.login}</div>}
+          <div className="row">
+            {/* Role, Faculty, Specialty, Degree */}
+            <div className="col-md-6">
+              <div className="form-group mb-3">
+                <label htmlFor="role">Роль в системі</label>
+                <select
+                  name="role"
+                  className={`form-control ${errors.role ? 'is-invalid' : ''}`}
+                  id="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                >
+                  <option value="STUDENT">STUDENT</option>
+                  <option value="EMPLOYEE">EMPLOYEE</option>
+                </select>
+                {errors.role && <div className="invalid-feedback">{errors.role}</div>}
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="form-group mb-3">
+                <label htmlFor="faculty">Факультет</label>
+                <select
+                  name="faculty"
+                  className={`form-control ${errors.faculty ? 'is-invalid' : ''}`}
+                  id="faculty"
+                  value={formData.faculty}
+                  onChange={handleChange}
+                >
+                  <option value="">Оберіть факультет</option>
+                  <option value="Факультет пожежної та техногенної безпеки">
+                    Факультет пожежної та техногенної безпеки
+                  </option>
+                  <option value="Факультет психології та соціального захисту">
+                    Факультет психології та соціального захисту
+                  </option>
+                  <option value="Факультет цивільного захисту">Факультет цивільного захисту</option>
+                </select>
+                {errors.faculty && <div className="invalid-feedback">{errors.faculty}</div>}
+              </div>
+            </div>
           </div>
 
-          {/* Password */}
-          <div className="form-group mb-3">
-            <label htmlFor="password">Пароль</label>
-            <input
-              type="password"
-              name="password"
-              className="form-control"
-              id="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Введіть пароль"
-            />
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group mb-3">
+                <label htmlFor="specialty">Спеціальність</label>
+                <select
+                  name="specialty"
+                  className={`form-control ${errors.specialty ? 'is-invalid' : ''}`}
+                  id="specialty"
+                  value={formData.specialty}
+                  onChange={handleChange}
+                >
+                  <option value="">Оберіть спеціальність</option>
+                  <option value="ЕКОЛОГІЯ ТА ОХОРОНА НАВКОЛИШНЬОГО СЕРЕДОВИЩА">
+                    ЕКОЛОГІЯ ТА ОХОРОНА НАВКОЛИШНЬОГО СЕРЕДОВИЩА
+                  </option>
+                  <option value="КОМП'ЮТЕРНІ НАУКИ">КОМП'ЮТЕРНІ НАУКИ</option>
+                  <option value="МЕНЕДЖМЕНТ ОРГАНІЗАЦІЙ ТА АДМІНІСТРУВАННЯ">
+                    МЕНЕДЖМЕНТ ОРГАНІЗАЦІЙ ТА АДМІНІСТРУВАННЯ
+                  </option>
+                  {/* More options */}
+                </select>
+                {errors.specialty && <div className="invalid-feedback">{errors.specialty}</div>}
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="form-group mb-3">
+                <label htmlFor="degree">Ступінь</label>
+                <select
+                  name="degree"
+                  className={`form-control ${errors.degree ? 'is-invalid' : ''}`}
+                  id="degree"
+                  value={formData.degree}
+                  onChange={handleChange}
+                >
+                  <option value="">Оберіть ступінь</option>
+                  <option value="бакалавр">бакалавр</option>
+                  <option value="магістр">магістр</option>
+                </select>
+                {errors.degree && <div className="invalid-feedback">{errors.degree}</div>}
+              </div>
+            </div>
           </div>
 
-          {/* Role */}
-          <div className="form-group mb-3">
-            <label htmlFor="role">Роль в системі</label>
-            <select
-              name="role"
-              className={`form-control ${errors.role ? 'is-invalid' : ''}`}
-              id="role"
-              value={formData.role}
-              onChange={handleChange}
-            >
-              <option value="STUDENT">STUDENT</option>
-              <option value="EMPLOYEE">EMPLOYEE</option>
-            </select>
-            {errors.role && <div className="invalid-feedback">{errors.role}</div>}
+          <div className="row">
+            {/* Group */}
+            <div className="col-md-12">
+              <div className="form-group mb-3">
+                <label htmlFor="group">Група</label>
+                <input
+                  type="text"
+                  name="group"
+                  className={`form-control ${errors.group ? 'is-invalid' : ''}`}
+                  id="group"
+                  value={formData.group}
+                  onChange={handleChange}
+                  placeholder="Введіть групу"
+                />
+                {errors.group && <div className="invalid-feedback">{errors.group}</div>}
+              </div>
+            </div>
           </div>
 
-          <button type="submit" className="btn btn-primary w-100">
-            Зареєструвати
-          </button>
+          <div className="form-group">
+            <button type="submit" className="btn btn-primary btn-block w-100">
+              Зареєструватися
+            </button>
+          </div>
         </form>
       </div>
     </div>

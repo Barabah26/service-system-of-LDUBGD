@@ -1,9 +1,11 @@
 package com.example.authservice.controller;
 
+import com.example.authservice.dto.UserProfileDtoResponse;
 import com.example.authservice.exception.AuthException;
 import com.example.authservice.security.JwtRequest;
 import com.example.authservice.security.JwtResponse;
 import com.example.authservice.service.AuthService;
+import com.example.authservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody JwtRequest authRequest) {
@@ -36,6 +39,14 @@ public class AuthController {
         }
     }
 
-
+    @GetMapping("/{userId}/profile")
+    public ResponseEntity<UserProfileDtoResponse> getUserProfile(@PathVariable Long userId) {
+        UserProfileDtoResponse userProfileDtoResponse = userService.getUserProfile(userId);
+        if (userProfileDtoResponse != null) {
+            return ResponseEntity.ok(userProfileDtoResponse);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
 }

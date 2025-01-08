@@ -46,4 +46,16 @@ public class UserDtoRequest {
     @Pattern(regexp = "^(STUDENT|EMPLOYEE)$",
             message = "Role must be one of the following: STUDENT, EMPLOYEE")
     private String role;
+
+    @NotBlank(message = "Faculty cannot be blank")
+    private String faculty;
+
+    @NotBlank(message = "Specialty cannot be blank")
+    private String specialty;
+
+    @NotBlank(message = "Degree cannot be blank")
+    private String degree;
+
+    @NotBlank(message = "Group cannot be blank")
+    private String group;
 }

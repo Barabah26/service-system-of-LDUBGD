@@ -1,5 +1,6 @@
 package com.example.authservice.service.impl;
 
+import com.example.authservice.dto.UserProfileDtoResponse;
 import com.example.authservice.entity.User;
 import com.example.authservice.repository.UserRepository;
 import com.example.authservice.service.UserService;
@@ -33,8 +34,27 @@ public class UserServiceImpl implements UserService {
         user.setLogin(user.getLogin());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(user.getRole());
+        user.setFaculty(user.getFaculty());
+        user.setSpecialty(user.getSpecialty());
+        user.setDegree(user.getDegree());
+        user.setGroup(user.getGroup());
 
         return userRepository.save(user);
+    }
+
+    @Override
+    public UserProfileDtoResponse getUserProfile(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return new UserProfileDtoResponse(
+                    user.getFaculty(),
+                    user.getSpecialty(),
+                    user.getDegree(),
+                    user.getGroup()
+            );
+        }
+        return null;
     }
 
 }

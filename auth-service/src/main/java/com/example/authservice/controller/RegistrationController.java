@@ -36,7 +36,11 @@ public class RegistrationController {
                     registeredUser.getName(),
                     registeredUser.getEmail(),
                     registeredUser.getLogin(),
-                    registeredUser.getRole()
+                    registeredUser.getRole(),
+                    registeredUser.getFaculty(),
+                    registeredUser.getSpecialty(),
+                    registeredUser.getDegree(),
+                    registeredUser.getGroup()
             );
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
