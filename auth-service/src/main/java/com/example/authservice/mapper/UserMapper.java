@@ -23,6 +23,10 @@ public class UserMapper {
         user.setLogin(userDtoRequest.getLogin());
         user.setPassword(userDtoRequest.getPassword());
         user.setRole(userDtoRequest.getRole());
+        user.setFaculty(userDtoRequest.getFaculty());
+        user.setSpecialty(userDtoRequest.getSpecialty());
+        user.setDegree(userDtoRequest.getDegree());
+        user.setGroup(userDtoRequest.getGroup());
 
         return user;
     }

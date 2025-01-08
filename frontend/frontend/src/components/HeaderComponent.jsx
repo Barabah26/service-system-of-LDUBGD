@@ -63,8 +63,8 @@ const HeaderComponent = () => {
               className="me-3"
             >
               <NavDropdown.Item href="/statement-registration">Замовити довідку з місця навчання</NavDropdown.Item>
-              <NavDropdown.Item href="#">Замовити довідку для військкомату (Форма 20)</NavDropdown.Item>
-              <NavDropdown.Item href="#">Довідка (Форма 9)</NavDropdown.Item>
+              <NavDropdown.Item href="/statement-registration">Замовити довідку для військкомату (Форма 20)</NavDropdown.Item>
+              <NavDropdown.Item href="/statement-registration">Довідка (Форма 9)</NavDropdown.Item>
             </NavDropdown>
 
             {/* Кнопка "Сповіщення" */}

@@ -1,9 +1,13 @@
 package com.example.authservice.controller;
 
+import com.example.authservice.dto.UserProfileDtoResponse;
 import com.example.authservice.exception.AuthException;
 import com.example.authservice.security.JwtRequest;
 import com.example.authservice.security.JwtResponse;
 import com.example.authservice.service.AuthService;
+import com.example.authservice.service.JwtService;
+import com.example.authservice.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserService userService;
+    private final JwtService jwtService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody JwtRequest authRequest) {
@@ -36,6 +42,24 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfileDtoResponse> getUserProfile(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").replace("Bearer ", "");
+
+        try {
+            Long userId = jwtService.extractUserIdFromToken(token);
+
+            UserProfileDtoResponse userProfileDtoResponse = userService.getUserProfile(userId);
+
+            if (userProfileDtoResponse != null) {
+                return ResponseEntity.ok(userProfileDtoResponse);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    }
 
 
 }
