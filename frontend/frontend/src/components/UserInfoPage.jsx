@@ -71,7 +71,7 @@ const StudentInfoPage = () => {
               <ul className="list-group list-group-flush">
                 {links.map((link, index) => (
                   <li key={index} className="list-group-item">
-                    <a href="#">{link}</a>
+                    <a href="/statement-registration">{link}</a>
                   </li>
                 ))}
               </ul>
