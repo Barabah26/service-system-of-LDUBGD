@@ -26,7 +26,7 @@ const ListStatementComponent = () => {
     setLoading(true);
     const token = localStorage.getItem('accessToken');
     try {
-      const response = await axios.get('http://localhost:9000/api/statements/statusAndFaculty', {
+      const response = await axios.get('http://localhost:9080/api/statements/statusAndFaculty', {
         params: {
           status: selectedStatus || undefined,
           faculty: selectedFaculty || undefined,
@@ -64,7 +64,7 @@ const ListStatementComponent = () => {
     if (!window.confirm("Ви впевнені, що хочете змінити статус на 'В обробці'?")) return;
     const token = localStorage.getItem('accessToken');
     try {
-      await axios.put(`http://localhost:9000/api/statements/${id}/in-progress`, {}, {
+      await axios.put(`http://localhost:9080/api/statements/${id}/in-progress`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchStatements();
@@ -77,7 +77,7 @@ const ListStatementComponent = () => {
     if (!window.confirm("Ви впевнені, що хочете змінити статус на 'Готово'?")) return;
     const token = localStorage.getItem('accessToken');
     try {
-      await axios.put(`http://localhost:9000/api/statements/${id}/ready`, {}, {
+      await axios.put(`http://localhost:9080/api/statements/${id}/ready`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchStatements();
@@ -101,7 +101,7 @@ const ListStatementComponent = () => {
 
     const token = localStorage.getItem('accessToken');
     try {
-      await axios.post(`http://localhost:9000/api/files/upload/${statementId}`, formData, {
+      await axios.post(`http://localhost:9080/api/files/upload/${statementId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,

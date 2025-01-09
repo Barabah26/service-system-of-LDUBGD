@@ -1,10 +1,8 @@
 DROP TABLE IF EXISTS statement CASCADE;
 DROP TABLE IF EXISTS statement_info CASCADE;
 
-
-
 CREATE TABLE statement (
-                           id SERIAL PRIMARY KEY,
+                           id BIGSERIAL PRIMARY KEY,
                            full_name VARCHAR(255),
                            year_birthday VARCHAR(255),
                            group_name VARCHAR(255),
@@ -14,7 +12,7 @@ CREATE TABLE statement (
 );
 
 CREATE TABLE statement_info (
-                                id BIGINT PRIMARY KEY,
+                                id BIGSERIAL PRIMARY KEY,
                                 is_ready BOOLEAN,
                                 statement_status VARCHAR(50),
                                 CONSTRAINT fk_statement

@@ -24,8 +24,8 @@ export const login = async (login, password) => {
       localStorage.setItem('accessToken', response.data.accessToken);
       localStorage.setItem('refreshToken', response.data.refreshToken);
 
-      
-      const role = response.data.role 
+      // Ensure the role is set
+      const role = response.data.role;
       localStorage.setItem('userRole', role);
       console.log('Role stored:', role);
 
