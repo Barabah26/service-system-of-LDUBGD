@@ -67,7 +67,7 @@ const RegistrationForm = () => {
         setServerMessage('Registration successful!');
         setErrors({});
         setTimeout(() => {
-          navigate('/');
+          navigate('/student-login');
         }, 1000);
       } catch (error) {
         setServerMessage(

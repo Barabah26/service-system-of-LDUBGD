@@ -1,19 +1,26 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HeaderComponent from './components/HeaderComponent';
-import ListStatementComponent from './components/StatementRegistrationForm';
-import LoginPage from './components/LoginPage';
-import RegisterPage from './components/RegisterPage';
-import StatementRegistrationForm from './components/StatementRegistrationForm'; // Імпорт форми реєстрації
-import StudentInfoPage from './components/UserInfoPage'; // Додано імпорт StudentInfoPage
-import PrivateRoute from './components/PrivateRoute';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HeaderComponent from "./components/HeaderComponent";
+import HeaderComponentAdmin from "./components/HeaderComponentAdmin";
+import ListStatementComponent from "./components/StatementRegistrationForm";
+import LoginPage from "./components/LoginPage"; 
+import RegisterPage from "./components/RegisterPage"; 
+import StatementRegistrationForm from "./components/StatementRegistrationForm";
+import StudentInfoPage from "./components/UserInfoPage";
+import PrivateRoute from "./components/PrivateRoute";
+import MainPage from "./components/MainPage"; 
+import LoginPageAdmin from "./components/LoginPageAdmin";
+import ListStatementsAdmin from './components/ListStatementsAdmin'; // Adjust as needed
 
 function App() {
     return (
-        <BrowserRouter>
+        <Router>
             <Routes>
-                <Route path="/" element={<LoginPage />} />
+                <Route path="/" element={<MainPage />} />
+                <Route path="/student-login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                
+                {/* Private routes */}
                 <Route
                     path="/statements"
                     element={
@@ -37,12 +44,23 @@ function App() {
                     element={
                         <PrivateRoute>
                             <HeaderComponent />
-                            <StatementRegistrationForm /> {/* Форма реєстрації */}
+                            <StatementRegistrationForm />
                         </PrivateRoute>
                     }
                 />
+
+                {/* Admin routes */}
+                <Route path="/admin-login" element={<LoginPageAdmin />} />
+                <Route 
+                    path="/admin-services" 
+                    element={
+                        <PrivateRoute>
+                            <HeaderComponentAdmin />
+                            <ListStatementsAdmin />
+                        </PrivateRoute>
+                    } />
             </Routes>
-        </BrowserRouter>
+        </Router>
     );
 }
 

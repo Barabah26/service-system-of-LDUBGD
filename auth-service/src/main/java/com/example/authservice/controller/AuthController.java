@@ -26,11 +26,11 @@ public class AuthController {
     private final UserService userService;
     private final JwtService jwtService;
 
-    @PostMapping("/login")
+    @PostMapping("/student/login")
     public ResponseEntity<?> login(@Valid @RequestBody JwtRequest authRequest) {
         log.info("Attempting login for user: {}", authRequest.getLogin());
         try {
-            JwtResponse token = authService.login(authRequest);
+            JwtResponse token = authService.loginUser(authRequest);
             log.info("Login successful for user: {}", authRequest.getLogin());
             return ResponseEntity.ok(token);
         } catch (AuthException e) {
@@ -41,6 +41,24 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
         }
     }
+
+    @PostMapping("/admin/login")
+    public ResponseEntity<?> loginAdmin(@Valid @RequestBody JwtRequest authRequest) {
+        log.info("Attempting login for admin: {}", authRequest.getLogin());
+        try {
+            log.info("Received login: {}, password: {}", authRequest.getLogin(), authRequest.getPassword());
+            JwtResponse token = authService.loginAdmin(authRequest);
+            log.info("Admin login successful for admin: {}", authRequest.getLogin());
+            return ResponseEntity.ok(token);
+        } catch (AuthException e) {
+            log.warn("Admin login failed for admin: {} due to incorrect login or password", authRequest.getLogin());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect login or password");
+        } catch (Exception e) {
+            log.error("Unexpected error during admin login for admin: {}", authRequest.getLogin(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
+        }
+    }
+
 
     @GetMapping("/profile")
     public ResponseEntity<UserProfileDtoResponse> getUserProfile(HttpServletRequest request) {

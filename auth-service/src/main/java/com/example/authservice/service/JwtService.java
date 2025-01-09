@@ -2,6 +2,7 @@ package com.example.authservice.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.authservice.entity.Admin;
 import com.example.authservice.entity.User;
 import com.example.authservice.exception.AuthException;
 import com.example.authservice.security.JwtProvider;
@@ -66,6 +67,12 @@ public class JwtService {
             }
         }
         throw new AuthException("JWT token is invalid");
+    }
+
+    public JwtResponse generateAdminTokens(Admin admin) {
+        String accessToken = jwtProvider.generateAccessTokenAdmin(admin);
+        String refreshToken = jwtProvider.generateRefreshTokenAdmin(admin);
+        return new JwtResponse(accessToken, refreshToken, "ADMIN");
     }
 
     public boolean validateAccessToken(@NonNull String accessToken) {

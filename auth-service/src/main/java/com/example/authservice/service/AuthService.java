@@ -1,10 +1,12 @@
 package com.example.authservice.service;
 
+import com.example.authservice.entity.Admin;
 import com.example.authservice.entity.User;
 import com.example.authservice.exception.AuthException;
 import com.example.authservice.security.JwtProvider;
 import com.example.authservice.security.JwtRequest;
 import com.example.authservice.security.JwtResponse;
+import com.example.authservice.service.impl.AdminServiceImpl;
 import com.example.authservice.service.impl.UserServiceImpl;
 import io.jsonwebtoken.Claims;
 import lombok.NonNull;
@@ -20,11 +22,12 @@ import java.util.List;
 public class AuthService {
 
     private final UserServiceImpl userService;
+    private final AdminServiceImpl adminService;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    public JwtResponse login(@NonNull JwtRequest authRequest) {
+    public JwtResponse loginUser(@NonNull JwtRequest authRequest) {
         if (authRequest.getLogin() == null) {
             throw new AuthException("Username is null");
         }
@@ -41,6 +44,27 @@ public class AuthService {
             jwtService.getAccessStorage().put(user.getLogin(), accessTokens);
 
             String role = user.getRole();
+
+            return new JwtResponse(accessToken, refreshToken, role);
+        } else {
+            throw new AuthException("Password is incorrect");
+        }
+    }
+
+    public JwtResponse loginAdmin(JwtRequest authRequest) {
+        Admin admin = adminService.findByLogin(authRequest.getLogin())
+                .orElseThrow(() -> new AuthException("Admin not found"));
+
+        if (passwordEncoder.matches(authRequest.getPassword(), admin.getPassword())) {
+            final String accessToken = jwtProvider.generateAccessTokenAdmin(admin);
+            final String refreshToken = jwtProvider.generateRefreshTokenAdmin(admin);
+            jwtService.getRefreshStorage().put(admin.getLogin(), refreshToken);
+
+            List<String> accessTokens = jwtService.getAccessStorage().computeIfAbsent(admin.getLogin(), k -> new ArrayList<>());
+            accessTokens.add(accessToken);
+            jwtService.getAccessStorage().put(admin.getLogin(), accessTokens);
+
+            String role = admin.getRole();
 
             return new JwtResponse(accessToken, refreshToken, role);
         } else {
@@ -66,4 +90,7 @@ public class AuthService {
         }
         return false;
     }
+
+
 }
+
