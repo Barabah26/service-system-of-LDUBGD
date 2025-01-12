@@ -101,12 +101,13 @@ const ListStatementComponent = () => {
 
     const token = localStorage.getItem('accessToken');
     try {
-      await axios.post(`http://localhost:9080/api/files/upload/${statementId}`, formData, {
+      await axios.post('http://localhost:8080/api/file/upload', formData, {
+        params: { id: statementId },
         headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
         },
-      });
+    });
       setShowModal(true);
     } catch (error) {
       alert('Виникла помилка при завантаженні файлу.');
@@ -180,56 +181,57 @@ const ListStatementComponent = () => {
               {noResults ? (
                   <p className="text-center">{errorMessage}</p>
               ) : (
-                  <Table striped bordered hover>
-                    <thead>
-                    <tr>
-                      <th>ПІБ</th>
-                      <th>Група</th>
-                      <th>Дата народження</th>
-                      <th>Номер телефону</th>
-                      <th>Тип заявки</th>
-                      <th>Факультет</th>
-                      <th className="wide-column">Статус</th>
-                      {selectedStatus !== 'READY' && <th>Дія</th>}
-                      {selectedStatus === 'IN_PROGRESS' && <th className="wide-column">Завантажити файл</th>}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {filteredStatements.map((statement) => (
-                        <tr key={statement.id}>
-                          <td>{statement.fullName}</td>
-                          <td>{statement.groupName}</td>
-                          <td>{statement.yearBirthday}</td>
-                          <td>{statement.phoneNumber}</td>
-                          <td>{statement.typeOfStatement}</td>
-                          <td>{statement.faculty}</td>
-                          <td>{statement.status}</td>
-                          {statement.status !== 'READY' && (
-                              <td>
-                                {statement.status === 'В очікуванні' && (
-                                    <Button variant="success" onClick={() => handleInProgress(statement.id)}>
-                                      В обробку
-                                    </Button>
-                                )}
-                                {statement.status === 'В процесі' && (
-                                    <Button variant="success" onClick={() => handleReady(statement.id)}>
-                                      Готово
-                                    </Button>
-                                )}
-                              </td>
+                <Table striped bordered hover className="wide-table">
+                <thead>
+                  <tr>
+                    <th>ПІБ</th>
+                    <th>Група</th>
+                    <th>Дата народження</th>
+                    <th>Номер телефону</th>
+                    <th>Тип заявки</th>
+                    <th>Факультет</th>
+                    <th className="wide-column">Статус</th>
+                    {selectedStatus !== 'READY' && <th>Дія</th>}
+                    {selectedStatus === 'IN_PROGRESS' && <th className="wide-column">Завантажити файл</th>}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredStatements.map((statement) => (
+                    <tr key={statement.id}>
+                      <td>{statement.fullName}</td>
+                      <td>{statement.groupName}</td>
+                      <td>{statement.yearBirthday}</td>
+                      <td>{statement.phoneNumber}</td>
+                      <td>{statement.typeOfStatement}</td>
+                      <td>{statement.faculty}</td>
+                      <td>{statement.status}</td>
+                      {statement.status !== 'READY' && (
+                        <td>
+                          {statement.status === 'В очікуванні' && (
+                            <Button variant="success" onClick={() => handleInProgress(statement.id)}>
+                              В обробку
+                            </Button>
                           )}
                           {statement.status === 'В процесі' && (
-                              <td>
-                                <input type="file" onChange={handleFileChange} />
-                                <Button variant="primary" onClick={() => handleFileUpload(statement.id)}>
-                                  Завантажити
-                                </Button>
-                              </td>
+                            <Button variant="success" onClick={() => handleReady(statement.id)}>
+                              Готово
+                            </Button>
                           )}
-                        </tr>
-                    ))}
-                    </tbody>
-                  </Table>
+                        </td>
+                      )}
+                      {statement.status === 'В процесі' && (
+                        <td>
+                          <input type="file" onChange={handleFileChange} />
+                          <Button variant="primary" onClick={() => handleFileUpload(statement.id)}>
+                            Завантажити
+                          </Button>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              
               )}
             </>
         )}
