@@ -102,7 +102,7 @@ const RegistrationForm = () => {
             {/* Name and Email */}
             <div className="col-md-6">
               <div className="form-group mb-3">
-                <label htmlFor="name">Прізвище і ім'я</label>
+                <label htmlFor="name">ПІБ</label>
                 <input
                   type="text"
                   name="name"
@@ -186,7 +186,7 @@ const RegistrationForm = () => {
               </div>
             </div>
 
-            <div className="col-md-4">
+            <div className="col-md-6">
               <div className="form-group mb-3">
                 <label htmlFor="birthDate">Дата народження</label>
                 <input

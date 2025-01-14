@@ -2,7 +2,7 @@ package com.example.authservice.controller;
 
 import com.example.authservice.security.JwtResponse;
 import com.example.authservice.security.RefreshJwtRequest;
-import com.example.authservice.service.JwtService;
+import com.example.authservice.service.impl.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

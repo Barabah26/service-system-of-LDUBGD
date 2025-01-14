@@ -1,4 +1,4 @@
-package com.example.authservice.service;
+package com.example.authservice.service.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;

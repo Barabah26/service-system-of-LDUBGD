@@ -37,9 +37,8 @@ function LoginPage() {
       if (response.role === 'ADMIN') {
         console.log('Redirecting to /super-admin');
         navigate('/admin-services');
-      } else {
-        console.log('Redirecting to /statements');
-        navigate('/admin-statements');
+      } else if(response.role === 'SUPER_ADMIN'){
+        navigate('/super-admin');
       }
     } catch (error) {
       console.error('Login failed:', error.message);

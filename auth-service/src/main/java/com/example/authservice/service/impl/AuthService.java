@@ -1,4 +1,4 @@
-package com.example.authservice.service;
+package com.example.authservice.service.impl;
 
 import com.example.authservice.entity.Admin;
 import com.example.authservice.entity.User;
@@ -6,8 +6,6 @@ import com.example.authservice.exception.AuthException;
 import com.example.authservice.security.JwtProvider;
 import com.example.authservice.security.JwtRequest;
 import com.example.authservice.security.JwtResponse;
-import com.example.authservice.service.impl.AdminServiceImpl;
-import com.example.authservice.service.impl.UserServiceImpl;
 import io.jsonwebtoken.Claims;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
