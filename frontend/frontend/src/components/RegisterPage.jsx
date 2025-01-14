@@ -14,6 +14,8 @@ const RegistrationForm = () => {
     specialty: '',
     degree: '',
     group: '',
+    dateBirth: '',
+    phoneNumber: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -47,6 +49,13 @@ const RegistrationForm = () => {
     if (!formData.role) newErrors.role = 'Role cannot be blank';
     else if (!['STUDENT', 'EMPLOYEE'].includes(formData.role)) {
       newErrors.role = 'Role must be either STUDENT or EMPLOYEE';
+    }
+
+    if (!formData.dateBirth) newErrors.dateBirth = 'Birth date cannot be blank';
+    if (!formData.phoneNumber) {
+      newErrors.phoneNumber = 'Phone number cannot be blank';
+    } else if (!/^\+?[0-9]{10,15}$/.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = 'Phone number must be valid (e.g., +380123456789)';
     }
 
     if (!formData.faculty) newErrors.faculty = 'Faculty cannot be blank';
@@ -174,6 +183,39 @@ const RegistrationForm = () => {
                   <option value="EMPLOYEE">EMPLOYEE</option>
                 </select>
                 {errors.role && <div className="invalid-feedback">{errors.role}</div>}
+              </div>
+            </div>
+
+            <div className="col-md-4">
+              <div className="form-group mb-3">
+                <label htmlFor="birthDate">Дата народження</label>
+                <input
+                  type="text"
+                  name="dateBirth"
+                  className={`form-control`}
+                  id="dateBirth"
+                  value={formData.birthDate}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            {/* Phone Number */}
+            <div className="col-md-6">
+              <div className="form-group mb-3">
+                <label htmlFor="phoneNumber">Номер телефону</label>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  className={`form-control ${errors.phoneNumber ? 'is-invalid' : ''}`}
+                  id="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  placeholder="+380123456789"
+                />
+                {errors.phoneNumber && <div className="invalid-feedback">{errors.phoneNumber}</div>}
               </div>
             </div>
 
