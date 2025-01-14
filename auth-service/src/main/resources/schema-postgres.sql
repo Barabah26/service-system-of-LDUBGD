@@ -13,7 +13,9 @@ CREATE TABLE users (
                        faculty VARCHAR(128),
                        specialty VARCHAR(128),
                        degree VARCHAR(128),
-                       student_group VARCHAR(128)
+                       student_group VARCHAR(128),
+                       phone_number VARCHAR(128),
+                       date_birth VARCHAR(128)
 );
 
 -- Таблиця для адміністраторів

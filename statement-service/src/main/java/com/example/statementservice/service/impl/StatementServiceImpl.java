@@ -2,7 +2,6 @@ package com.example.statementservice.service.impl;
 
 import com.example.statementservice.dto.StatementDto;
 import com.example.statementservice.dto.StatementDtoRequest;
-import com.example.statementservice.dto.StatementDtoResponse;
 import com.example.statementservice.entity.Statement;
 import com.example.statementservice.entity.StatementInfo;
 import com.example.statementservice.entity.enums.StatementStatus;
@@ -30,7 +29,7 @@ public class StatementServiceImpl implements StatementService {
     public void createStatement(StatementDtoRequest statementDtoRequest) {
         Statement statement = new Statement();
         statement.setFullName(statementDtoRequest.getFullName());
-        statement.setYearBirthday(statementDtoRequest.getYearBirthday());
+        statement.setYearBirthday(statementDtoRequest.getDateBirth());
         statement.setGroup(statementDtoRequest.getGroup());
         statement.setPhoneNumber(statementDtoRequest.getPhoneNumber());
         statement.setFaculty(statementDtoRequest.getFaculty());

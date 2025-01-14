@@ -27,6 +27,8 @@ public class UserMapper {
         user.setSpecialty(userDtoRequest.getSpecialty());
         user.setDegree(userDtoRequest.getDegree());
         user.setGroup(userDtoRequest.getGroup());
+        user.setPhoneNumber(userDtoRequest.getPhoneNumber());
+        user.setDateBirth(userDtoRequest.getDateBirth());
 
         return user;
     }

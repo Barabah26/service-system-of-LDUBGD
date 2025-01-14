@@ -43,4 +43,10 @@ public class User {
 
     @Column(name = "student_group", length = 128)
     private String group;
+
+    @Column(name = "phone_number", length = 128)
+    private String phoneNumber;
+
+    @Column(name = "date_birth", length = 128)
+    private String dateBirth;
 }

@@ -38,6 +38,8 @@ public class UserServiceImpl implements UserService {
         user.setSpecialty(user.getSpecialty());
         user.setDegree(user.getDegree());
         user.setGroup(user.getGroup());
+        user.setPhoneNumber(user.getPhoneNumber());
+        user.setDateBirth(user.getDateBirth());
 
         return userRepository.save(user);
     }
@@ -48,10 +50,13 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             return new UserProfileDtoResponse(
+                    user.getName(),
                     user.getFaculty(),
                     user.getSpecialty(),
                     user.getDegree(),
-                    user.getGroup()
+                    user.getGroup(),
+                    user.getPhoneNumber(),
+                    user.getDateBirth()
             );
         }
         return null;
