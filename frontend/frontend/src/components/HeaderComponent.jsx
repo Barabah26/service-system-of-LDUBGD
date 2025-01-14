@@ -49,6 +49,11 @@ const HeaderComponent = () => {
     navigate(`/statement-registration?type=${type}`); // Перехід на сторінку з вибраним типом довідки
   };
 
+  // Функція для переходу на сторінку "Мої довідки"
+  const handleMyStatements = () => {
+    navigate('/student-statements'); // Перехід на сторінку "Мої довідки"
+  };
+
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="py-3 shadow-sm">
       <Container>
@@ -75,6 +80,15 @@ const HeaderComponent = () => {
             <Nav.Link href="#" className="custom-button text-light me-3">
               <IoMdNotifications size={20} className="me-2" />
               Сповіщення
+            </Nav.Link>
+
+            {/* Кнопка "Мої довідки" */}
+            <Nav.Link
+              href="#"
+              className="custom-button text-light me-3"
+              onClick={handleMyStatements}
+            >
+              Мої довідки
             </Nav.Link>
 
             {/* Кнопка профілю */}

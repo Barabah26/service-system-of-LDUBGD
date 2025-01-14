@@ -10,7 +10,9 @@ import StudentInfoPage from "./components/UserInfoPage";
 import PrivateRoute from "./components/PrivateRoute";
 import MainPage from "./components/MainPage"; 
 import LoginPageAdmin from "./components/LoginPageAdmin";
-import ListStatementsAdmin from './components/ListStatementsAdmin'; // Adjust as needed
+import ListStatementsAdmin from './components/ListStatementsAdmin'; 
+import StudentStatementsPage from './components/StudentStatementsPage';
+
 
 function App() {
     return (
@@ -19,6 +21,16 @@ function App() {
                 <Route path="/" element={<MainPage />} />
                 <Route path="/student-login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                
+                <Route 
+                    path="/student-statements" 
+                    element={
+                        <PrivateRoute>
+                            <HeaderComponent />
+                            <StudentStatementsPage />
+                        </PrivateRoute>
+                    } />
+
                 
                 {/* Private routes */}
                 <Route
