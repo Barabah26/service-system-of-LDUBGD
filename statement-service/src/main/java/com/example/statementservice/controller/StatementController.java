@@ -2,6 +2,7 @@ package com.example.statementservice.controller;
 
 import com.example.statementservice.dto.StatementDto;
 import com.example.statementservice.dto.StatementDtoRequest;
+import com.example.statementservice.entity.Statement;
 import com.example.statementservice.entity.enums.StatementStatus;
 import com.example.statementservice.exception.RecourseNotFoundException;
 import com.example.statementservice.security.JwtTokenProvider;
@@ -51,6 +52,15 @@ public class StatementController {
     @GetMapping
     public ResponseEntity<List<StatementDto>> getAllStatements() {
         List<StatementDto> statements = statementService.getStatementsInfoWithStatusPending();
+        if (statements.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(statements);
+    }
+
+    @GetMapping("/findByFullName")
+    public ResponseEntity<List<StatementDto>> findByFullName(@RequestParam String fullName) {
+        List<StatementDto> statements = statementService.findStatementInfoByStatementFullName(fullName);
         if (statements.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
