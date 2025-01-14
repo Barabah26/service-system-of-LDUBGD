@@ -58,4 +58,10 @@ public class UserDtoRequest {
 
     @NotBlank(message = "Group cannot be blank")
     private String group;
+
+    @NotBlank(message = "phoneNumber cannot be blank")
+    private String phoneNumber;
+
+    @NotBlank(message = "dateBirth cannot be blank")
+    private String dateBirth;
 }

@@ -1,6 +1,7 @@
 package com.example.statementservice.entity;
 
 import com.example.statementservice.entity.enums.StatementStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class StatementInfo {
 
     @OneToOne
     @MapsId
+    @JsonBackReference
     @JoinColumn(name = "id")
     private Statement statement;
 }

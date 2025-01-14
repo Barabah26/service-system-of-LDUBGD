@@ -8,8 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserProfileDtoResponse {
+    private String fullName;
     private String faculty;
     private String specialty;
     private String degree;
     private String group;
+    private String phoneNumber;
+    private String dateBirth;
 }

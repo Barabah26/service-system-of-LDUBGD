@@ -17,7 +17,7 @@ public class StatementDtoRequest {
 
     @NotEmpty(message = "Year of birth must not be empty")
     @Pattern(regexp = "^(0[1-9]|1[0-9]|2[0-9]|3[01])-(0[1-9]|1[0-2])-(\\d{4})$", message = "Year of birth must be in 'dd-MM-yyyy' format")
-    private String yearBirthday;
+    private String dateBirth;
 
     @NotEmpty(message = "Group must not be empty")
     @Pattern(regexp = "^[А-ЯІЇЄҐ][A-Za-z0-9]+$", message = "Group must not contain special characters")

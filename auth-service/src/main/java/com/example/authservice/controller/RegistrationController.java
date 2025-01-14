@@ -40,7 +40,9 @@ public class RegistrationController {
                     registeredUser.getFaculty(),
                     registeredUser.getSpecialty(),
                     registeredUser.getDegree(),
-                    registeredUser.getGroup()
+                    registeredUser.getGroup(),
+                    registeredUser.getPhoneNumber(),
+                    registeredUser.getDateBirth()
             );
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);

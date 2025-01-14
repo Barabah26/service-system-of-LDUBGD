@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';  // Import useNavigate instead of useHistory
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -7,20 +8,20 @@ const StudentInfoPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Отримуємо дані про студента після завантаження компонента
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchStudentInfo = async () => {
       try {
-        // Отримуємо токен з localStorage або з іншого джерела
         const token = localStorage.getItem('accessToken');
-        
+
         const response = await axios.get('http://localhost:9000/api/auth/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        setStudent(response.data); // Оновлюємо стан даних студента
+        setStudent(response.data);
       } catch (error) {
         setError('Не вдалося отримати інформацію про студента');
       } finally {
@@ -30,6 +31,10 @@ const StudentInfoPage = () => {
 
     fetchStudentInfo();
   }, []);
+
+  const handleNavigate = (type) => {
+    navigate(`/statement-registration?type=${type}`);  // Add query parameter with type
+  };
 
   if (loading) {
     return <div>Завантаження...</div>;
@@ -44,9 +49,9 @@ const StudentInfoPage = () => {
   }
 
   const links = [
-    'Замовити довідку з місця навчання',
-    'Замовити довідку для військкомату(Форма 20)',
-    'Довідка(Форма 9)',
+    { label: 'Замовити довідку з місця навчання', type: 'Довідка з місця навчання' },
+    { label: 'Замовити довідку для військкомату(Форма 20)', type: 'Довідка для військкомату (Форма 20)' },
+    { label: 'Довідка(Форма 9)', type: 'Довідка (Форма 9)' },
   ];
 
   return (
@@ -71,7 +76,7 @@ const StudentInfoPage = () => {
               <ul className="list-group list-group-flush">
                 {links.map((link, index) => (
                   <li key={index} className="list-group-item">
-                    <a href="/statement-registration">{link}</a>
+                    <a href="#" onClick={() => handleNavigate(link.type)}>{link.label}</a>
                   </li>
                 ))}
               </ul>
@@ -82,5 +87,6 @@ const StudentInfoPage = () => {
     </div>
   );
 };
+
 
 export default StudentInfoPage;

@@ -17,7 +17,7 @@ public class StatementMapper {
 
         Statement statement = new Statement();
         statement.setFullName(statementDtoRequest.getFullName());
-        statement.setYearBirthday(statementDtoRequest.getYearBirthday());
+        statement.setYearBirthday(statementDtoRequest.getDateBirth());
         statement.setGroup(statementDtoRequest.getGroup());
         statement.setPhoneNumber(statementDtoRequest.getPhoneNumber());
         statement.setFaculty(statementDtoRequest.getFaculty());
@@ -35,7 +35,7 @@ public class StatementMapper {
 
         StatementDtoRequest statementDtoRequest = new StatementDtoRequest();
         statementDtoRequest.setFullName(statement.getFullName());
-        statementDtoRequest.setYearBirthday(statement.getYearBirthday());
+        statementDtoRequest.setDateBirth(statement.getYearBirthday());
         statementDtoRequest.setGroup(statement.getGroup());
         statementDtoRequest.setPhoneNumber(statement.getPhoneNumber());
         statementDtoRequest.setFaculty(statement.getFaculty());

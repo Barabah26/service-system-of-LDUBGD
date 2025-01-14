@@ -13,7 +13,7 @@ const parseJwt = (token) => {
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const jsonPayload = decodeURIComponent(
       atob(base64)
-        .split('')
+        .split('') 
         .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
         .join('')
     );
@@ -45,6 +45,15 @@ const HeaderComponent = () => {
     navigate('/');
   };
 
+  const handleSelectType = (type) => {
+    navigate(`/statement-registration?type=${type}`); // Перехід на сторінку з вибраним типом довідки
+  };
+
+  // Функція для переходу на сторінку "Мої довідки"
+  const handleMyStatements = () => {
+    navigate('/student-statements'); // Перехід на сторінку "Мої довідки"
+  };
+
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="py-3 shadow-sm">
       <Container>
@@ -62,15 +71,24 @@ const HeaderComponent = () => {
               align="end"
               className="me-3"
             >
-              <NavDropdown.Item href="/statement-registration">Замовити довідку з місця навчання</NavDropdown.Item>
-              <NavDropdown.Item href="/statement-registration">Замовити довідку для військкомату (Форма 20)</NavDropdown.Item>
-              <NavDropdown.Item href="/statement-registration">Довідка (Форма 9)</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleSelectType('Довідка з місця навчання')}>Замовити довідку з місця навчання</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleSelectType('Довідка для військкомату (Форма 20)')}>Замовити довідку для військкомату (Форма 20)</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleSelectType('Довідка (Форма 9)')}>Довідка (Форма 9)</NavDropdown.Item>
             </NavDropdown>
 
             {/* Кнопка "Сповіщення" */}
             <Nav.Link href="#" className="custom-button text-light me-3">
               <IoMdNotifications size={20} className="me-2" />
               Сповіщення
+            </Nav.Link>
+
+            {/* Кнопка "Мої довідки" */}
+            <Nav.Link
+              href="#"
+              className="custom-button text-light me-3"
+              onClick={handleMyStatements}
+            >
+              Мої довідки
             </Nav.Link>
 
             {/* Кнопка профілю */}

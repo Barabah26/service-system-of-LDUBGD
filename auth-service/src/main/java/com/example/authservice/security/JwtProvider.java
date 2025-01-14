@@ -1,5 +1,6 @@
 package com.example.authservice.security;
 
+import com.example.authservice.entity.Admin;
 import com.example.authservice.entity.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -56,6 +57,24 @@ public class JwtProvider {
         return Jwts.builder()
                 .setSubject(user.getName())
                 .setExpiration(refreshExpiration)
+                .signWith(jwtRefreshSecret)
+                .compact();
+    }
+
+    public String generateAccessTokenAdmin(Admin admin) {
+
+        return Jwts.builder()
+                .setSubject(admin.getLogin())
+                .claim("role", "ADMIN")
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
+                .signWith(jwtAccessSecret)
+                .compact();
+    }
+
+    public String generateRefreshTokenAdmin(Admin admin) {
+        return Jwts.builder()
+                .setSubject(admin.getLogin())
+                .setExpiration(new Date(System.currentTimeMillis() + 2592000000L))
                 .signWith(jwtRefreshSecret)
                 .compact();
     }

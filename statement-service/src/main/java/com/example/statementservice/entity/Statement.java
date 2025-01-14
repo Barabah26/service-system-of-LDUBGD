@@ -1,5 +1,6 @@
 package com.example.statementservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,6 +37,7 @@ public class Statement {
     @Column(name = "type_of_statement")
     private String typeOfStatement;
 
+    @JsonManagedReference
     @OneToOne(mappedBy = "statement", cascade = CascadeType.ALL, orphanRemoval = true)
     private StatementInfo statementInfo;
 }

@@ -1,5 +1,6 @@
 package com.example.authservice.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDtoResponse {
-
     private Long userId;
     private String name;
     private String email;
@@ -18,5 +18,7 @@ public class UserDtoResponse {
     private String specialty;
     private String degree;
     private String group;
+    private String phoneNumber;
+    private String dateBirth;
 }
 
