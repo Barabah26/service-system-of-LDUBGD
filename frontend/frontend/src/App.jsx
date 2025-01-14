@@ -12,6 +12,8 @@ import MainPage from "./components/MainPage";
 import LoginPageAdmin from "./components/LoginPageAdmin";
 import ListStatementsAdmin from './components/ListStatementsAdmin'; 
 import StudentStatementsPage from './components/StudentStatementsPage';
+import SuperAdminPage from './components/SuperAdminPage';
+
 
 
 function App() {
@@ -61,16 +63,27 @@ function App() {
                     }
                 />
 
+                <Route
+                    path="/super-admin"
+                    element={
+                        <PrivateRoute requiredRole="SUPER_ADMIN">
+                            <HeaderComponentAdmin />
+                            <SuperAdminPage />
+                        </PrivateRoute>
+                    }
+                />
+
                 {/* Admin routes */}
                 <Route path="/admin-login" element={<LoginPageAdmin />} />
                 <Route 
                     path="/admin-services" 
                     element={
-                        <PrivateRoute>
+                        <PrivateRoute requiredRole="ADMIN">
                             <HeaderComponentAdmin />
                             <ListStatementsAdmin />
                         </PrivateRoute>
                     } />
+                
             </Routes>
         </Router>
     );
