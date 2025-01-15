@@ -50,91 +50,127 @@ public class StatementController {
     }
 
     @GetMapping
-    public ResponseEntity<List<StatementDto>> getAllStatements() {
-        List<StatementDto> statements = statementService.getStatementsInfoWithStatusPending();
-        if (statements.isEmpty()) {
-            return ResponseEntity.noContent().build();
+    public ResponseEntity<List<StatementDto>> getAllStatements(HttpServletRequest request) {
+        Long currentUserId = getUserIdFromToken(request);
+        if (currentUserId == null) {
+            List<StatementDto> statements = statementService.getStatementsInfoWithStatusPending();
+            if (statements.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(statements);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.ok(statements);
     }
 
     @GetMapping("/findByFullName")
-    public ResponseEntity<List<StatementDto>> findByFullName(@RequestParam String fullName) {
-        List<StatementDto> statements = statementService.findStatementInfoByStatementFullName(fullName);
-        if (statements.isEmpty()) {
-            return ResponseEntity.noContent().build();
+    public ResponseEntity<List<StatementDto>> findByFullName(@RequestParam String fullName, HttpServletRequest request) {
+        Long currentUserId = getUserIdFromToken(request);
+        if (currentUserId != null) {
+            List<StatementDto> statements = statementService.findStatementInfoByStatementFullName(fullName);
+            if (statements.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(statements);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.ok(statements);
+
     }
 
-
-    /**
-     * Marks a statement as "IN_PROGRESS" based on its ID.
-     *
-     * @param statementId the ID of the statement to update.
-     * @return ResponseEntity<String> - the response indicating the result of the update operation.
-     */
-    @PutMapping("{id}/in-progress") //
-    public ResponseEntity<String> markStatementInProgress(@PathVariable("id") Long statementId) {
-        try {
-            statementService.updateStatementStatus(statementId, StatementStatus.IN_PROGRESS);
-        } catch (RecourseNotFoundException e) {
-            return ResponseEntity.status(404).body("Statement not found!");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to update statement status!");
+    @GetMapping("/findByFullNameAndStatus")
+    public ResponseEntity<List<StatementDto>> findByFullNameAndStatus( @RequestParam(value = "status") StatementStatus status,
+                                                                       @RequestParam(value = "fullName") String fullName, HttpServletRequest request) {
+        Long currentUserId = getUserIdFromToken(request);
+        if (currentUserId != null) {
+            List<StatementDto> statements = statementService.findStatementInfoByStatementFullNameAndStatus(fullName, status);
+            if (statements.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(statements);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.ok("Statement marked as IN_PROGRESS successfully!");
     }
 
-    /**
-     * Marks a statement as "READY" based on its ID.
-     *
-     * @param statementId the ID of the statement to update.
-     * @return ResponseEntity<String> - the response indicating the result of the update operation.
-     */
+    @PutMapping("{id}/in-progress")
+    public ResponseEntity<String> markStatementInProgress(@PathVariable("id") Long statementId, HttpServletRequest request) {
+        Long currentUserId = getUserIdFromToken(request);
+        if (currentUserId == null) {
+            try {
+                statementService.updateStatementStatus(statementId, StatementStatus.IN_PROGRESS);
+            } catch (RecourseNotFoundException e) {
+                return ResponseEntity.status(404).body("Statement not found!");
+            } catch (Exception e) {
+                return ResponseEntity.status(500).body("Failed to update statement status!");
+            }
+            return ResponseEntity.ok("Statement marked as IN_PROGRESS successfully!");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+    }
+
     @PutMapping("{id}/ready")
-    public ResponseEntity<String> markStatementReady(@PathVariable("id") Long statementId) { //
-        try {
-            statementService.updateStatementStatus(statementId, StatementStatus.READY);
-        } catch (RecourseNotFoundException e) {
-            return ResponseEntity.status(404).body("Statement not found!");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to update statement status!");
+    public ResponseEntity<String> markStatementReady(@PathVariable("id") Long statementId, HttpServletRequest request) { //
+        Long currentUserId = getUserIdFromToken(request);
+        if (currentUserId == null) {
+            try {
+                statementService.updateStatementStatus(statementId, StatementStatus.READY);
+            } catch (RecourseNotFoundException e) {
+                return ResponseEntity.status(404).body("Statement not found!");
+            } catch (Exception e) {
+                return ResponseEntity.status(500).body("Failed to update statement status!");
+            }
+            return ResponseEntity.ok("Statement marked as READY successfully!");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.ok("Statement marked as READY successfully!");
+
     }
 
     @GetMapping("/statusAndFaculty") //
     public ResponseEntity<List<StatementDto>> getStatementsByStatusAndFaculty(
             @RequestParam(value = "status", required = false) StatementStatus status,
-            @RequestParam(value = "faculty", required = false) String faculty) {
+            @RequestParam(value = "faculty", required = false) String faculty,
+            HttpServletRequest request) {
 
+        Long currentUserId = getUserIdFromToken(request);
 
-        List<StatementDto> statements = new ArrayList<>();
+        if (currentUserId == null) {
+            List<StatementDto> statements = new ArrayList<>();
 
-        if (status != null) {
-            statements = statementService.getStatementsInfoByStatusAndFaculty(status, faculty);
+            if (status != null) {
+                statements = statementService.getStatementsInfoByStatusAndFaculty(status, faculty);
+            }
+
+            if (statements.isEmpty()) {
+                return ResponseEntity.ok(new ArrayList<>());
+            }
+            return ResponseEntity.ok(statements);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        if (statements.isEmpty()) {
-            return ResponseEntity.ok(new ArrayList<>());
-        }
-        return ResponseEntity.ok(statements);
     }
 
 
     @GetMapping("/searchByName")
-    public ResponseEntity<?> searchUsersByName(@RequestParam String name) {
-        try {
-            List<StatementDto> users = statementService.searchByName(name);
-            if (!users.isEmpty()) {
-                return ResponseEntity.ok(users);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No users found");
+    public ResponseEntity<?> searchUsersByName(@RequestParam String name, HttpServletRequest request) {
+        Long currentUserId = getUserIdFromToken(request);
+        if (currentUserId == null) {
+            try {
+                List<StatementDto> users = statementService.searchByName(name);
+                if (!users.isEmpty()) {
+                    return ResponseEntity.ok(users);
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No users found");
+                }
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while searching for users");
             }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while searching for users");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-
 }

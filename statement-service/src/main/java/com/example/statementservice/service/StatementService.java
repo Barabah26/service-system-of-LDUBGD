@@ -14,4 +14,5 @@ public interface StatementService {
     void deleteStatementIfReady(Long statementId, StatementStatus status, String faculty);
     List<StatementDto> searchByName(String name);
     List<StatementDto> findStatementInfoByStatementFullName(String fullName);
+    List<StatementDto> findStatementInfoByStatementFullNameAndStatus(String fullName, StatementStatus status);
 }
