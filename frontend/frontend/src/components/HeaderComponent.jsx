@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaUniversity } from 'react-icons/fa'; // Іконка університету
 import { BsPersonCircle } from 'react-icons/bs'; // Іконка для аватара користувача
 import { IoMdNotifications } from 'react-icons/io'; // Іконка для сповіщень
+import { FaTrashAlt } from 'react-icons/fa'; // Іконка для видалення
 
 // Функція для розбору токена
 const parseJwt = (token) => {
@@ -27,6 +28,8 @@ const parseJwt = (token) => {
 const HeaderComponent = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState('');
+  const [notifications, setNotifications] = useState([]);
+  const [processedNotifications, setProcessedNotifications] = useState(new Set()); // Масив оброблених ID
 
   useEffect(() => {
     // Отримання accessToken з localStorage
@@ -39,19 +42,81 @@ const HeaderComponent = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      const interval = setInterval(() => {
+        const fetchNotifications = async () => {
+          try {
+            const response = await fetch(
+              `http://localhost:9080/api/statements/findByFullNameAndStatus?status=READY&fullName=${userName}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            if (response.ok) {
+              const data = await response.json();
+              console.log(data);  // Лог для перевірки відповіді
+
+              // Фільтруємо нові сповіщення, щоб не надсилати одні й ті ж
+              const newNotifications = data.filter(
+                (notification) => !processedNotifications.has(notification.id)
+              );
+
+              if (newNotifications.length > 0) {
+                // Додаємо нові сповіщення до списку
+                setNotifications((prevNotifications) => [
+                  ...prevNotifications,
+                  ...newNotifications,
+                ]);
+
+                // Оновлюємо оброблені ID
+                setProcessedNotifications((prevProcessed) => {
+                  const updated = new Set(prevProcessed);
+                  newNotifications.forEach(notification => updated.add(notification.id));
+                  return updated;
+                });
+              }
+            } else {
+              console.error('Помилка: статус не OK');
+            }
+          } catch (error) {
+            console.error('Помилка при отриманні сповіщень:', error);
+          }
+        };
+        
+        fetchNotifications();
+      }, 1000); 
+
+      return () => clearInterval(interval); // Очистити інтервал при розмонтуванні компонента
+    }
+  }, [userName, processedNotifications]);
+
   const handleLogout = () => {
+    // Очищення даних при логауті
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
-    navigate('/');
+    setNotifications([]); // Очищуємо сповіщення
+    setProcessedNotifications(new Set()); // Очищаємо оброблені ID
+    navigate('/'); // Перехід на головну сторінку
   };
+  
 
   const handleSelectType = (type) => {
     navigate(`/statement-registration?type=${type}`); // Перехід на сторінку з вибраним типом довідки
   };
 
-  // Функція для переходу на сторінку "Мої довідки"
   const handleMyStatements = () => {
     navigate('/student-statements'); // Перехід на сторінку "Мої довідки"
+  };
+
+  const handleDeleteNotification = (index) => {
+    // Видалення сповіщення з масиву за індексом
+    const updatedNotifications = [...notifications];
+    updatedNotifications.splice(index, 1);
+    setNotifications(updatedNotifications);
   };
 
   return (
@@ -71,23 +136,48 @@ const HeaderComponent = () => {
               align="end"
               className="me-3"
             >
-              <NavDropdown.Item onClick={() => handleSelectType('Довідка з місця навчання')}>Замовити довідку з місця навчання</NavDropdown.Item>
-              <NavDropdown.Item onClick={() => handleSelectType('Довідка для військкомату (Форма 20)')}>Замовити довідку для військкомату (Форма 20)</NavDropdown.Item>
-              <NavDropdown.Item onClick={() => handleSelectType('Довідка (Форма 9)')}>Довідка (Форма 9)</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleSelectType('Довідка з місця навчання')}>
+                Замовити довідку з місця навчання
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleSelectType('Довідка для військкомату (Форма 20)')}>
+                Замовити довідку для військкомату (Форма 20)
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleSelectType('Довідка (Форма 9)')}>
+                Довідка (Форма 9)
+              </NavDropdown.Item>
             </NavDropdown>
 
             {/* Кнопка "Сповіщення" */}
-            <Nav.Link href="#" className="custom-button text-light me-3">
-              <IoMdNotifications size={20} className="me-2" />
-              Сповіщення
-            </Nav.Link>
+            <NavDropdown
+              title={
+                <span className="custom-button text-light">
+                  <IoMdNotifications size={20} className="me-2" />
+                  Сповіщення {notifications.length > 0 && <span>({notifications.length})</span>}
+                </span>
+              }
+              id="notifications-dropdown"
+              align="end"
+              className="me-3"
+            >
+              {notifications.length > 0 ? (
+                notifications.map((notification, index) => (
+                  <NavDropdown.Item key={index} className="d-flex justify-content-between">
+                    <span>Довідка готова, перевірте електронну пошту або зверніться в деканат!</span>
+                    <FaTrashAlt
+                      size={18}
+                      className="text-danger"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => handleDeleteNotification(index)}
+                    />
+                  </NavDropdown.Item>
+                ))
+              ) : (
+                <NavDropdown.Item>Немає нових сповіщень</NavDropdown.Item>
+              )}
+            </NavDropdown>
 
             {/* Кнопка "Мої довідки" */}
-            <Nav.Link
-              href="#"
-              className="custom-button text-light me-3"
-              onClick={handleMyStatements}
-            >
+            <Nav.Link href="#" className="custom-button text-light me-3" onClick={handleMyStatements}>
               Мої довідки
             </Nav.Link>
 
