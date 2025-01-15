@@ -3,7 +3,9 @@ spring:
     url: jdbc:postgresql://localhost:${DATABASE_PORT}/${DATABASE_NAME}
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
-  jpa:
-    hibernate:
-      ddl-auto: update
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
 salt: ${SALT}
