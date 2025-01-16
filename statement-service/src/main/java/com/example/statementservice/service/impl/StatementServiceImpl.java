@@ -3,6 +3,7 @@ package com.example.statementservice.service.impl;
 import com.example.statementservice.dto.StatementDto;
 import com.example.statementservice.dto.StatementDtoRequest;
 import com.example.statementservice.repository.UserRepository;
+import com.example.statementservice.service.NotificationService;
 import com.ldubgd.components.dao.Statement;
 import com.ldubgd.components.dao.StatementInfo;
 import com.ldubgd.components.dao.User;
@@ -27,6 +28,7 @@ public class StatementServiceImpl implements StatementService {
 
     private final StatementInfoRepository statementInfoRepository;
     private final StatementRepository statementRepository;
+    private final NotificationService notificationService;
     private final UserRepository userRepository;
 
     @Override
@@ -127,10 +129,16 @@ public class StatementServiceImpl implements StatementService {
         StatementInfo statement = statementInfoRepository.findById(statementId).orElseThrow(
                 () -> new RecourseNotFoundException("Statement is not found with id: " + statementId)
         );
-        statement.setStatementStatus(StatementStatus.valueOf(status.name()));
 
+        statement.setStatementStatus(StatementStatus.valueOf(status.name()));
         statementInfoRepository.save(statement);
+
+        if (status == StatementStatus.READY) {
+            User user = statement.getStatement().getUser();
+            notificationService.createNotification(user.getUserId(), "Ваша довідка готова!");
+        }
     }
+
 
     @Override
     public List<StatementDto> getStatementsInfoByStatusAndFaculty(StatementStatus status, String faculty) {

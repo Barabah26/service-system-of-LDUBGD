@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS statement_info CASCADE;
 DROP TABLE IF EXISTS statement CASCADE;
+DROP TABLE IF EXISTS notification CASCADE;
 
 CREATE TABLE statement (
                            id BIGSERIAL PRIMARY KEY,
@@ -24,4 +25,12 @@ CREATE TABLE statement_info (
                                     FOREIGN KEY (id)
                                         REFERENCES statement (id)
                                         ON DELETE CASCADE
+);
+
+CREATE TABLE notification (
+                              id BIGSERIAL PRIMARY KEY,
+                              message VARCHAR(255) NOT NULL,
+                              user_id BIGINT NOT NULL,
+                              is_read BOOLEAN DEFAULT FALSE,
+                              CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
