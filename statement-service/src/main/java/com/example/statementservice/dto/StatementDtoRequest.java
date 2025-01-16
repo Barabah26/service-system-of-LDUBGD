@@ -32,4 +32,7 @@ public class StatementDtoRequest {
 
     @NotEmpty(message = "Type of statement must not be empty")
     private String typeOfStatement;
+
+    @NotEmpty(message = "User ID must not be empty")
+    private Long userId;
 }

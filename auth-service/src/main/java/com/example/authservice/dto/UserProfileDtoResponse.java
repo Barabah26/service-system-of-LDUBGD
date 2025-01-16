@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserProfileDtoResponse {
+    private Long userId;
     private String fullName;
     private String faculty;
     private String specialty;

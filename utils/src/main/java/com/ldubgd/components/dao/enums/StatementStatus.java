@@ -1,4 +1,4 @@
-package com.example.statementservice.entity.enums;
+package com.ldubgd.components.dao.enums;
 
 public enum StatementStatus {
     IN_PROGRESS,

@@ -1,7 +1,7 @@
 package com.example.statementservice.mapper;
 
 import com.example.statementservice.dto.StatementDtoRequest;
-import com.example.statementservice.entity.Statement;
+import com.ldubgd.components.dao.Statement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

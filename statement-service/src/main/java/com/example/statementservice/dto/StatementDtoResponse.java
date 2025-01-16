@@ -1,6 +1,6 @@
 package com.example.statementservice.dto;
 
-import com.example.statementservice.entity.StatementInfo;
+import com.ldubgd.components.dao.StatementInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -2,7 +2,7 @@ package com.example.statementservice.service;
 
 import com.example.statementservice.dto.StatementDto;
 import com.example.statementservice.dto.StatementDtoRequest;
-import com.example.statementservice.entity.enums.StatementStatus;
+import com.ldubgd.components.dao.enums.StatementStatus;
 
 import java.util.List;
 

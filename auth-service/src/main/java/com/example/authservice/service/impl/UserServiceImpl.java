@@ -50,6 +50,7 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             return new UserProfileDtoResponse(
+                    user.getUserId(),
                     user.getName(),
                     user.getFaculty(),
                     user.getSpecialty(),
