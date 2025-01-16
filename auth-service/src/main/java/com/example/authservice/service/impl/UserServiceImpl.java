@@ -1,9 +1,9 @@
 package com.example.authservice.service.impl;
 
 import com.example.authservice.dto.UserProfileDtoResponse;
-import com.example.authservice.entity.User;
 import com.example.authservice.repository.UserRepository;
 import com.example.authservice.service.UserService;
+import com.ldubgd.components.dao.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

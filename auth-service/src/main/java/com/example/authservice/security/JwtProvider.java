@@ -1,7 +1,7 @@
 package com.example.authservice.security;
 
-import com.example.authservice.entity.Admin;
-import com.example.authservice.entity.User;
+import com.ldubgd.components.dao.Admin;
+import com.ldubgd.components.dao.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

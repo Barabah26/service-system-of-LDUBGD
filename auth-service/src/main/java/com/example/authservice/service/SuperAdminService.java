@@ -2,7 +2,7 @@ package com.example.authservice.service;
 
 import com.example.authservice.dto.AdminDto;
 import com.example.authservice.dto.UpdateAdminDto;
-import com.example.authservice.entity.Admin;
+import com.ldubgd.components.dao.Admin;
 import lombok.NonNull;
 
 import java.util.List;

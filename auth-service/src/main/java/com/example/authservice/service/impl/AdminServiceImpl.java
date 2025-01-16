@@ -1,8 +1,8 @@
 package com.example.authservice.service.impl;
 
-import com.example.authservice.entity.Admin;
 import com.example.authservice.repository.AdminRepository;
 import com.example.authservice.service.AdminService;
+import com.ldubgd.components.dao.Admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

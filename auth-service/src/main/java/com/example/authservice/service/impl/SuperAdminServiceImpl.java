@@ -2,10 +2,10 @@ package com.example.authservice.service.impl;
 
 import com.example.authservice.dto.AdminDto;
 import com.example.authservice.dto.UpdateAdminDto;
-import com.example.authservice.entity.Admin;
 import com.example.authservice.exception.RecourseNotFoundException;
 import com.example.authservice.repository.AdminRepository;
 import com.example.authservice.service.SuperAdminService;
+import com.ldubgd.components.dao.Admin;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

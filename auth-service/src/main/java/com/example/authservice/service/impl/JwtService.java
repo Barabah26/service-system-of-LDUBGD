@@ -2,14 +2,13 @@ package com.example.authservice.service.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.authservice.entity.Admin;
-import com.example.authservice.entity.User;
+;
 import com.example.authservice.exception.AuthException;
 import com.example.authservice.security.JwtProvider;
 import com.example.authservice.security.JwtResponse;
-import com.example.authservice.service.impl.UserServiceImpl;
+import com.ldubgd.components.dao.Admin;
+import com.ldubgd.components.dao.User;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

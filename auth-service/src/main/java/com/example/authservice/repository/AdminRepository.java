@@ -1,6 +1,6 @@
 package com.example.authservice.repository;
 
-import com.example.authservice.entity.Admin;
+import com.ldubgd.components.dao.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
