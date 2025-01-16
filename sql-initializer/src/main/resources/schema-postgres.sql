@@ -1,7 +1,10 @@
-DROP TABLE IF EXISTS file_data CASCADE;
-DROP TABLE IF EXISTS file_info CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS admins CASCADE;
 DROP TABLE IF EXISTS statement_info CASCADE;
 DROP TABLE IF EXISTS statement CASCADE;
+DROP TABLE IF EXISTS notification CASCADE;
+DROP TABLE IF EXISTS file_data CASCADE;
+DROP TABLE IF EXISTS file_info CASCADE;
 DROP SEQUENCE IF EXISTS hibernate_sequence;
 
 -- Створення послідовності для генерації значень ID
@@ -11,23 +14,67 @@ CREATE SEQUENCE hibernate_sequence
 
 
 
-CREATE TABLE statement (
-    id BIGSERIAL PRIMARY KEY,
-    full_name VARCHAR(255) NOT NULL,
-    year_birthday VARCHAR(4) NOT NULL,
-    group_name VARCHAR(100) NOT NULL,
-    phone_number VARCHAR(20) NOT NULL,
-    faculty VARCHAR(255) NOT NULL,
-    type_of_statement VARCHAR(255) NOT NULL
+
+-- Таблиця для користувачів
+CREATE TABLE users (
+                       user_id SERIAL PRIMARY KEY,
+                       name VARCHAR(36) NOT NULL UNIQUE,
+                       email VARCHAR(128) NOT NULL,
+                       login VARCHAR(128) NOT NULL,
+                       password VARCHAR(128) NOT NULL,
+                       role VARCHAR(128) NOT NULL,
+                       faculty VARCHAR(128),
+                       specialty VARCHAR(128),
+                       degree VARCHAR(128),
+                       student_group VARCHAR(128),
+                       phone_number VARCHAR(128),
+                       date_birth VARCHAR(128)
 );
 
+-- Таблиця для адміністраторів
+CREATE TABLE admins (
+                        admin_id SERIAL PRIMARY KEY,
+                        name VARCHAR(36) NOT NULL UNIQUE,
+                        login VARCHAR(128) NOT NULL,
+                        password VARCHAR(128) NOT NULL,
+                        role VARCHAR(128) NOT NULL
+);
+
+
+
+CREATE TABLE statement (
+                           id BIGSERIAL PRIMARY KEY,
+                           full_name VARCHAR(255),
+                           year_birthday VARCHAR(255),
+                           group_name VARCHAR(255),
+                           phone_number VARCHAR(255),
+                           faculty VARCHAR(255),
+                           type_of_statement VARCHAR(255),
+                           user_id BIGINT NOT NULL,
+                           CONSTRAINT fk_user
+                               FOREIGN KEY (user_id)
+                                   REFERENCES users (user_id)
+                                   ON DELETE CASCADE
+);
 
 CREATE TABLE statement_info (
-    id BIGINT PRIMARY KEY,
-    is_ready BOOLEAN,
-    statement_status VARCHAR(255),
-    CONSTRAINT fk_statement FOREIGN KEY (id) REFERENCES statement(id) ON DELETE CASCADE
+                                id BIGSERIAL PRIMARY KEY,
+                                is_ready BOOLEAN,
+                                statement_status VARCHAR(50),
+                                CONSTRAINT fk_statement
+                                    FOREIGN KEY (id)
+                                        REFERENCES statement (id)
+                                        ON DELETE CASCADE
 );
+
+CREATE TABLE notification (
+                              id BIGSERIAL PRIMARY KEY,
+                              message VARCHAR(255) NOT NULL,
+                              user_id BIGINT NOT NULL,
+                              is_read BOOLEAN DEFAULT FALSE,
+                              CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
 
 
 CREATE TABLE file_info (

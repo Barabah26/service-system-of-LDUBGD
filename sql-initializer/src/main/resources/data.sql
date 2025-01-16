@@ -1,4 +1,9 @@
-INSERT INTO statement (id, full_name, year_birthday, group_name, phone_number, faculty, type_of_statement)
-VALUES (1, 'Pavlo44444', '1990', 'Група 1', '1234567890', 'Факультет', 'Тип заяви');
+INSERT INTO users (name, email, login, password, role, faculty, specialty, degree, student_group, phone_number, date_birth)
+VALUES
+    ('Pavlo', 'pavlo@gamil.com', 'student', '$2a$10$BXH1wlAJPIMXvjnJTBoRuea4CvZwSs8/Zqz4bDRZBDJ6hxvXoHlqq', 'STUDENT', 'Факультет цивільного захисту', '122 Комп’ютерні науки', 'бакалавр', 'КН43с', '', ''),
+    ('Serhii', 'serhii@gamil.com', 'employee', '$2a$10$BXH1wlAJPIMXvjnJTBoRuea4CvZwSs8/Zqz4bDRZBDJ6hxvXoHlqq', 'STUDENT', 'Факультет інженерії', '122 Електроніка', 'бакалавр', 'КН42с', '', '');
 
-INSERT INTO statement_info (id, is_ready, statement_status) VALUES (1, TRUE, 'PENDING');
+INSERT INTO admins (name, login, password, role)
+VALUES
+    ('Admin1', 'admin1', '$2a$10$BXH1wlAJPIMXvjnJTBoRuea4CvZwSs8/Zqz4bDRZBDJ6hxvXoHlqq', 'ADMIN'),
+    ('Admin2', 'admin2', '$2a$10$BXH1wlAJPIMXvjnJTBoRuea4CvZwSs8/Zqz4bDRZBDJ6hxvXoHlqq', 'SUPER_ADMIN');

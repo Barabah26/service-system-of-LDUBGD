@@ -27,12 +27,6 @@ spring:
   config:
     activate:
       on-profile: prod
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:schema-postgres.sql
-#      data-locations: classpath:data.sql
-
   datasource:
     url: jdbc:postgresql://localhost:${DATABASE_PORT}/${DATABASE_NAME}
     username: ${DATABASE_USERNAME}
