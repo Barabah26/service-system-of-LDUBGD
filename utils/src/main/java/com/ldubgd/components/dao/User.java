@@ -1,9 +1,12 @@
-package com.example.authservice.entity;
+package com.ldubgd.components.dao;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -20,10 +23,10 @@ public class User {
     @Column(name = "name", length = 36, nullable = false, unique = true)
     private String name;
 
-    @Column(name = "email", length = 128, nullable = false)
+    @Column(name = "email", length = 128, nullable = false, unique = true)
     private String email;
 
-    @Column(name = "login", length = 128, nullable = false)
+    @Column(name = "login", length = 128, nullable = false, unique = true)
     private String login;
 
     @Column(name = "password", length = 128, nullable = false)
@@ -49,4 +52,8 @@ public class User {
 
     @Column(name = "date_birth", length = 128)
     private String dateBirth;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Statement> statements = new ArrayList<>();
+
 }

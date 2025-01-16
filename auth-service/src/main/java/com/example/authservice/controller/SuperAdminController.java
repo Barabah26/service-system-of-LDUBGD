@@ -2,9 +2,9 @@ package com.example.authservice.controller;
 
 import com.example.authservice.dto.AdminDto;
 import com.example.authservice.dto.UpdateAdminDto;
-import com.example.authservice.entity.Admin;
 import com.example.authservice.exception.RecourseNotFoundException;
 import com.example.authservice.service.SuperAdminService;
+import com.ldubgd.components.dao.Admin;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

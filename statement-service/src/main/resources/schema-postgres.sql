@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS statement CASCADE;
 DROP TABLE IF EXISTS statement_info CASCADE;
+DROP TABLE IF EXISTS statement CASCADE;
 
 CREATE TABLE statement (
                            id BIGSERIAL PRIMARY KEY,
@@ -8,7 +8,12 @@ CREATE TABLE statement (
                            group_name VARCHAR(255),
                            phone_number VARCHAR(255),
                            faculty VARCHAR(255),
-                           type_of_statement VARCHAR(255)
+                           type_of_statement VARCHAR(255),
+                           user_id BIGINT NOT NULL,
+                           CONSTRAINT fk_user
+                               FOREIGN KEY (user_id)
+                                   REFERENCES users (user_id)
+                                   ON DELETE CASCADE
 );
 
 CREATE TABLE statement_info (

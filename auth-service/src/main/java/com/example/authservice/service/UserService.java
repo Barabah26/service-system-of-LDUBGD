@@ -1,7 +1,7 @@
 package com.example.authservice.service;
 
 import com.example.authservice.dto.UserProfileDtoResponse;
-import com.example.authservice.entity.User;
+import com.ldubgd.components.dao.User;
 import lombok.NonNull;
 
 import java.util.Optional;

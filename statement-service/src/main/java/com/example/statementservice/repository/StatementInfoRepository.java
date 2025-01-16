@@ -1,7 +1,6 @@
 package com.example.statementservice.repository;
 
-import com.example.statementservice.dto.StatementDto;
-import com.example.statementservice.entity.StatementInfo;
+import com.ldubgd.components.dao.StatementInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

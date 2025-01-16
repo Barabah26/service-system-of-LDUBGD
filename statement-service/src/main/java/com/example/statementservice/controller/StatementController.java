@@ -2,8 +2,7 @@ package com.example.statementservice.controller;
 
 import com.example.statementservice.dto.StatementDto;
 import com.example.statementservice.dto.StatementDtoRequest;
-import com.example.statementservice.entity.Statement;
-import com.example.statementservice.entity.enums.StatementStatus;
+import com.ldubgd.components.dao.enums.StatementStatus;
 import com.example.statementservice.exception.RecourseNotFoundException;
 import com.example.statementservice.security.JwtTokenProvider;
 import com.example.statementservice.service.StatementService;

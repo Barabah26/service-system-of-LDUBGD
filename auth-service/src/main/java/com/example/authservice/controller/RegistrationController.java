@@ -2,9 +2,9 @@ package com.example.authservice.controller;
 
 import com.example.authservice.dto.UserDtoRequest;
 import com.example.authservice.dto.UserDtoResponse;
-import com.example.authservice.entity.User;
 import com.example.authservice.mapper.UserMapper;
 import com.example.authservice.service.UserService;
+import com.ldubgd.components.dao.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

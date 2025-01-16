@@ -1,4 +1,4 @@
-package com.example.authservice.entity;
+package com.ldubgd.components.dao;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

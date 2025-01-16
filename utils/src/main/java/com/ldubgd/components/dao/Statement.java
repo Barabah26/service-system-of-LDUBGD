@@ -1,4 +1,4 @@
-package com.example.statementservice.entity;
+package com.ldubgd.components.dao;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -19,26 +19,30 @@ public class Statement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "full_name")
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(name = "year_birthday")
+    @Column(name = "year_birthday", nullable = false)
     private String yearBirthday;
 
-    @Column(name = "group_name")
+    @Column(name = "group_name", nullable = false)
     private String group;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    @Column(name = "faculty")
+    @Column(name = "faculty", nullable = false)
     private String faculty;
 
-    @Column(name = "type_of_statement")
+    @Column(name = "type_of_statement", nullable = false)
     private String typeOfStatement;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "statement", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "statement", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private StatementInfo statementInfo;
-}
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+}

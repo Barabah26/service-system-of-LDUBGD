@@ -1,9 +1,7 @@
 package com.example.authservice.mapper;
 
 import com.example.authservice.dto.UserDtoRequest;
-import com.example.authservice.entity.User;
-import com.example.authservice.exception.RecourseNotFoundException;
-import com.example.authservice.repository.UserRepository;
+import com.ldubgd.components.dao.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

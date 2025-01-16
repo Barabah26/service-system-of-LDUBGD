@@ -2,9 +2,11 @@ package com.example.statementservice.service.impl;
 
 import com.example.statementservice.dto.StatementDto;
 import com.example.statementservice.dto.StatementDtoRequest;
-import com.example.statementservice.entity.Statement;
-import com.example.statementservice.entity.StatementInfo;
-import com.example.statementservice.entity.enums.StatementStatus;
+import com.example.statementservice.repository.UserRepository;
+import com.ldubgd.components.dao.Statement;
+import com.ldubgd.components.dao.StatementInfo;
+import com.ldubgd.components.dao.User;
+import com.ldubgd.components.dao.enums.StatementStatus;
 import com.example.statementservice.exception.RecourseNotFoundException;
 import com.example.statementservice.repository.StatementInfoRepository;
 import com.example.statementservice.repository.StatementRepository;
@@ -12,6 +14,7 @@ import com.example.statementservice.service.StatementService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,9 +27,13 @@ public class StatementServiceImpl implements StatementService {
 
     private final StatementInfoRepository statementInfoRepository;
     private final StatementRepository statementRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void createStatement(StatementDtoRequest statementDtoRequest) {
+        User user = userRepository.findById(statementDtoRequest.getUserId()).orElseThrow(
+                () -> new RecourseNotFoundException("User not found")
+        );
         Statement statement = new Statement();
         statement.setFullName(statementDtoRequest.getFullName());
         statement.setYearBirthday(statementDtoRequest.getDateBirth());
@@ -34,6 +41,7 @@ public class StatementServiceImpl implements StatementService {
         statement.setPhoneNumber(statementDtoRequest.getPhoneNumber());
         statement.setFaculty(statementDtoRequest.getFaculty());
         statement.setTypeOfStatement(statementDtoRequest.getTypeOfStatement());
+        statement.setUser(user);
 
         statementRepository.save(statement);
 

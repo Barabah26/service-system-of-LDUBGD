@@ -1,7 +1,7 @@
-package com.example.statementservice.entity;
+package com.ldubgd.components.dao;
 
-import com.example.statementservice.entity.enums.StatementStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.ldubgd.components.dao.enums.StatementStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

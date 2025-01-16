@@ -1,11 +1,11 @@
 package com.example.authservice.service.impl;
 
-import com.example.authservice.entity.Admin;
-import com.example.authservice.entity.User;
 import com.example.authservice.exception.AuthException;
 import com.example.authservice.security.JwtProvider;
 import com.example.authservice.security.JwtRequest;
 import com.example.authservice.security.JwtResponse;
+import com.ldubgd.components.dao.Admin;
+import com.ldubgd.components.dao.User;
 import io.jsonwebtoken.Claims;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,7 @@
 package com.example.authservice.service;
 
-import com.example.authservice.entity.Admin;
+
+import com.ldubgd.components.dao.Admin;
 
 import java.util.Optional;
 
