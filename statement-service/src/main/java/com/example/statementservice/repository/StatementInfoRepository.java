@@ -73,5 +73,11 @@ public interface StatementInfoRepository extends JpaRepository<StatementInfo, Lo
             nativeQuery = true)
     List<Object[]> findStatementDtoByFullName(@Param("fullName") String fullName);
 
+    @Query(value =  "SELECT s.id, s.full_name, s.group_name, s.phone_number, s.type_of_statement, s.faculty, s.year_birthday, si.statement_status " +
+            "FROM statement_info si JOIN statement s ON si.id = s.id " +
+            "WHERE s.full_name = :fullName AND si.statement_status = :status",
+            nativeQuery = true)
+    List<Object[]> findStatementDtoByFullNameAndStatus(@Param("fullName") String fullName, @Param("status") String status);
+
 
 }

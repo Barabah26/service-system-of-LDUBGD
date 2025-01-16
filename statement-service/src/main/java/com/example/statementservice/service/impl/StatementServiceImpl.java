@@ -64,6 +64,15 @@ public class StatementServiceImpl implements StatementService {
         return statements.stream().map(this::mapToStatementDto).collect(Collectors.toList());
     }
 
+    @Override
+    public List<StatementDto> findStatementInfoByStatementFullNameAndStatus(String fullName, StatementStatus status) {
+        List<Object[]> statements = statementInfoRepository.findStatementDtoByFullNameAndStatus(fullName, status.name());
+        if (statements.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return statements.stream().map(this::mapToStatementDto).collect(Collectors.toList());
+    }
+
 
     private StatementDto mapToStatementDto(Object[] result) {
         StatementDto dto = new StatementDto();
