@@ -11,7 +11,9 @@ const StatementRegistrationForm = () => {
     phoneNumber: '',
     faculty: '',
     typeOfStatement: '',
+    userId: '',  
   });
+  
 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -29,7 +31,8 @@ const StatementRegistrationForm = () => {
         const response = await axios.get('http://localhost:9000/api/auth/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
-
+  
+        // Додаємо userId до стейту
         setFormData((prevData) => ({
           ...prevData,
           fullName: response.data.fullName || '',
@@ -38,15 +41,16 @@ const StatementRegistrationForm = () => {
           phoneNumber: response.data.phoneNumber || '',
           faculty: response.data.faculty || '',
           typeOfStatement: selectedType, // Set the selected type of statement
+          userId: response.data.userId,  // Передаємо userId з профілю
         }));
       } catch (error) {
         console.error('Не вдалося отримати інформацію про користувача:', error);
       }
     };
-
+  
     fetchUserInfo();
   }, [selectedType]);
-
+  
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -56,11 +60,16 @@ const StatementRegistrationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form Data before submitting:', formData);  // Log data before submitting
+  
     try {
       const token = localStorage.getItem('accessToken');
-      await axios.post('http://localhost:9080/api/statements/createStatement', formData, {
+      const response = await axios.post('http://localhost:9080/api/statements/createStatement', formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
+  
+      console.log('Response from backend:', response);  // Log the backend response
+  
       setSuccessMessage('Заявку успішно створено!');
       setErrorMessage('');
       setFormData({
@@ -70,18 +79,19 @@ const StatementRegistrationForm = () => {
         phoneNumber: '',
         faculty: '',
         typeOfStatement: '',
+        userId: '', // Clear userId after submission
       });
-
+  
       setTimeout(() => {
         navigate('/user-info');
       }, 1000);
-
     } catch (error) {
+      console.error('Error during form submission:', error);
       setErrorMessage('Помилка при створенні заявки.');
-      console.error(error);
     }
   };
-
+  
+  
   return (
     <Container className="mt-5">
       <h2 className="mb-4 text-center text-uppercase">Реєстрація довідки</h2>
@@ -97,7 +107,7 @@ const StatementRegistrationForm = () => {
                 type="text"
                 name="fullName"
                 value={formData.fullName}
-                onChange={handleChange}
+                onChange={false}
               />
             </Form.Group>
           </Col>
