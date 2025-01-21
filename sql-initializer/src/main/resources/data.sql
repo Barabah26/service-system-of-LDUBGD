@@ -19,6 +19,6 @@ VALUES
 -- Тестові дані для таблиці statement_info
 INSERT INTO statement_info (id, is_ready, statement_status)
 VALUES
-    (1, TRUE, 'READY'),
+    (1, FALSE, 'READY'),
     (2, FALSE, 'PENDING'),
     (3, FALSE, 'IN_PROGRESS');
