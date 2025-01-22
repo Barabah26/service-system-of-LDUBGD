@@ -3,6 +3,7 @@ package com.ldubgd.emailService.services;
 import com.ldubgd.components.dao.Statement;
 import com.ldubgd.emailService.repositories.FileInfoRepository;
 import com.ldubgd.emailService.repositories.StatementRepository;
+import com.ldubgd.utils.CryptoTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -17,6 +18,12 @@ public class EmailSenderService {
     @Value("${spring.mail.username}")
     private String emailFrom;
 
+    @Value("${fileService.url}")
+    private String fileServiceUrl;
+
+    @Autowired
+    private CryptoTool cryptoTool;
+
     @Autowired
     private FileInfoRepository fileInfoRepository;
 
@@ -28,18 +35,14 @@ public class EmailSenderService {
 
         Statement statement = statementRepository.findById(idOfStatement).orElseThrow(() -> new RuntimeException("Statement not found"));
 
-        String urlOfFile="123";
-
         String texOfEmail;
 
         if(fileInfoRepository.existsById(statement.getId())){
+            String urlOfFile=new StringBuilder(fileServiceUrl).append("/api/file/download?id=").append(cryptoTool.hashOf(idOfStatement)).toString();
             texOfEmail = generateNotificationMessageWithFile(statement,urlOfFile);
         }else {
             texOfEmail = generateNotificationMessage(statement);
         }
-
-
-
 
         sendEmail(emailOfUser, "Сповіщення про статус заявки", texOfEmail);
     }
@@ -73,13 +76,10 @@ public class EmailSenderService {
 
 
     private String generateNotificationMessageWithFile(Statement statement,String url) {
-        StringBuilder messageBuilder = new StringBuilder();
-        messageBuilder
-                .append(generateNotificationMessage(statement))
-                .append("Файл заявки: ")
-                .append(url);
 
-        return messageBuilder.toString();
+        return new StringBuilder(generateNotificationMessage(statement))
+                .append("Файл заявки: ")
+                .append(url).toString();
     }
 }
 
