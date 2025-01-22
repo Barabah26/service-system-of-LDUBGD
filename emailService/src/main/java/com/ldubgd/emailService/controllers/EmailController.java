@@ -20,12 +20,7 @@ public class EmailController {
             @RequestParam("id") String idOfStatement, @RequestParam("email") String emailOfUser){
 
 
-
-
-        emailSenderService.sendSimpleEmail(
-                emailOfUser,
-                "Hell world mail",
-                "yours statement id "+ idOfStatement);
+        emailSenderService.sendEmailAboutStatementStatus(emailOfUser, Long.parseLong(idOfStatement));
 
 
         return ResponseEntity.ok().body("Email send");

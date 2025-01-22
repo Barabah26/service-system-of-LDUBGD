@@ -13,9 +13,25 @@ public class SendNotificationService {
         this.webClientBuilder = webClientBuilder;
     }
 
-    public void sendNotificationAboutStatementStatus(Statement statement ) {
+    public void sendNotificationAboutStatementStatus(Statement statement) {
+        String url = String.format(
+                "http://localhost:8060/api/email/send?id=%d&email=%s",
+                statement.getId(),
+                statement.getUser().getEmail()
+        );
 
+        try {
+            webClientBuilder.build()
+                    .patch()
+                    .uri(url)
+                    .retrieve()
+                    .toBodilessEntity()
+                    .doOnSuccess(response -> System.out.println("Notification sent successfully"))
+                    .doOnError(error -> System.err.println("Error while sending notification: " + error.getMessage()))
+                    .block();
+        } catch (Exception e) {
+            System.err.println("Exception occurred while sending notification: " + e.getMessage());
+        }
     }
-
-
 }
+

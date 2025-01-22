@@ -4,5 +4,7 @@ spring:
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
   jpa:
-      open-in-view: false
+    open-in-view: false
 salt: ${SALT}
+server:
+  port: ${NOTIFICATION_SERVICE_PORT}

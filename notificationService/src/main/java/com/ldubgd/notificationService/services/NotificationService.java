@@ -2,15 +2,11 @@ package com.ldubgd.notificationService.services;
 
 
 import com.ldubgd.components.dao.Statement;
-import com.ldubgd.components.dao.StatementInfo;
 import com.ldubgd.components.dao.enums.StatementStatus;
-import com.ldubgd.notificationService.repositories.StatementInfoRepository;
 import com.ldubgd.notificationService.repositories.StatementRepository;
-import com.ldubgd.notificationService.repositories.UserRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,10 +22,6 @@ public class NotificationService {
 
     @Autowired
     private StatementRepository statementRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private StatementInfoRepository statementInfoRepository;
 
     @Autowired
     private SendNotificationService sendNotificationService;

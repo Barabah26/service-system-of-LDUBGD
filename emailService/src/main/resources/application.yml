@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: emailService
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_OF_EMAIL_SENDER}
+    password: ${PASWORD_OF_EMAIL_SENDER}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            enable: false
+  datasource:
+    url: jdbc:postgresql://localhost:${DATABASE_PORT}/${DATABASE_NAME}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+salt: ${SALT}
+
+fileService:
+  url: ${REST_SERVICE_URL}
+
+server:
+  port: ${EMAIL_SERVICE_PORT}
