@@ -10,7 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class NotificationServiceConfig {
     @Value("${salt}")
     private String salt;
-
+    //todo: перекинути сюди конфіг розкладу
 
     @Bean
     public CryptoTool getCryptoTool(){
