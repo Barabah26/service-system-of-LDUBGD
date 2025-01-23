@@ -2,8 +2,10 @@ package com.ldubgd.fileService.controller;
 
 import com.ldubgd.components.dao.FileInfo;
 import com.ldubgd.fileService.fileService.FileService;
+import com.ldubgd.utils.CryptoTool;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,13 +25,16 @@ public class FileController {
 
     private final FileService fileService;
 
+    @Autowired
+    private final CryptoTool cryptoTool;
+
     @GetMapping("/download")
     public ResponseEntity<?> getFile(@RequestParam("id") String hashId) {
         log.info("Отримано запит на завантаження файлу з hashId: {}", hashId);
 
         Long statementId;
         try {
-            statementId = Long.parseLong(hashId);
+            statementId = cryptoTool.idOf(hashId);
         } catch (NumberFormatException e) {
             log.error("Невірний формат hashId: {}", hashId);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не вірний формат id");

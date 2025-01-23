@@ -1,6 +1,7 @@
 package com.ldubgd.emailService.controllers;
 
 import com.ldubgd.emailService.services.EmailSenderService;
+import com.ldubgd.utils.CryptoTool;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +16,15 @@ public class EmailController {
     @Autowired
     EmailSenderService emailSenderService;
 
+    @Autowired
+    private CryptoTool cryptoTool;
+
     @PatchMapping("/send")
     public ResponseEntity<?> notificationAboutStatementStatus(
-            @RequestParam("id") String idOfStatement, @RequestParam("email") String emailOfUser){
+            @RequestParam("id") String hashIdOfStatement, @RequestParam("email") String emailOfUser){
 
 
-
-
-        emailSenderService.sendSimpleEmail(
-                emailOfUser,
-                "Hell world mail",
-                "yours statement id "+ idOfStatement);
+        emailSenderService.sendEmailAboutStatementStatus(emailOfUser, cryptoTool.idOf(hashIdOfStatement));
 
 
         return ResponseEntity.ok().body("Email send");
