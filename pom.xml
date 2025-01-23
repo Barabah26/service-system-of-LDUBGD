@@ -12,6 +12,8 @@
         <module>sql-initializer</module>
         <module>fileService</module>
         <module>utils</module>
+        <module>emailService</module>
+        <module>notificationService</module>
     </modules>
 
     <properties>
@@ -25,7 +27,7 @@
         <org.hashids.version>1.0.1</org.hashids.version>
         <jakarta.persistence.version>3.1.0</jakarta.persistence.version>
         <com.fasterxml.jackson.core.version>2.18.2</com.fasterxml.jackson.core.version>
-
+        <webflux.version>3.3.4</webflux.version>
     </properties>
 
 
@@ -56,6 +58,7 @@
                 <scope>runtime</scope>
                 <optional>true</optional>
             </dependency>
+
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
@@ -69,14 +72,12 @@
                 <version>${com.ldubgd.utils.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${org.lombok.version}</version>
                 <scope>provided</scope>
             </dependency>
-
 
             <dependency>
                 <groupId>org.hashids</groupId>
@@ -102,7 +103,11 @@
                 <version>${spring.boot.version}</version>
             </dependency>
 
-
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-webflux</artifactId>
+                <version>${webflux.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
