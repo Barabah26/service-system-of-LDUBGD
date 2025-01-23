@@ -13,12 +13,8 @@
         <option value="$PROJECT_DIR$/notificationService/pom.xml" />
         <option value="$PROJECT_DIR$/utils/pom.xml" />
         <option value="$PROJECT_DIR$/userprofile-service/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
-    </option>
-    <option name="ignoredFiles">
-      <set>
-        <option value="$PROJECT_DIR$/userprofile-service/pom.xml" />
-      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="23" project-jdk-type="JavaSDK">
