@@ -11,6 +11,7 @@
     <modules>
         <module>sql-initializer</module>
         <module>fileService</module>
+        <module>utils</module>
     </modules>
 
     <properties>
@@ -21,6 +22,10 @@
         <postgresql.version>42.7.4</postgresql.version>
         <com.ldubgd.utils.version>1.0-SNAPSHOT</com.ldubgd.utils.version>
         <org.lombok.version>1.18.30</org.lombok.version>
+        <org.hashids.version>1.0.1</org.hashids.version>
+        <jakarta.persistence.version>3.1.0</jakarta.persistence.version>
+        <com.fasterxml.jackson.core.version>2.18.2</com.fasterxml.jackson.core.version>
+
     </properties>
 
 
@@ -68,6 +73,25 @@
                 <artifactId>lombok</artifactId>
                 <version>${org.lombok.version}</version>
                 <scope>provided</scope>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.hashids</groupId>
+                <artifactId>hashids</artifactId>
+                <version>${org.hashids.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.persistence</groupId>
+                <artifactId>jakarta.persistence-api</artifactId>
+                <version>${jakarta.persistence.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${com.fasterxml.jackson.core.version}</version>
             </dependency>
 
         </dependencies>
