@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 @Configuration
 public class SecurityConfig {
+
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

@@ -19,13 +19,11 @@ public class SendNotificationService {
     @Autowired
     private  CryptoTool cryptoTool;
 
-    public void sendNotificationAboutStatementStatus(Statement statement) {
+    public void sendNotificationAboutStatementStatus(Long statementId) {
         String url = String.format(
-                "http://localhost:8060/api/email/send?id=%s&email=%s",
-                cryptoTool.hashOf(statement.getId()),
-                statement.getUser().getEmail()
+                "http://localhost:8060/api/email/send?id=%s",
+                cryptoTool.hashOf(statementId)
         );
-
 
         try {
             webClientBuilder.build()

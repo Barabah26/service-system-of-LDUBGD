@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EmailSenderService {
@@ -30,10 +31,18 @@ public class EmailSenderService {
     @Autowired
     private StatementRepository statementRepository;
 
+    @Transactional(rollbackFor = Exception.class)
+    public boolean  sendEmailAboutStatementStatus(Long idOfStatement){
 
-    public void sendEmailAboutStatementStatus(String emailOfUser, Long idOfStatement){
+        Statement statement;
 
-        Statement statement = statementRepository.findById(idOfStatement).orElseThrow(() -> new RuntimeException("Statement not found"));
+        try {
+            statement = statementRepository.findById(idOfStatement).orElseThrow(() -> new RuntimeException("Statement not found"));
+        }  catch (Exception e) {
+            System.err.println("Exception occurred while sending notification: " + e.getMessage());
+            return false;
+        }
+
 
         String texOfEmail;
 
@@ -44,7 +53,19 @@ public class EmailSenderService {
             texOfEmail = generateNotificationMessage(statement);
         }
 
-        sendEmail(emailOfUser, "Сповіщення про статус заявки", texOfEmail);
+
+        try {
+            sendEmail(statement.getUser().getEmail(), "Сповіщення про статус заявки", texOfEmail);
+        } catch (Exception e) {
+            System.err.println("Exception occurred while sending notification: " + e.getMessage());
+            return false;
+        }
+
+        statement.getStatementInfo().setIsReady(true);
+
+        statementRepository.save(statement);
+
+        return true;
     }
 
 
