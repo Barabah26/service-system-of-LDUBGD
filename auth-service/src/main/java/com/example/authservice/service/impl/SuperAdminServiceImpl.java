@@ -2,10 +2,13 @@ package com.example.authservice.service.impl;
 
 import com.example.authservice.dto.AdminDto;
 import com.example.authservice.dto.UpdateAdminDto;
+import com.example.authservice.dto.UpdateUserDto;
 import com.example.authservice.exception.RecourseNotFoundException;
 import com.example.authservice.repository.AdminRepository;
+import com.example.authservice.repository.UserRepository;
 import com.example.authservice.service.SuperAdminService;
 import com.ldubgd.components.dao.Admin;
+import com.ldubgd.components.dao.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +22,7 @@ public class SuperAdminServiceImpl implements SuperAdminService {
 
     private final PasswordEncoder passwordEncoder;
     private final AdminRepository adminRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Optional<Admin> getByLogin(@NonNull String login) {
@@ -48,10 +52,22 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     }
 
     @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
     public void deleteAdminByLogin(String login) {
         Admin admin = adminRepository.findAdminByLogin(login)
                 .orElseThrow(() -> new RecourseNotFoundException("Admin not found with login: " + login));
         adminRepository.delete(admin);
+    }
+
+    @Override
+    public void deleteUserByLogin(String login) {
+        User user = userRepository.findUsersByLogin(login)
+                .orElseThrow(() -> new RecourseNotFoundException("User not found with login: " + login));
+        userRepository.delete(user);
     }
 
     @Override
@@ -64,6 +80,19 @@ public class SuperAdminServiceImpl implements SuperAdminService {
             return adminDto;
         } else {
             throw new RecourseNotFoundException("Admin not found");
+        }
+    }
+
+    @Override
+    public UpdateUserDto updateUserPassword(String login, UpdateUserDto userDto) {
+        Optional<User> optionalUser = userRepository.findUsersByLogin(login);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setPassword(passwordEncoder.encode(userDto.getNewPassword()));
+            userRepository.updateUserByLogin(login, passwordEncoder.encode(userDto.getNewPassword()));
+            return userDto;
+        } else {
+            throw new RecourseNotFoundException("User not found");
         }
     }
 }

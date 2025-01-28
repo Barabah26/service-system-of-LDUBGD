@@ -5,23 +5,26 @@ import { useNavigate } from 'react-router-dom';
 
 const SuperAdminPage = () => {
     const [admins, setAdmins] = useState([]);
+    const [users, setUsers] = useState([]);
     const [newAdmin, setNewAdmin] = useState({
         name: '',
         login: '',
         password: '',
-        role: '', // Заміна масиву ролей на одне поле
+        role: '', 
     });
     const [editingAdmin, setEditingAdmin] = useState(null);
+    const [editingUser, setEditingUser] = useState(null);
     const [newPassword, setNewPassword] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
+        fetchAdmins();
         fetchUsers();
     }, []);
 
-    const fetchUsers = async () => {
+    const fetchAdmins = async () => {
         try {
             const token = localStorage.getItem('accessToken');
             const response = await axios.get('http://localhost:9000/api/admin/allAdmins', {
@@ -39,6 +42,25 @@ const SuperAdminPage = () => {
         }
     };
 
+    const fetchUsers = async () => {
+        try {
+            const token = localStorage.getItem('accessToken');
+            const response = await axios.get('http://localhost:9000/api/admin/allUsers', {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setUsers(response.data);
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
+                navigate('/login');
+            } else {
+                setError('Failed to fetch users');
+            }
+        }
+    };
+    
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewAdmin((prevState) => ({
@@ -50,29 +72,29 @@ const SuperAdminPage = () => {
     const handleRegisterUser = async (e) => {
         e.preventDefault();
         try {
-          const token = localStorage.getItem('accessToken');
-          await axios.post('http://localhost:9000/api/admin/register', newAdmin, { // Виправлено newUser на newAdmin
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          setSuccessMessage('Адміністратор зареєстрований успішно');
-          setNewAdmin({ name: '', login: '', password: '', role: '' });
-          fetchUsers();
+            const token = localStorage.getItem('accessToken');
+            await axios.post('http://localhost:9000/api/admin/register', newAdmin, { // Виправлено newUser на newAdmin
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setSuccessMessage('Адміністратор зареєстрований успішно');
+            setNewAdmin({ name: '', login: '', password: '', role: '' });
+            fetchAdmins();
         } catch (error) {
-          if (error.response && error.response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            navigate('/admin-login');
-          } else if (error.response && error.response.status === 409) {
-            setError('Такий користувач вже існує');
-          } else if (error.response && error.response.status === 404) {
-            setError('Роль може бути: USER або ADMIN');
-          } else {
-            setError(error.response?.data || 'Не вдалося зареєструвати адміністратора');
-          }
+            if (error.response && error.response.status === 401) {
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
+                navigate('/admin-login');
+            } else if (error.response && error.response.status === 409) {
+                setError('Такий користувач вже існує');
+            } else if (error.response && error.response.status === 404) {
+                setError('Роль може бути: USER або ADMIN');
+            } else {
+                setError(error.response?.data || 'Не вдалося зареєструвати адміністратора');
+            }
         }
-      };
+    };
 
-    const handleDeleteUser = (login) => {
+    const handleDeleteAdmin = (login) => {
         if (!login) return;
 
         const confirmAction = window.confirm('Ви впевнені що хочете видалити цього користувача?');
@@ -84,6 +106,31 @@ const SuperAdminPage = () => {
                 })
                 .then(() => {
                     setAdmins((prevAdmins) => prevAdmins.filter((admin) => admin.login !== login)); // Виправлено setUsers на setAdmins
+                })
+                .catch((error) => {
+                    if (error.response && error.response.status === 401) {
+                        localStorage.removeItem('accessToken');
+                        localStorage.removeItem('refreshToken');
+                        navigate('/admin-login');
+                    } else {
+                        setError('Failed to delete admin');
+                    }
+                });
+        }
+    };
+
+    const handleDeleteUser = (login) => {
+        if (!login) return;
+
+        const confirmAction = window.confirm('Ви впевнені що хочете видалити цього користувача?');
+        if (confirmAction) {
+            const token = localStorage.getItem('accessToken');
+            axios
+                .delete(`http://localhost:9000/api/admin/deleteUserByLogin/${login}`, { 
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+                .then(() => {
+                    setUsers((prevUser) => prevUser.filter((user) => user.login !== login));
                 })
                 .catch((error) => {
                     if (error.response && error.response.status === 401) {
@@ -111,6 +158,32 @@ const SuperAdminPage = () => {
             });
             setSuccessMessage('Password updated successfully');
             setEditingAdmin(null);
+            fetchAdmins();
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
+                navigate('/admin-login');
+            } else {
+                setError(error.response?.data || 'Failed to update password');
+            }
+        }
+    };
+
+    const handleEditPasswordUsers = (user) => {
+        setEditingUser(user);
+        setNewPassword('');
+    };
+
+    const handleSaveUserPassword = async () => {
+        try {
+            const token = localStorage.getItem('accessToken');
+            const updateUserDto = { newPassword: newPassword };
+            await axios.put(`http://localhost:9000/api/admin/updateUserPasswordByLogin/${editingUser.login}`, updateUserDto, { // Виправлено на editingAdmin
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setSuccessMessage('Password updated successfully');
+            setEditingUser(null);
             fetchUsers();
         } catch (error) {
             if (error.response && error.response.status === 401) {
@@ -122,6 +195,9 @@ const SuperAdminPage = () => {
             }
         }
     };
+
+
+
 
     return (
         <div className="container mt-4">
@@ -196,7 +272,7 @@ const SuperAdminPage = () => {
                 <div className="col-12">
                     <div className="card">
                         <div className="card-header">
-                            <h2>Всі користувачі</h2>
+                            <h2>Всі адміністратори</h2>
                         </div>
                         <div className="card-body">
                             <table className="table table-striped">
@@ -215,7 +291,7 @@ const SuperAdminPage = () => {
                                             <td>{admin.login}</td>
                                             <td>{admin.role}</td>
                                             <td>
-                                                <button className="btn btn-danger btn-sm" onClick={() => handleDeleteUser(admin.login)}>Видалити</button>
+                                                <button className="btn btn-danger btn-sm" onClick={() => handleDeleteAdmin(admin.login)}>Видалити</button>
                                                 <button className="btn btn-warning btn-sm ms-2" onClick={() => handleEditPassword(admin)}>Змінити пароль</button>
                                             </td>
                                         </tr>
@@ -254,7 +330,74 @@ const SuperAdminPage = () => {
                         </div>
                     </div>
                 </div>
+
             )}
+
+            <div className="row">
+                <div className="col-12">
+                    <div className="card">
+                        <div className="card-header">
+                            <h2>Всі студенти</h2>
+                        </div>
+                        <div className="card-body">
+                            <table className="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Ім'я користувача</th>
+                                        <th>Логін</th>
+                                        <th>Роль</th>
+                                        <th>Дія</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {users.map((user) => ( 
+                                        <tr key={user.login}>
+                                            <td>{user.name}</td>
+                                            <td>{user.login}</td>
+                                            <td>{user.role}</td>
+                                            <td>
+                                                <button className="btn btn-danger btn-sm" onClick={() => handleDeleteUser(user.login)}>Видалити</button>
+                                                <button className="btn btn-warning btn-sm ms-2" onClick={() => handleEditPasswordUsers(user)}>Змінити пароль</button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {editingUser && ( 
+                <div className="row mb-4">
+                    <div className="col-12">
+                        <div className="card">
+                            <div className="card-header">
+                                <h2>Редагувати пароль для {editingUser.name}</h2> 
+                            </div>
+                            <div className="card-body">
+                                <form onSubmit={(e) => { e.preventDefault(); handleSaveUserPassword(); }}>
+                                    <div className="mb-3">
+                                        <input
+                                            type="password"
+                                            className="form-control"
+                                            placeholder="Новий пароль"
+                                            value={newPassword}
+                                            onChange={(e) => setNewPassword(e.target.value)}
+                                            required
+                                            autoComplete="new-password"
+                                        />
+                                    </div>
+                                    <button type="submit" className="btn btn-success">Зберегти пароль</button>
+                                    <button type="button" className="btn btn-secondary ms-2" onClick={() => setEditingUser(null)}>Скасувати</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            )}
+
         </div>
     );
 };
