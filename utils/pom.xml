@@ -26,13 +26,14 @@
         </dependency>
 
         <dependency>
-            <groupId>org.hashids</groupId>
-            <artifactId>hashids</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
+            <groupId>org.hashids</groupId>
+            <artifactId>hashids</artifactId>
+            <version>1.0.3</version>
         </dependency>
     </dependencies>
 
