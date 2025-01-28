@@ -46,14 +46,15 @@ const MainPage = () => {
                     </button>
                     <button
                         className="btn btn-outline-light mb-3"
-                        onClick={() => navigate("/admin-login")} // Adjust this route as needed
+                        onClick={() => navigate("/admin-login")} 
                     >
                         СЕРВІС ПОСЛУГ ДЕКАНАТУ ДЛЯ АДМІНІСТРАТОРІВ
                     </button>
                     <button
                         className="btn btn-outline-light mb-3"
-                        onClick={() => navigate("/chat-bot")}
+                        onClick={() => window.open("https://t.me/ldubgdDekanat_bot", "_blank")}
                     >
+
                         ЧАТ-БОТ ДЛЯ ЗАМОВЛЕННЯ ДОВІДОК
                     </button>
                 </div>
