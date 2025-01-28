@@ -101,7 +101,7 @@ const ListStatementComponent = () => {
 
     const token = localStorage.getItem('accessToken');
     try {
-      await axios.post('http://localhost:8080/api/file/upload', formData, {
+      await axios.post('http://localhost:8050/api/file/upload', formData, {
         params: { id: statementId },
         headers: {
             'Content-Type': 'multipart/form-data',
