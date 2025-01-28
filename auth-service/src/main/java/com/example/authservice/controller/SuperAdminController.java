@@ -2,9 +2,11 @@ package com.example.authservice.controller;
 
 import com.example.authservice.dto.AdminDto;
 import com.example.authservice.dto.UpdateAdminDto;
+import com.example.authservice.dto.UpdateUserDto;
 import com.example.authservice.exception.RecourseNotFoundException;
 import com.example.authservice.service.SuperAdminService;
 import com.ldubgd.components.dao.Admin;
+import com.ldubgd.components.dao.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,7 +23,7 @@ public class SuperAdminController {
     private final SuperAdminService adminService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody AdminDto adminDto) {
+    public ResponseEntity<?> registerAdmin(@RequestBody AdminDto adminDto) {
         try {
             AdminDto registeredAdmin = adminService.registerAdmin(adminDto);
             return ResponseEntity.ok(registeredAdmin);
@@ -35,8 +37,7 @@ public class SuperAdminController {
     }
 
     @GetMapping("/allAdmins")
-    public ResponseEntity<List<Admin>> getUser() {
-        log.info("Fetching all users");
+    public ResponseEntity<List<Admin>> getAdmins() {
         try {
             List<Admin> admins = adminService.getAllAdmins();
             return ResponseEntity.ok(admins);
@@ -45,11 +46,31 @@ public class SuperAdminController {
         }
     }
 
+    @GetMapping("/allUsers")
+    public ResponseEntity<List<User>> getUsers() {
+        try {
+            List<User> users = adminService.getAllUsers();
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
 
     @DeleteMapping("/deleteByLogin/{login}")
-    public ResponseEntity<?> deleteUserByUsername(@PathVariable String login) {
+    public ResponseEntity<?> deleteAdminByUsername(@PathVariable String login) {
         try {
             adminService.deleteAdminByLogin(login);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @DeleteMapping("/deleteUserByLogin/{login}")
+    public ResponseEntity<?> deleteUserByLogin(@PathVariable String login) {
+        try {
+            adminService.deleteUserByLogin(login);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -71,4 +92,20 @@ public class SuperAdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @PutMapping("/updateUserPasswordByLogin/{login}")
+    public ResponseEntity<?> updateUserPasswordByLogin(@PathVariable String login, @RequestBody UpdateUserDto updateUserDto) {
+        try {
+            UpdateUserDto currentUser = adminService.updateUserPassword(login, updateUserDto);
+            if (currentUser != null) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

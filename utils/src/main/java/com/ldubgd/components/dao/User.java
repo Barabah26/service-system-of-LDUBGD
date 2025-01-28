@@ -1,5 +1,6 @@
 package com.ldubgd.components.dao;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -53,6 +54,7 @@ public class User {
     @Column(name = "date_birth", length = 128)
     private String dateBirth;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Statement> statements = new ArrayList<>();
 
