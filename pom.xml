@@ -30,6 +30,7 @@
         <postgresql.version>42.7.3</postgresql.version>
         <org.lombok.version>1.18.30</org.lombok.version>
         <com.ldubgd.utils.version>1.0-SNAPSHOT</com.ldubgd.utils.version>
+        <spring-cloud.version>2023.0.5</spring-cloud.version>
     </properties>
 
     <dependencyManagement>
@@ -69,6 +70,14 @@
                 <groupId>com.ldubgd</groupId>
                 <artifactId>utils</artifactId>
                 <version>${com.ldubgd.utils.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             
         </dependencies>
