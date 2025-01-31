@@ -23,11 +23,15 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
 
 salt: ${SALT}
 
-fileService:
-  url: ${REST_SERVICE_URL}
-
 server:
   port: ${EMAIL_SERVICE_PORT}
+
+fileService:
+#  url: ${REST_SERVICE_URL}
+    url: http://localhost:8080/fileservice

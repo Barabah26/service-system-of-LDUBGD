@@ -12,9 +12,15 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
 
 
 salt: ${SALT}
+
+emailService:
+  url: http://localhost:8080/emailservice
 
 server:
   port: ${NOTIFICATION_SERVICE_PORT}

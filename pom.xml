@@ -20,6 +20,7 @@
         <module>utils</module>
         <module>emailService</module>
         <module>notificationService</module>
+        <module>gatewayService</module>
     </modules>
 
     <properties>
