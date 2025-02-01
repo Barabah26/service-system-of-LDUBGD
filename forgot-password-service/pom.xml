@@ -5,8 +5,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.2</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>3.3.8</version> <!-- Використовуємо Spring Boot 3.3.8 -->
+        <relativePath/>
     </parent>
     <groupId>com.example</groupId>
     <artifactId>forgot-password-service</artifactId>
@@ -14,18 +14,6 @@
     <name>forgot-password-service</name>
     <description>forgot-password-service</description>
     <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -111,7 +99,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>3.4.0</version>
+            <version>3.3.8</version> <!-- Використовуємо Spring Boot 3.3.8 -->
         </dependency>
         <dependency>
             <groupId>com.ldubgd</groupId>
@@ -146,5 +134,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS statement CASCADE;
 DROP TABLE IF EXISTS notification CASCADE;
 DROP TABLE IF EXISTS file_data CASCADE;
 DROP TABLE IF EXISTS file_info CASCADE;
+DROP TABLE IF EXISTS forgot_password CASCADE;
 DROP SEQUENCE IF EXISTS hibernate_sequence;
 
 -- Створення послідовності для генерації значень ID
@@ -93,5 +94,15 @@ CREATE TABLE file_data (
     file_info_id BIGINT UNIQUE,
     CONSTRAINT fk_file_info FOREIGN KEY (file_info_id) REFERENCES file_info(id) ON DELETE CASCADE
 );
+
+CREATE TABLE forgot_password (
+                                id BIGSERIAL PRIMARY KEY,
+                                full_name VARCHAR(255) NOT NULL,
+                                group_name VARCHAR(255) NOT NULL,
+                                faculty VARCHAR(255) NOT NULL,
+                                type_of_forgot_password VARCHAR(255) NOT NULL,
+                                user_id BIGINT NOT NULL
+);
+
 
 
