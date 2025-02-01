@@ -1,5 +1,6 @@
 package com.ldubgd.components.dao;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,18 +18,14 @@ public class ForgotPassword {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "full_name", nullable = false)
-    private String fullName;
-
-    @Column(name = "group_name", nullable = false)
-    private String group;
-
-    @Column(name = "faculty", nullable = false)
-    private String faculty;
-
     @Column(name = "type_of_forgot_password", nullable = false)
     private String typeOfForgotPassword;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @JsonManagedReference
+    @OneToOne(mappedBy = "forgotPassword", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private ForgotPasswordInfo forgotPasswordInfo;
 }

@@ -11,9 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ForgotPasswordDto {
     private Long id;
-    private String fullName;
-    private String group;
-    private String faculty;
     private String typeOfForgotPassword;
 
 }

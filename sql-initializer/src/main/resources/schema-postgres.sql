@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS statement CASCADE;
 DROP TABLE IF EXISTS notification CASCADE;
 DROP TABLE IF EXISTS file_data CASCADE;
 DROP TABLE IF EXISTS file_info CASCADE;
+DROP TABLE IF EXISTS forgot_password_info CASCADE;
 DROP TABLE IF EXISTS forgot_password CASCADE;
 DROP SEQUENCE IF EXISTS hibernate_sequence;
 
@@ -97,12 +98,22 @@ CREATE TABLE file_data (
 
 CREATE TABLE forgot_password (
                                 id BIGSERIAL PRIMARY KEY,
-                                full_name VARCHAR(255) NOT NULL,
-                                group_name VARCHAR(255) NOT NULL,
-                                faculty VARCHAR(255) NOT NULL,
                                 type_of_forgot_password VARCHAR(255) NOT NULL,
-                                user_id BIGINT NOT NULL
+                                user_id BIGINT NOT NULL,
+                                CONSTRAINT fk_user
+                                    FOREIGN KEY (user_id)
+                                        REFERENCES users (user_id)
+                                        ON DELETE CASCADE
 );
+
+CREATE TABLE forgot_password_info (
+                                      id BIGINT NOT NULL,
+                                      is_ready BOOLEAN,
+                                      statement_status VARCHAR(255),
+                                      PRIMARY KEY (id),
+                                      FOREIGN KEY (id) REFERENCES forgot_password(id)
+);
+
 
 
 
