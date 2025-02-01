@@ -8,7 +8,6 @@
 		<version>1.0.0</version>
 	</parent>
 
-
 	<artifactId>gatewayService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gatewayService</name>
@@ -26,14 +25,5 @@
 		</dependency>
 
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

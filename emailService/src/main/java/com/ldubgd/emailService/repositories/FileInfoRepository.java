@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface FileInfoRepository extends JpaRepository<FileInfo,Long> {
 
+    public boolean existsByStatementId(Long id);
+
 }

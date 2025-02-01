@@ -46,7 +46,7 @@ public class EmailSenderService {
 
         String texOfEmail;
 
-        if(fileInfoRepository.existsById(statement.getId())){
+        if(fileInfoRepository.existsByStatementId(statement.getId())){
             String urlOfFile=new StringBuilder(fileServiceUrl).append("/file/download?id=").append(cryptoTool.hashOf(idOfStatement)).toString();
             texOfEmail = generateNotificationMessageWithFile(statement,urlOfFile);
         }else {
