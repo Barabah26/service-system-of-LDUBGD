@@ -1,5 +1,6 @@
 services:
   database:
+    container_name: crm-db
     env_file:
       - ./.env
     image: postgres:14
@@ -11,47 +12,56 @@ services:
       - db_data:/var/lib/postgresql/data
     ports:
       - "${DATABASE_PORT}:5432"
-      
-#  sql-initializer:
-#    env_file:
-#      - .env  # Вказуємо шлях до файлу .env
-#    image: sql-initializer:latest
-#    build:
-#      context: ../sql-initializer
-#      dockerfile: ../sql-initializer/Dockerfile
-#    ports:
-#      - "9080:9080"  # Відображаємо зовнішній порт 9080 на внутрішній порт 9080 контейнера
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/${DATABASE_NAME}  # Використовуйте правильний порт 5432
-#      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"  # Використання змінної з .env
-#      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"  # Використання змінної з .env
-#    depends_on:
-#      - database
-#
 
-#  frontend:
-#    build:
-#      context: ../frontend/stat-frontend  # Коренева директорія фронтенду, де розташований Dockerfile
-#      dockerfile: Dockerfile
-#    ports:
-#      - "3000:3001"  # Зовнішній порт 3000 відображається на внутрішній порт 3001 контейнера
-#
-#  crm_for_bot:
-#    env_file:
-#      - .env  # Вказуємо шлях до файлу .env
-#    image: crm_for_bot:latest
-#    build:
-#      context: ../crm_for_bot
-#      dockerfile: ../crm_for_bot/Dockerfile
-#    ports:
-#      - "9000:9000"  # Відображаємо зовнішній порт 9080 на внутрішній порт 9080 контейнера
-#
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/${DATABASE_NAME}  # Використовуйте правильний порт 5432
-#      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"  # Використання змінної з .env
-#      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"  # Використання змінної з .env
-#    depends_on:
-#      - database
+  sql-initializer:
+    env_file:
+      - .env  # Вказуємо шлях до файлу .env
+    container_name: sql-initializer
+    image: sql-initializer:latest
+    build:
+      context: ../sql-initializer
+      dockerfile: ../sql-initializer/Dockerfile
+    ports:
+      - "9080:9080"  # Відображаємо зовнішній порт 9080 на внутрішній порт 9080 контейнера
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/${DATABASE_NAME} # Використовуйте правильний порт 5432
+      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"  # Використання змінної з .env
+      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"  # Використання змінної з .env
+    depends_on:
+      - database
+
+  fileService:
+    container_name: file-service
+    build:
+      context: ../fileService      # Шлях до директорії з Dockerfile для fileService
+      dockerfile: ../fileService/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
+    image: file-service:latest
+    env_file:
+      - ./.env
+    ports:
+      - "${FILE_SERVICE_PORT}:${FILE_SERVICE_PORT}"
+    environment:
+      # Вказуємо змінні оточення для Spring Boot
+      # Зверніть увагу: datasource URL змінено на 'database' замість 'localhost'
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
+      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
+      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
+      FILE_SERVICE_PORT: "${FILE_SERVICE_PORT}"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
+      SALT: "${SALT}"
+    depends_on:
+      - database
+
+
+  serviceRegistry:
+    container_name: service-registry
+    build:
+      context: ../serviceRegistry      # Шлях до директорії з Dockerfile для fileService
+      dockerfile: ../serviceRegistry/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
+    image: service-registry:latest
+    ports:
+      - "8761:8761"
+
 
 
 volumes:

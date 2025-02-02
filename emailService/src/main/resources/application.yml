@@ -22,7 +22,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_SERVER_URL}
   instance:
     prefer-ip-address: true
     hostname: localhost
@@ -33,5 +33,4 @@ server:
   port: ${EMAIL_SERVICE_PORT}
 
 fileService:
-#  url: ${REST_SERVICE_URL}
     url: http://localhost:8080/fileservice

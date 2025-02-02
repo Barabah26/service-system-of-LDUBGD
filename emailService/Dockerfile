@@ -8,10 +8,10 @@ ENV PORT 8080
 WORKDIR /crm_system
 
 # Копіюємо jar-файл, який буде виконуватись
-COPY target/fileService-0.0.1-SNAPSHOT.jar fileService.jar
+COPY target/emailService-0.0.1-SNAPSHOT.jar emailService.jar
 
 # Відкриваємо порт 8080
 EXPOSE 8080
 
 # Вказуємо команду для запуску програми
-ENTRYPOINT ["java", "-jar", "fileService.jar"]
+ENTRYPOINT ["java", "-jar", "emailService.jar"]

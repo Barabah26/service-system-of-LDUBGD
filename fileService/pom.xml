@@ -11,8 +11,8 @@
 
 	<artifactId>fileService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>restFileService</name>
-	<description>REST service for sending files</description>
+	<name>fileService</name>
+	<description>file service for sending files</description>
 
 	<dependencies>
 		<dependency>
@@ -53,5 +53,14 @@
 		</dependency>
 
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
