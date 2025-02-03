@@ -1,7 +1,9 @@
 package com.example.forgotpasswordservice.service.impl;
 
+import com.example.forgotpasswordservice.dto.ForgotPasswordDto;
 import com.example.forgotpasswordservice.dto.ForgotPasswordRequestDto;
 import com.example.forgotpasswordservice.exception.RecourseNotFoundException;
+import com.example.forgotpasswordservice.mapper.ForgotPasswordMapper;
 import com.example.forgotpasswordservice.repository.ForgotPasswordInfoRepository;
 import com.example.forgotpasswordservice.repository.ForgotPasswordRepository;
 import com.example.forgotpasswordservice.repository.UserRepository;
@@ -11,6 +13,9 @@ import com.ldubgd.components.dao.enums.StatementStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -38,5 +43,11 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         forgotPasswordInfo.setStatementStatus(StatementStatus.PENDING);
 
         forgotPasswordInfoRepository.save(forgotPasswordInfo);
+    }
+
+    @Override
+    public List<ForgotPasswordDto> getForgotPasswordInfoByStatus(StatementStatus status) {
+        List<Object[]> results = forgotPasswordInfoRepository.findForgotPasswordInfoByStatus(status.name());
+        return results.stream().map(ForgotPasswordMapper::mapToForgotPasswordDto).collect(Collectors.toList());
     }
 }

@@ -12,5 +12,6 @@ import lombok.Setter;
 public class ForgotPasswordDto {
     private Long id;
     private String typeOfForgotPassword;
-
+    private Long userId;
+    private String status;
 }
