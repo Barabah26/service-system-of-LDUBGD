@@ -106,8 +106,20 @@ const HeaderComponent = () => {
   };
 
   const handleSelectType = (type) => {
-    navigate(`/statement-registration?type=${type}`); // Перехід на сторінку з вибраним типом довідки
+    if (
+      type === 'Довідка з місця навчання' ||
+      type === 'Довідка для військкомату (Форма 20)' ||
+      type === 'Довідка (Форма 9)'
+    ) {
+      navigate(`/statement-registration?type=${type}`); // Перехід на сторінку для довідки
+    } else if (
+      type === 'Пароль до журналу' ||
+      type === 'Пароль до віртуального університету'
+    ) {
+      navigate(`/forgot-password-registration?type=${type}`); // Перехід на сторінку для паролів
+    }
   };
+  
 
   const handleMyStatements = () => {
     navigate('/student-statements'); // Перехід на сторінку "Мої довідки"
@@ -143,7 +155,7 @@ const HeaderComponent = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="py-3 shadow-sm">
       <Container>
-        <Navbar.Brand href="#" className="d-flex align-items-center">
+        <Navbar.Brand href="/user-info" className="d-flex align-items-center">
           <FaUniversity className="me-2" size={30} />
           <span className="fw-bold text-uppercase">Львівський державний університет безпеки життєдіяльності</span>
         </Navbar.Brand>
@@ -165,6 +177,12 @@ const HeaderComponent = () => {
               </NavDropdown.Item>
               <NavDropdown.Item onClick={() => handleSelectType('Довідка (Форма 9)')}>
                 Довідка (Форма 9)
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleSelectType('Пароль до журналу')}>
+                Пароль до журналу
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleSelectType('Пароль до віртуального університету')}>
+                Пароль до віртуального університету
               </NavDropdown.Item>
             </NavDropdown>
 

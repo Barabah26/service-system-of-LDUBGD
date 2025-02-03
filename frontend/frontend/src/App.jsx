@@ -13,6 +13,7 @@ import LoginPageAdmin from "./components/LoginPageAdmin";
 import ListStatementsAdmin from './components/ListStatementsAdmin'; 
 import StudentStatementsPage from './components/StudentStatementsPage';
 import SuperAdminPage from './components/SuperAdminPage';
+import ForgotPasswordRegistrationForm from "./components/ForgotPasswordRegistartionForm";
 
 
 
@@ -59,6 +60,16 @@ function App() {
                         <PrivateRoute>
                             <HeaderComponent />
                             <StatementRegistrationForm />
+                        </PrivateRoute>
+                    }
+                />
+
+                <Route
+                    path="/forgot-password-registration"
+                    element={
+                        <PrivateRoute>
+                            <HeaderComponent />
+                            <ForgotPasswordRegistrationForm />
                         </PrivateRoute>
                     }
                 />
