@@ -2,6 +2,7 @@ package com.example.forgotpasswordservice.controller;
 
 import com.example.forgotpasswordservice.dto.ForgotPasswordDto;
 import com.example.forgotpasswordservice.dto.ForgotPasswordRequestDto;
+import com.example.forgotpasswordservice.exception.RecourseNotFoundException;
 import com.example.forgotpasswordservice.security.JwtTokenProvider;
 import com.example.forgotpasswordservice.service.ForgotPasswordService;
 import com.ldubgd.components.dao.enums.StatementStatus;
@@ -73,6 +74,42 @@ public class ForgotPasswordController {
                 return ResponseEntity.ok(new ArrayList<>());
             }
             return ResponseEntity.ok(forgotPasswords);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+    }
+
+    @PutMapping("{id}/in-progress")
+    public ResponseEntity<String> markForgotPasswordInProgress(@PathVariable("id") Long statementId, HttpServletRequest request) {
+        Long currentUserId = getUserIdFromToken(request);
+        if (currentUserId == null) {
+            try {
+                forgotPasswordService.updateForgotPasswordStatus(statementId, StatementStatus.IN_PROGRESS);
+            } catch (RecourseNotFoundException e) {
+                return ResponseEntity.status(404).body("ForgotPassword not found!");
+            } catch (Exception e) {
+                return ResponseEntity.status(500).body("Failed to update ForgotPassword status!");
+            }
+            return ResponseEntity.ok("ForgotPassword marked as IN_PROGRESS successfully!");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+    }
+
+    @PutMapping("{id}/ready")
+    public ResponseEntity<String> markForgotPasswordReady(@PathVariable("id") Long statementId, HttpServletRequest request) { //
+        Long currentUserId = getUserIdFromToken(request);
+        if (currentUserId == null) {
+            try {
+                forgotPasswordService.updateForgotPasswordStatus(statementId, StatementStatus.READY);
+            } catch (RecourseNotFoundException e) {
+                return ResponseEntity.status(404).body("ForgotPassword not found!");
+            } catch (Exception e) {
+                return ResponseEntity.status(500).body("Failed to update ForgotPassword status!");
+            }
+            return ResponseEntity.ok("ForgotPassword marked as READY successfully!");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

@@ -50,4 +50,14 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         List<Object[]> results = forgotPasswordInfoRepository.findForgotPasswordInfoByStatus(status.name());
         return results.stream().map(ForgotPasswordMapper::mapToForgotPasswordDto).collect(Collectors.toList());
     }
+
+    @Override
+    public void updateForgotPasswordStatus(Long forgotPasswordId, StatementStatus status) {
+        ForgotPasswordInfo forgotPasswordInfo = forgotPasswordInfoRepository.findById(forgotPasswordId).orElseThrow(
+                () -> new RecourseNotFoundException("ForgotPassword is not found with id: " + forgotPasswordId)
+        );
+
+        forgotPasswordInfo.setStatementStatus(StatementStatus.valueOf(status.name()));
+        forgotPasswordInfoRepository.save(forgotPasswordInfo);
+    }
 }
