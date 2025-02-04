@@ -8,11 +8,11 @@ const ListStatementComponent = () => {
   // Стан для заявок на довідки та для заявок на забутий пароль
   const [statements, setStatements] = useState([]);
   const [forgotPasswords, setForgotPasswords] = useState([]);
-  
+
   const [loading, setLoading] = useState(true);
   // selectedRequestType: "statements" для заявок на довідки, "forgotPassword" для заявок на забутий пароль
   const [selectedRequestType, setSelectedRequestType] = useState('statements');
-  
+
   const [selectedFaculty, setSelectedFaculty] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -97,7 +97,6 @@ const ListStatementComponent = () => {
     setSearchQuery(e.target.value);
   };
 
-  // Зміна статусу заявки: "В обробці"
   const handleInProgress = async (id) => {
     if (!window.confirm("Ви впевнені, що хочете змінити статус на 'В обробці'?")) return;
     const token = localStorage.getItem('accessToken');
@@ -119,7 +118,6 @@ const ListStatementComponent = () => {
     }
   };
 
-  // Зміна статусу заявки: "Готово"
   const handleReady = async (id) => {
     if (!window.confirm("Ви впевнені, що хочете змінити статус на 'Готово'?")) return;
     const token = localStorage.getItem('accessToken');
@@ -141,6 +139,7 @@ const ListStatementComponent = () => {
     }
   };
 
+
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -155,7 +154,7 @@ const ListStatementComponent = () => {
     const token = localStorage.getItem('accessToken');
     try {
       // Припускаємо, що API для завантаження файлу однакове для обох типів
-      await axios.post('http://localhost:8080/file/upload', formData, {
+      await axios.post('http://localhost:8050/file/upload', formData, {
         params: { id },
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -173,11 +172,13 @@ const ListStatementComponent = () => {
     }
   };
 
-  // Надсилання повідомлення користувачу (тільки коли статус "В процесі")
-  const handleMessageChange = (e, id) => {
-    setMessageMap(prevState => ({
-      ...prevState,
-      [id]: e.target.value,
+  const handleMessageChange = (e, statementId, field) => {
+    setMessageMap((prev) => ({
+      ...prev,
+      [statementId]: {
+        ...prev[statementId],
+        [field]: e.target.value,
+      },
     }));
   };
 
@@ -200,13 +201,30 @@ const ListStatementComponent = () => {
     }
   };
 
+  const handleSaveData = async (statementId, login, password) => {
+    if (!window.confirm("Ви впевнені, що хочете надіслати ці дані?")) return;
+  
+    try {
+      const response = await axios.put(`http://localhost:8095/api/forgot-password/${statementId}`, {
+        login,
+        password,
+      });
+  
+      alert(response.data); 
+    } catch (error) {
+      console.error("Помилка оновлення:", error);
+      alert("Логін і пароль вже збережені! Змініть статус заявки!");
+    }
+  };
+  
+
   // Фільтрація за ПІБ для заявок на довідки
   const filteredStatements = statements.filter(statement =>
     statement.fullName.toLowerCase().includes(searchQuery.toLowerCase())
   );
   // Фільтрація за ПІБ для заявок на забутий пароль
-  const filteredForgotPasswords = forgotPasswords.filter(fp =>
-    fp.fullName.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredForgotPasswords = forgotPasswords.filter(statement =>
+    statement.typeOfForgotPassword === "Пароль до журналу"
   );
 
   // Перемикання типу заявок
@@ -217,17 +235,17 @@ const ListStatementComponent = () => {
   return (
     <Container className="students-container">
       <h2 className="my-4">Список заявок</h2>
-
+  
       {/* Кнопки перемикання між типами заявок */}
       <Row className="mb-3">
         <Col>
-          <Button 
+          <Button
             variant={selectedRequestType === 'statements' ? 'primary' : 'secondary'}
             onClick={() => handleRequestTypeChange('statements')}
           >
             Заявки на довідки
           </Button>{' '}
-          <Button 
+          <Button
             variant={selectedRequestType === 'forgotPassword' ? 'primary' : 'secondary'}
             onClick={() => handleRequestTypeChange('forgotPassword')}
           >
@@ -235,9 +253,28 @@ const ListStatementComponent = () => {
           </Button>
         </Col>
       </Row>
-
-      {/* Фільтри (тільки для заявок на довідки) */}
+  
+      {/* Контейнер для заявок на довідки */}
       {selectedRequestType === 'statements' && (
+        <Container className="students-container">
+        <h2 className="my-4">Список заявок</h2>
+
+        {/* Поле для пошуку */}
+        <Row className="mb-3">
+          <Col md={12}>
+            <Form.Group controlId="searchQuery">
+              <Form.Label>Пошук за ПІБ:</Form.Label>
+              <Form.Control
+                  type="text"
+                  placeholder="Введіть ПІБ"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        {/* Фільтри для факультету і статусу */}
         <Row className="mb-3">
           <Col md={6}>
             <Form.Group controlId="facultyFilter">
@@ -265,75 +302,47 @@ const ListStatementComponent = () => {
             </Form.Group>
           </Col>
         </Row>
-      )}
 
-      {/* Поле для пошуку за ПІБ */}
-      <Row className="mb-3">
-        <Col md={12}>
-          <Form.Group controlId="searchQuery">
-            <Form.Label>Пошук за ПІБ:</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Введіть ПІБ"
-              value={searchQuery}
-              onChange={handleSearchChange}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
+        {/* Повідомлення про успіх */}
+        {successMessage && (
+            <Alert variant="success" onClose={() => setSuccessMessage('')} dismissible>
+              {successMessage}
+            </Alert>
+        )}
 
-      {/* Повідомлення про успіх */}
-      {successMessage && (
-        <Alert variant="success" onClose={() => setSuccessMessage('')} dismissible>
-          {successMessage}
-        </Alert>
-      )}
-
-      {/* Відображення таблиці заявок залежно від вибраного типу */}
-      {loading ? (
-        <p>Завантаження...</p>
-      ) : noResults ? (
-        <p className="text-center">{errorMessage}</p>
-      ) : selectedRequestType === 'statements' ? (
-        <Table striped bordered hover className="wide-table">
-          <thead>
-            <tr>
-              <th>ПІБ</th>
-              <th>Група</th>
-              <th>Дата народження</th>
-              <th>Номер телефону</th>
-              <th>Тип заявки</th>
-              <th>Факультет</th>
-              <th className="wide-column">Статус</th>
-              {selectedStatus !== 'READY' && <th>Дія</th>}
-              {selectedStatus === 'IN_PROGRESS' && <th className="wide-column">Завантажити файл</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {filteredStatements.map((statement) => (
-              <tr key={statement.id}>
-                <td>{statement.fullName}</td>
-                <td>{statement.groupName}</td>
-                <td>{statement.yearBirthday}</td>
-                <td>{statement.phoneNumber}</td>
-                <td>{statement.typeOfStatement}</td>
-                <td>{statement.faculty}</td>
-                <td>{statement.status}</td>
-                {statement.status !== 'READY' && (
-                  <td>
-                    {statement.status === 'В очікуванні' && (
-                      <Button variant="success" onClick={() => handleInProgress(statement.id)}>
-                        В обробку
-                      </Button>
-                    )}
-                    {statement.status === 'В процесі' && (
-                      <Button variant="success" onClick={() => handleReady(statement.id)}>
-                        Готово
-                      </Button>
-                    )}
-                  </td>
-                )}
-                {statement.status !== 'READY' && (
+        {/* Таблиця заявок */}
+        {loading ? (
+            <p>Завантаження...</p>
+        ) : (
+            <>
+              {noResults ? (
+                  <p className="text-center">{errorMessage}</p>
+              ) : (
+                <Table striped bordered hover className="wide-table">
+                <thead>
+                  <tr>
+                    <th>ПІБ</th>
+                    <th>Група</th>
+                    <th>Дата народження</th>
+                    <th>Номер телефону</th>
+                    <th>Тип заявки</th>
+                    <th>Факультет</th>
+                    <th className="wide-column">Статус</th>
+                    {selectedStatus !== 'READY' && <th>Дія</th>}
+                    {selectedStatus === 'IN_PROGRESS' && <th className="wide-column">Завантажити файл</th>}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredStatements.map((statement) => (
+                    <tr key={statement.id}>
+                      <td>{statement.fullName}</td>
+                      <td>{statement.groupName}</td>
+                      <td>{statement.yearBirthday}</td>
+                      <td>{statement.phoneNumber}</td>
+                      <td>{statement.typeOfStatement}</td>
+                      <td>{statement.faculty}</td>
+                      <td>{statement.status}</td>
+                      {statement.status !== 'READY' && (
                         <td>
                           {statement.status === 'В очікуванні' && (
                             <Button variant="success" onClick={() => handleInProgress(statement.id)}>
@@ -357,99 +366,156 @@ const ListStatementComponent = () => {
                       )}
                     </tr>
                   ))}
-          </tbody>
-        </Table>
-      ) : (
-        // Таблиця для заявок на забутий пароль з аналогічною структурою
-        <Table striped bordered hover className="wide-table">
-          <thead>
-            <tr>
-              <th>ПІБ</th>
-              <th>Група</th>
-              <th>Дата народження</th>
-              <th>Номер телефону</th>
-              <th>Тип заявки</th>
-              <th>Факультет</th>
-              <th className="wide-column">Статус</th>
-              {selectedStatus !== 'READY' && <th>Дія</th>}
-              {selectedStatus === 'IN_PROGRESS' && <th className="wide-column">Завантажити файл</th>}
-              <th>Повідомлення</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredForgotPasswords.map((fp) => (
-              <tr key={fp.id}>
-                <td>{fp.fullName}</td>
-                <td>{fp.groupName}</td>
-                <td>{fp.yearBirthday}</td>
-                <td>{fp.phoneNumber}</td>
-                <td>{fp.typeOfForgotPassword}</td>
-                <td>{fp.faculty}</td>
-                <td>{fp.status}</td>
-                {fp.status !== 'READY' && (
-                  <td>
-                    {fp.status === 'В очікуванні' && (
-                      <Button variant="success" onClick={() => handleInProgress(fp.id)}>
-                        В обробку
-                      </Button>
-                    )}
-                    {fp.status === 'В процесі' && (
-                      <Button variant="success" onClick={() => handleReady(fp.id)}>
-                        Готово
-                      </Button>
-                    )}
-                  </td>
-                )}
-                {fp.status === 'В процесі' && (
-                  <td>
-                    <input type="file" onChange={handleFileChange} />
-                    <Button variant="primary" onClick={() => handleFileUpload(fp.id)}>
-                      Завантажити
-                    </Button>
-                  </td>
-                )}
-                <td>
-                  {fp.status === 'В процесі' ? (
-                    <>
-                      <Form.Control
-                        type="text"
-                        placeholder="Введіть повідомлення"
-                        value={messageMap[fp.id] || ''}
-                        onChange={(e) => handleMessageChange(e, fp.id)}
-                      />
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        className="mt-2"
-                        onClick={() => handleSendMessage(fp.id, fp.userId)}
-                      >
-                        Надіслати
-                      </Button>
-                    </>
-                  ) : (
-                    <span>Недоступно</span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
+                </tbody>
+              </Table>
+              
+              )}
+            </>
+        )}
 
-      {/* Модальне вікно для підтвердження завантаження файлу */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Завантаження файлу</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Файл успішно завантажено!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Закрити
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        {/* Модальне вікно для підтвердження успішного завантаження файлу */}
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Завантаження файлу</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Файл успішно завантажено!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+              Закрити
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </Container>
+      )}
+  
+      {/* Контейнер для заявок на забутий пароль */}
+      {selectedRequestType === 'forgotPassword' && (
+        <Container className="students-container">        
+              <Row className="mb-3">
+                <Col md={12}>
+                  <Form.Group controlId="searchQuery">
+                    <Form.Label>Пошук за ПІБ:</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Введіть ПІБ"
+                      value={searchQuery}
+                      onChange={handleSearchChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+        
+              {/* Фільтр за статусом */}
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group controlId="statusFilter">
+                    <Form.Label>Оберіть статус заявки:</Form.Label>
+                    <Form.Control as="select" value={selectedStatus} onChange={handleStatusChange}>
+                      <option value="">Оберіть статус</option>
+                      <option value="PENDING">Очікується</option>
+                      <option value="IN_PROGRESS">В процесі</option>
+                      <option value="READY">Готово</option>
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+        
+              {/* Повідомлення про успіх */}
+              {successMessage && (
+                <Alert variant="success" onClose={() => setSuccessMessage('')} dismissible>
+                  {successMessage}
+                </Alert>
+              )}
+        
+              {/* Таблиця заявок */}
+              {loading ? (
+                <p>Завантаження...</p>
+              ) : (
+                <>
+                  {noResults ? (
+                    <p className="text-center">{errorMessage}</p>
+                  ) : (
+                    <Table striped bordered hover className="wide-table">
+                      <thead>
+                        <tr>
+                          <th>ПІБ</th>
+                          <th>Група</th>
+                          <th>Факультет</th>
+                          <th>Тип заявки</th>
+                          <th>Статус</th>
+                          <th>Дія</th>
+                          <th>Повідомлення</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredForgotPasswords
+                          .filter(forgotPassword =>
+                            forgotPassword.fullName.toLowerCase().includes(searchQuery.toLowerCase())
+                          )
+                          .map((forgotPassword) => (
+                            <tr key={forgotPassword.id}>
+                              <td>{forgotPassword.fullName}</td>
+                              <td>{forgotPassword.groupName}</td>
+                              <td>{forgotPassword.faculty}</td>
+                              <td>{forgotPassword.typeOfForgotPassword}</td>
+                              <td>{forgotPassword.status}</td>
+                              <td>
+                                {forgotPassword.status === 'В очікуванні' && (
+                                  <Button variant="success" onClick={() => handleInProgress(forgotPassword.id)}>
+                                    В обробку
+                                  </Button>
+                                )}
+        
+                                {forgotPassword.status === 'В процесі' && (
+                                  <Button variant="success" onClick={() => handleReady(forgotPassword.id)}>
+                                    Готово
+                                  </Button>
+                                )}
+                                {forgotPassword.status === 'Готово' && <span>Недоступно</span>}
+                              </td>
+                              <td>
+                                {forgotPassword.status === 'В процесі' && (
+                                  <>
+                                    <Form.Control
+                                      type="text"
+                                      placeholder="Введіть логін"
+                                      value={messageMap[forgotPassword.id]?.login || ''}
+                                      onChange={(e) => handleMessageChange(e, forgotPassword.id, 'login')}
+                                    />
+                                    <Form.Control
+                                      type="password"
+                                      placeholder="Введіть пароль"
+                                      value={messageMap[forgotPassword.id]?.password || ''}
+                                      onChange={(e) => handleMessageChange(e, forgotPassword.id, 'password')}
+                                      />
+                                      <Button
+                                      variant="primary"
+                                      size="sm"
+                                      className="mt-4"
+                                      onClick={() =>
+                                        handleSaveData(forgotPassword.id, messageMap[forgotPassword.id]?.login, messageMap[forgotPassword.id]?.password)
+                                      }
+                                    >
+                                      Надіслати
+                                    </Button>
+                                  </>
+                                )}
+                                {(forgotPassword.status === 'Готово' || forgotPassword.status === 'В очікуванні') && <span>Недоступно</span>}
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </Table>
+                  )}
+                </>
+              )}
+            </Container>
+      )}
+  
     </Container>
   );
+  
+    
 };
 
 export default ListStatementComponent;

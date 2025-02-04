@@ -224,11 +224,9 @@ const TechAdminPage = () => {
                             >
                               Надіслати
                             </Button>
-
                           </>
                         )}
                         {(statement.status === 'Готово' || statement.status === 'В очікуванні') && <span>Недоступно</span>}
-
                       </td>
                     </tr>
                   ))}
