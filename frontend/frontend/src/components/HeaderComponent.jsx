@@ -14,7 +14,7 @@ const parseJwt = (token) => {
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const jsonPayload = decodeURIComponent(
       atob(base64)
-        .split('') 
+        .split('')
         .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
         .join('')
     );
@@ -119,7 +119,7 @@ const HeaderComponent = () => {
       navigate(`/forgot-password-registration?type=${type}`); // Перехід на сторінку для паролів
     }
   };
-  
+
 
   const handleMyStatements = () => {
     navigate('/student-statements'); // Перехід на сторінку "Мої довідки"
@@ -201,7 +201,7 @@ const HeaderComponent = () => {
               {notifications.length > 0 ? (
                 notifications.map((notification, index) => (
                   <NavDropdown.Item key={index} className="d-flex justify-content-between">
-                    <span>Довідка готова, перевірте електронну пошту або зверніться в деканат!</span>
+                    <span>{notification.message}</span>
                     <FaTrashAlt
                       size={18}
                       className="text-danger"
@@ -213,6 +213,7 @@ const HeaderComponent = () => {
               ) : (
                 <NavDropdown.Item>Немає нових сповіщень</NavDropdown.Item>
               )}
+
             </NavDropdown>
 
             {/* Кнопка "Мої довідки" */}
