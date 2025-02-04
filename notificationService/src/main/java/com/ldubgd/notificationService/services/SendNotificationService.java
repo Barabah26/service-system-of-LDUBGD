@@ -3,6 +3,7 @@ package com.ldubgd.notificationService.services;
 import com.ldubgd.components.dao.Statement;
 import com.ldubgd.utils.CryptoTool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -11,6 +12,8 @@ public class SendNotificationService {
 
     private final WebClient.Builder webClientBuilder;
 
+    @Value("${emailService.url}")
+    private String emailServiceUrl;
 
     public SendNotificationService(WebClient.Builder webClientBuilder) {
         this.webClientBuilder = webClientBuilder;
@@ -19,13 +22,12 @@ public class SendNotificationService {
     @Autowired
     private  CryptoTool cryptoTool;
 
-    public void sendNotificationAboutStatementStatus(Statement statement) {
+    public void sendNotificationAboutStatementStatus(Long statementId) {
         String url = String.format(
-                "http://localhost:8060/api/email/send?id=%s&email=%s",
-                cryptoTool.hashOf(statement.getId()),
-                statement.getUser().getEmail()
+                "%s/email/send?id=%s",
+                emailServiceUrl,
+                cryptoTool.hashOf(statementId)
         );
-
 
         try {
             webClientBuilder.build()

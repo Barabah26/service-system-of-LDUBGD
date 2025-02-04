@@ -16,6 +16,9 @@
         <option value="$PROJECT_DIR$/notificationService/pom.xml" />
         <option value="$PROJECT_DIR$/utils/pom.xml" />
         <option value="$PROJECT_DIR$/userprofile-service/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/serviceRegistry/pom.xml" />
+        <option value="$PROJECT_DIR$/getewayService/pom.xml" />
         <option value="$PROJECT_DIR$/forget-password-service/pom.xml" />
         <option value="$PROJECT_DIR$/forgot-password-service/pom.xml" />
       </list>

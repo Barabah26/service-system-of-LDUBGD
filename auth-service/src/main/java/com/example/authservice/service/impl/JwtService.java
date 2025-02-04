@@ -2,7 +2,6 @@ package com.example.authservice.service.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-;
 import com.example.authservice.exception.AuthException;
 import com.example.authservice.security.JwtProvider;
 import com.example.authservice.security.JwtResponse;

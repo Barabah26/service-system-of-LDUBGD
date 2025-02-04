@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-@RequestMapping("api/email")
+@RequestMapping("/email")
 @AllArgsConstructor
 @RestController
 public class EmailController {
@@ -21,13 +21,15 @@ public class EmailController {
 
     @PatchMapping("/send")
     public ResponseEntity<?> notificationAboutStatementStatus(
-            @RequestParam("id") String hashIdOfStatement, @RequestParam("email") String emailOfUser){
+            @RequestParam("id") String hashIdOfStatement){
 
+        boolean status=emailSenderService.sendEmailAboutStatementStatus(cryptoTool.idOf(hashIdOfStatement));
 
-        emailSenderService.sendEmailAboutStatementStatus(emailOfUser, cryptoTool.idOf(hashIdOfStatement));
+        if(!status){
+            return ResponseEntity.badRequest().body("Error while sending email");
+        }
 
-
-        return ResponseEntity.ok().body("Email send");
+        return ResponseEntity.ok().body("Email sent successfully");
     }
 
 }

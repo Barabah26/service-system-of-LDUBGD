@@ -21,6 +21,8 @@ spring:
 # Production profile configuration
 ---
 spring:
+  application:
+    name: statementService
   config:
     activate:
       on-profile: prod
@@ -49,6 +51,10 @@ spring:
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
 
-
-
-
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    hostname: localhost

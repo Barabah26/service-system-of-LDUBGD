@@ -18,7 +18,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
-@RequestMapping("/api/file")
+@RequestMapping("/file")
 @RestController
 @AllArgsConstructor
 public class FileController {
