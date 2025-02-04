@@ -30,7 +30,7 @@ eureka:
 salt: ${SALT}
 
 server:
-  port: ${EMAIL_SERVICE_PORT}
+  port: 8080
 
 fileService:
-    url: http://localhost:8080/fileservice
+    url: ${FILE_SERVICE_URL}

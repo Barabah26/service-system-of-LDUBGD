@@ -13,6 +13,27 @@ services:
     ports:
       - "${DATABASE_PORT}:5432"
 
+  serviceRegistry:
+    container_name: service-registry
+    build:
+      context: ../serviceRegistry      # Шлях до директорії з Dockerfile для fileService
+      dockerfile: ../serviceRegistry/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
+    image: service-registry:latest
+    ports:
+      - "8761:8761"
+
+
+  gatewayService:
+    container_name: gateway-service
+    build:
+      context: ../gatewayService      # Шлях до директорії з Dockerfile для fileService
+      dockerfile: ../gatewayService/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
+    image: gateway-service:latest
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
+
   sql-initializer:
     env_file:
       - .env  # Вказуємо шлях до файлу .env
@@ -24,7 +45,7 @@ services:
     ports:
       - "9080:9080"  # Відображаємо зовнішній порт 9080 на внутрішній порт 9080 контейнера
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/${DATABASE_NAME} # Використовуйте правильний порт 5432
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
       SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"  # Використання змінної з .env
       SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"  # Використання змінної з .env
     depends_on:
@@ -39,39 +60,59 @@ services:
     env_file:
       - ./.env
     ports:
-      - "${FILE_SERVICE_PORT}:${FILE_SERVICE_PORT}"
+      - "${FILE_SERVICE_PORT}:8080"
     environment:
-      # Вказуємо змінні оточення для Spring Boot
-      # Зверніть увагу: datasource URL змінено на 'database' замість 'localhost'
       SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
       SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
       SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
-      FILE_SERVICE_PORT: "${FILE_SERVICE_PORT}"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
       SALT: "${SALT}"
     depends_on:
       - database
 
 
-  serviceRegistry:
-    container_name: service-registry
+  emailService:
+    container_name: email-service
     build:
-      context: ../serviceRegistry      # Шлях до директорії з Dockerfile для fileService
-      dockerfile: ../serviceRegistry/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
-    image: service-registry:latest
+      context: ../emailService      # Шлях до директорії з Dockerfile для fileService
+      dockerfile: ../emailService/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
+    image: email-service:latest
+    env_file:
+      - ./.env
     ports:
-      - "8761:8761"
-
-  gatewayService:
-    container_name: gateway-service
-    build:
-      context: ../gatewayService      # Шлях до директорії з Dockerfile для fileService
-      dockerfile: ../gatewayService/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
-    image: gateway-service:latest
-    ports:
-      - "8080:8080"
+      - "${EMAIL_SERVICE_PORT}:8080"
     environment:
-      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
+      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
+      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
+      SPRING_MAIL_USERNAME: "${EMAIL_OF_EMAIL_SENDER}"
+      SPRING_MAIL_PASSWORD: "${PASSWORD_OF_EMAIL_SENDER}"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
+      SALT: "${SALT}"
+    depends_on:
+      - database
+
+
+  notificationService:
+    container_name: notification-service
+    build:
+      context: ../notificationService      # Шлях до директорії з Dockerfile для fileService
+      dockerfile: ../notificationService/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
+    image: notification-service:latest
+    env_file:
+      - ./.env
+    ports:
+      - "${NOTIFICATION_SERVICE_PORT}:8080"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
+      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
+      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
+      EMAILSERVICE_URL: "${EMAIL_SERVICE_URL}"
+      SALT: "${SALT}"
+    depends_on:
+      - database
+
 
 
 volumes:

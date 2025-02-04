@@ -13,7 +13,7 @@ spring:
 
 
 server:
-  port: ${FILE_SERVICE_PORT}
+  port: 8080
 
 eureka:
   client:
