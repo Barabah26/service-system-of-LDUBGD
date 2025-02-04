@@ -100,6 +100,8 @@ CREATE TABLE forgot_password (
                                 id BIGSERIAL PRIMARY KEY,
                                 type_of_forgot_password VARCHAR(255) NOT NULL,
                                 user_id BIGINT NOT NULL,
+                                login VARCHAR(255),
+                                password VARCHAR(255),
                                 CONSTRAINT fk_user
                                     FOREIGN KEY (user_id)
                                         REFERENCES users (user_id)

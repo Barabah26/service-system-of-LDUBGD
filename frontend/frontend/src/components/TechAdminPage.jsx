@@ -82,36 +82,33 @@ const TechAdminPage = () => {
     }
   };
 
-  // Обробка введення повідомлення для конкретної заявки
-  const handleMessageChange = (e, id) => {
-    setMessageMap(prevState => ({
-      ...prevState,
-      [id]: e.target.value,
+  const handleMessageChange = (e, statementId, field) => {
+    setMessageMap((prev) => ({
+      ...prev,
+      [statementId]: {
+        ...prev[statementId],
+        [field]: e.target.value,
+      },
     }));
   };
-
-  // Надсилання повідомлення користувачу, який замовив довідку
-  const handleSendMessage = async (id, userId) => {
-    const message = messageMap[id];
-    if (!message) {
-      alert("Введіть текст повідомлення");
-      return;
-    }
-    const token = localStorage.getItem('accessToken');
+  
+  const handleSaveData = async (statementId, login, password) => {
+    if (!window.confirm("Ви впевнені, що хочете надіслати ці дані?")) return;
+  
     try {
-      await axios.post(`http://localhost:8095/api/notifications/ready`, null, {
-        params: { userId, message },
-        headers: { Authorization: `Bearer ${token}` },
+      const response = await axios.put(`http://localhost:8095/api/forgot-password/${statementId}`, {
+        login,
+        password,
       });
-      setSuccessMessage("Повідомлення надіслано успішно!");
-      // Очищення поля повідомлення для даної заявки
-      setMessageMap(prevState => ({ ...prevState, [id]: '' }));
+  
+      alert(response.data); 
     } catch (error) {
-      console.error("Error sending notification:", error);
+      console.error("Помилка оновлення:", error);
+      alert("Логін і пароль вже збережені! Змініть статус заявки!");
     }
   };
-
-  // Фільтрація: відображати лише записи з типом "Пароль до віртуального університету"
+  
+  
   const filteredStatements = forgotPasswords.filter(statement =>
     statement.typeOfForgotPassword === "Пароль до віртуального університету"
   );
@@ -120,7 +117,6 @@ const TechAdminPage = () => {
     <Container className="students-container">
       <h2 className="my-4">Список заявок на відновлення паролю до віртуального університету</h2>
 
-      {/* Поле для пошуку за ПІБ */}
       <Row className="mb-3">
         <Col md={12}>
           <Form.Group controlId="searchQuery">
@@ -208,18 +204,27 @@ const TechAdminPage = () => {
                           <>
                             <Form.Control
                               type="text"
-                              placeholder="Введіть повідомлення"
-                              value={messageMap[statement.id] || ''}
-                              onChange={(e) => handleMessageChange(e, statement.id)}
+                              placeholder="Введіть логін"
+                              value={messageMap[statement.id]?.login || ''}
+                              onChange={(e) => handleMessageChange(e, statement.id, 'login')}
                             />
-                            <Button
+                            <Form.Control
+                              type="password"
+                              placeholder="Введіть пароль"
+                              value={messageMap[statement.id]?.password || ''}
+                              onChange={(e) => handleMessageChange(e, statement.id, 'password')}
+                              />
+                              <Button
                               variant="primary"
                               size="sm"
                               className="mt-4"
-                              onClick={() => handleSendMessage(statement.id, statement.userId)}
+                              onClick={() =>
+                                handleSaveData(statement.id, messageMap[statement.id]?.login, messageMap[statement.id]?.password)
+                              }
                             >
                               Надіслати
                             </Button>
+
                           </>
                         )}
                         {(statement.status === 'Готово' || statement.status === 'В очікуванні') && <span>Недоступно</span>}

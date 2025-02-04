@@ -60,4 +60,10 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         forgotPasswordInfo.setStatementStatus(StatementStatus.valueOf(status.name()));
         forgotPasswordInfoRepository.save(forgotPasswordInfo);
     }
+
+    @Override
+    public boolean updateForgotPassword(Long id, String login, String password) {
+        int updatedRows = forgotPasswordRepository.updateIfNull(id, login, password);
+        return updatedRows > 0;
+    }
 }

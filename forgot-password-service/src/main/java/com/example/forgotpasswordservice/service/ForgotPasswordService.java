@@ -10,5 +10,6 @@ public interface ForgotPasswordService {
     void createForgotPasswordStatement(ForgotPasswordRequestDto forgotPasswordRequestDto);
     List<ForgotPasswordDto> getForgotPasswordInfoByStatus(StatementStatus status);
     void updateForgotPasswordStatus(Long forgotPasswordId, StatementStatus status);
+    boolean updateForgotPassword(Long id, String login, String password);
 
 }

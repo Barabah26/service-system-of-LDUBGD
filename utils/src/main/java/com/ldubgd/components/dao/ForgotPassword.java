@@ -21,6 +21,12 @@ public class ForgotPassword {
     @Column(name = "type_of_forgot_password", nullable = false)
     private String typeOfForgotPassword;
 
+    @Column(name = "login")
+    private String login;
+
+    @Column(name = "password")
+    private String password;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

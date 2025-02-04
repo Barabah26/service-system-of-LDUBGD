@@ -2,6 +2,7 @@ package com.example.forgotpasswordservice.controller;
 
 import com.example.forgotpasswordservice.dto.ForgotPasswordDto;
 import com.example.forgotpasswordservice.dto.ForgotPasswordRequestDto;
+import com.example.forgotpasswordservice.dto.UpdateForgotPasswordDto;
 import com.example.forgotpasswordservice.exception.RecourseNotFoundException;
 import com.example.forgotpasswordservice.security.JwtTokenProvider;
 import com.example.forgotpasswordservice.service.ForgotPasswordService;
@@ -113,7 +114,18 @@ public class ForgotPasswordController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateForgotPassword(@PathVariable Long id, @RequestBody UpdateForgotPasswordDto updateDto) {
+
+        boolean isUpdated = forgotPasswordService.updateForgotPassword(id, updateDto.getLogin(), updateDto.getPassword());
+
+        if (isUpdated) {
+            return ResponseEntity.ok("Логін і пароль успішно збережені! Змініть статус заявки на 'ГОТОВО'");
+        } else {
+            return ResponseEntity.badRequest().body("Nothing was updated, maybe fields are already set");
+        }
     }
 
 }
