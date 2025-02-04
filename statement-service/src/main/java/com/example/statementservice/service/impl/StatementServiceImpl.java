@@ -135,7 +135,7 @@ public class StatementServiceImpl implements StatementService {
 
         if (status == StatementStatus.READY) {
             User user = statement.getStatement().getUser();
-            notificationService.createNotification(user.getUserId(), "Ваша довідка готова!");
+            notificationService.createNotification(user.getUserId(), "Ваша довідка готова! Первірте  елекронну пошту або зверніться в деканат!");
         }
     }
 

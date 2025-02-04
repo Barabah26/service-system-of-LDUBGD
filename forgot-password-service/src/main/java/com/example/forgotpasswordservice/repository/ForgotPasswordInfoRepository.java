@@ -17,5 +17,6 @@ public interface ForgotPasswordInfoRepository extends JpaRepository<ForgotPasswo
             "WHERE fpi.statement_status = :status",
             nativeQuery = true)
     List<Object[]> findForgotPasswordInfoByStatus(@Param("status") String status);
+
 }
 

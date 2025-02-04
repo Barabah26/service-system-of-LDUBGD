@@ -39,6 +39,8 @@ function LoginPage() {
         navigate('/admin-services');
       } else if(response.role === 'SUPER_ADMIN'){
         navigate('/super-admin');
+      } else if(response.role === 'TECH_ADMIN'){
+        navigate('/tech-admin');
       }
     } catch (error) {
       console.error('Login failed:', error.message);
