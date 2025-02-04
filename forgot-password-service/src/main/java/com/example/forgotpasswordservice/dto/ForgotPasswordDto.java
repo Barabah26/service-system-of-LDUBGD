@@ -14,4 +14,8 @@ public class ForgotPasswordDto {
     private String typeOfForgotPassword;
     private Long userId;
     private String status;
+    private String fullName;
+    private String groupName;
+    private String faculty;
 }
+

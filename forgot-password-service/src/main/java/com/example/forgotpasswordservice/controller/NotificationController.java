@@ -1,9 +1,7 @@
 package com.example.forgotpasswordservice.controller;
 
-import com.example.forgotpasswordservice.security.JwtTokenProvider;
 import com.example.forgotpasswordservice.service.NotificationService;
 import com.ldubgd.components.dao.Notification;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
