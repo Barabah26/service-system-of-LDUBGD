@@ -2,10 +2,15 @@ package com.ldubgd.notificationService.services;
 
 import com.ldubgd.components.dao.Statement;
 import com.ldubgd.utils.CryptoTool;
+import jakarta.ws.rs.core.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 @Service
 public class SendNotificationService {
@@ -23,16 +28,22 @@ public class SendNotificationService {
     private  CryptoTool cryptoTool;
 
     public void sendNotificationAboutStatementStatus(Long statementId) {
-        String url = String.format(
-                "%s/email/send?id=%s",
-                emailServiceUrl,
-                cryptoTool.hashOf(statementId)
-        );
-
         try {
+            String hashedId = cryptoTool.hashOf(statementId);
+            URI uri = UriComponentsBuilder
+                    .fromUriString(emailServiceUrl)
+                    .path("/email/send")
+                    .queryParam("id", hashedId)
+                    .build()
+                    .toUri();
+
+            System.out.println("Sending notification to: " + uri);
+
             webClientBuilder.build()
                     .patch()
-                    .uri(url)
+                    .uri(uri)
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                     .retrieve()
                     .toBodilessEntity()
                     .doOnSuccess(response -> System.out.println("Notification sent successfully"))
