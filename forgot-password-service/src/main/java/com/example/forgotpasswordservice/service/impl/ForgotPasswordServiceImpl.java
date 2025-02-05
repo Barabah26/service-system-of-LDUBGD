@@ -66,4 +66,10 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         int updatedRows = forgotPasswordRepository.updateIfNull(id, login, password);
         return updatedRows > 0;
     }
+
+    @Override
+    public List<ForgotPasswordDto> getForgotPasswordByStatusAndFaculty(StatementStatus status, String faculty) {
+        List<Object[]> results = forgotPasswordInfoRepository.findForgotPasswordByStatusAndFaculty(status.name(), faculty);
+        return results.stream().map(ForgotPasswordMapper::mapToForgotPasswordDto).collect(Collectors.toList());
+    }
 }

@@ -81,6 +81,28 @@ public class ForgotPasswordController {
 
     }
 
+    @GetMapping("/statusAndFaculty")
+    public ResponseEntity<List<ForgotPasswordDto>> getStatementsByStatusAndFaculty(@RequestParam(value = "status", required = false) StatementStatus status, @RequestParam(value = "faculty", required = false) String faculty, HttpServletRequest request) {
+
+        Long currentUserId = getUserIdFromToken(request);
+
+        if (currentUserId == null) {
+            List<ForgotPasswordDto> forgotPasswordDtos = new ArrayList<>();
+
+            if (status != null) {
+                forgotPasswordDtos = forgotPasswordService.getForgotPasswordByStatusAndFaculty(status, faculty);
+            }
+
+            if (forgotPasswordDtos.isEmpty()) {
+                return ResponseEntity.ok(new ArrayList<>());
+            }
+            return ResponseEntity.ok(forgotPasswordDtos);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+    }
+
     @PutMapping("{id}/in-progress")
     public ResponseEntity<String> markForgotPasswordInProgress(@PathVariable("id") Long statementId, HttpServletRequest request) {
         Long currentUserId = getUserIdFromToken(request);
