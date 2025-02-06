@@ -52,7 +52,7 @@ const HeaderComponent = () => {
             const token = localStorage.getItem('accessToken');
             if (token && userId) {
               const response = await fetch(
-                `http://localhost:8080/api/notifications?userId=${userId}`, // Використовуємо userId для запиту
+                `http://localhost:8070/api/notifications?userId=${userId}`, // Використовуємо userId для запиту
                 {
                   headers: {
                     Authorization: `Bearer ${token}`,
