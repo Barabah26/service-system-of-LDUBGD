@@ -36,6 +36,22 @@ public class ForgotPasswordController {
         return null;
     }
 
+    @GetMapping("/findByUserId")
+    public ResponseEntity<List<ForgotPasswordDto>> findByFullName(@RequestParam Long userId, HttpServletRequest request) {
+        Long currentUserId = getUserIdFromToken(request);
+        if (currentUserId != null) {
+            List<ForgotPasswordDto> forgotPasswordDtos = forgotPasswordService.findForgotPasswordInfoByUserId(userId);
+            if (forgotPasswordDtos.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(forgotPasswordDtos);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+    }
+
+
     @PostMapping("/createForgotPasswordStatement")
     @Operation(
             summary = "Create a forgot password statement",

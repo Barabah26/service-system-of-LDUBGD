@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,5 +72,14 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     public List<ForgotPasswordDto> getForgotPasswordByStatusAndFaculty(StatementStatus status, String faculty) {
         List<Object[]> results = forgotPasswordInfoRepository.findForgotPasswordByStatusAndFaculty(status.name(), faculty);
         return results.stream().map(ForgotPasswordMapper::mapToForgotPasswordDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ForgotPasswordDto> findForgotPasswordInfoByUserId(Long userId) {
+        List<Object[]> statements = forgotPasswordInfoRepository.findForgotPasswordInfoByUserId(userId);
+        if (statements.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return statements.stream().map(ForgotPasswordMapper::mapToForgotPasswordDto).collect(Collectors.toList());
     }
 }
