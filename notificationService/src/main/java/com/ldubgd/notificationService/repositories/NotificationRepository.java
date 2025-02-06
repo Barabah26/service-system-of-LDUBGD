@@ -11,5 +11,8 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     List<Notification> findByUserIdAndIsReadFalse(Long userId);
     boolean existsByUserIdAndMessage(Long userId, String message);
 
+    boolean existsByUserIdAndStatementInfoId(Long userId, Long statementInfoId);
+    boolean existsByUserIdAndForgotPasswordInfoId(Long userId, Long forgotPasswordInfoId);
+
 }
 

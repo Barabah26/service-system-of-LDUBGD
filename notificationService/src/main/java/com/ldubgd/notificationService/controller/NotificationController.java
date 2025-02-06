@@ -1,6 +1,7 @@
 package com.ldubgd.notificationService.controller;
 
 import com.ldubgd.components.dao.Notification;
+import com.ldubgd.components.dao.User;
 import com.ldubgd.notificationService.services.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +28,9 @@ public class NotificationController {
 
     @PostMapping("/ready")
     public String messageToUser(@RequestParam Long userId, @RequestParam String message) {
-        notificationService.createNotification(userId, message);
+        notificationService.createNotification(userId, message, null, null);
         return "Notification created successfully";
     }
+
 }
 

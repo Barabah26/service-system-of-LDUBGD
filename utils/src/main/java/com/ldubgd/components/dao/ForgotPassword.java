@@ -32,6 +32,6 @@ public class ForgotPassword {
     private User user;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "forgotPassword", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "forgotPassword", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private ForgotPasswordInfo forgotPasswordInfo;
 }
