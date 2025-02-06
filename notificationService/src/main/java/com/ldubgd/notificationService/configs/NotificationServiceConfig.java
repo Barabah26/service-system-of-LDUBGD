@@ -28,4 +28,5 @@ public class NotificationServiceConfig {
     public WebClient.Builder webClientBuilder() {
         return WebClient.builder();
     }
+
 }

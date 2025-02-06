@@ -3,7 +3,6 @@ package com.example.statementservice.service.impl;
 import com.example.statementservice.dto.StatementDto;
 import com.example.statementservice.dto.StatementDtoRequest;
 import com.example.statementservice.repository.UserRepository;
-import com.example.statementservice.service.NotificationService;
 import com.ldubgd.components.dao.Statement;
 import com.ldubgd.components.dao.StatementInfo;
 import com.ldubgd.components.dao.User;
@@ -15,7 +14,6 @@ import com.example.statementservice.service.StatementService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +26,6 @@ public class StatementServiceImpl implements StatementService {
 
     private final StatementInfoRepository statementInfoRepository;
     private final StatementRepository statementRepository;
-    private final NotificationService notificationService;
     private final UserRepository userRepository;
 
     @Override
@@ -132,11 +129,6 @@ public class StatementServiceImpl implements StatementService {
 
         statement.setStatementStatus(StatementStatus.valueOf(status.name()));
         statementInfoRepository.save(statement);
-
-        if (status == StatementStatus.READY) {
-            User user = statement.getStatement().getUser();
-            notificationService.createNotification(user.getUserId(), "Ваша довідка готова! Первірте  елекронну пошту або зверніться в деканат!");
-        }
     }
 
 
