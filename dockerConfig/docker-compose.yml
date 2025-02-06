@@ -48,8 +48,7 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
       SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"  # Використання змінної з .env
       SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"  # Використання змінної з .env
-    depends_on:
-      - database
+
 
   fileService:
     container_name: file-service
@@ -67,8 +66,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
       SALT: "${SALT}"
-    depends_on:
-      - database
 
 
   emailService:
@@ -90,8 +87,6 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
       FILESERVICE_URL: "${FILE_SERVICE_URL}"
       SALT: "${SALT}"
-    depends_on:
-      - database
 
 
   notificationService:
@@ -111,8 +106,26 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
       EMAILSERVICE_URL: "${EMAIL_SERVICE_URL}"
       SALT: "${SALT}"
-    depends_on:
-      - database
+
+
+  authService:
+    container_name: auth-service
+    build:
+      context: ../auth-service
+      dockerfile: ../auth-service/Dockerfile
+    image: auth-service:latest
+    env_file:
+      - ./.env
+    ports:
+      - "${AUTH_SERVICE_PORT}:8080"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
+      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
+      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
+      JWT_ACCESS_SECRET: "${JWT_ACCESS_SECRET}"
+      JWT_REFRESH_SECRET: "${JWT_REFRESH_SECRET}"
+
 
 
 
