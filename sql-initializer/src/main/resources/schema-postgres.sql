@@ -5,6 +5,8 @@ DROP TABLE IF EXISTS statement CASCADE;
 DROP TABLE IF EXISTS notification CASCADE;
 DROP TABLE IF EXISTS file_data CASCADE;
 DROP TABLE IF EXISTS file_info CASCADE;
+DROP TABLE IF EXISTS forgot_password_info CASCADE;
+DROP TABLE IF EXISTS forgot_password CASCADE;
 DROP SEQUENCE IF EXISTS hibernate_sequence;
 
 -- Створення послідовності для генерації значень ID
@@ -67,12 +69,36 @@ CREATE TABLE statement_info (
                                         ON DELETE CASCADE
 );
 
+CREATE TABLE forgot_password (
+                                 id BIGSERIAL PRIMARY KEY,
+                                 type_of_forgot_password VARCHAR(255) NOT NULL,
+                                 user_id BIGINT NOT NULL,
+                                 login VARCHAR(255),
+                                 password VARCHAR(255),
+                                 CONSTRAINT fk_user
+                                     FOREIGN KEY (user_id)
+                                         REFERENCES users (user_id)
+                                         ON DELETE CASCADE
+);
+
+CREATE TABLE forgot_password_info (
+                                      id BIGINT NOT NULL,
+                                      is_ready BOOLEAN,
+                                      statement_status VARCHAR(255),
+                                      PRIMARY KEY (id),
+                                      FOREIGN KEY (id) REFERENCES forgot_password(id)
+);
+
 CREATE TABLE notification (
                               id BIGSERIAL PRIMARY KEY,
                               message VARCHAR(255) NOT NULL,
                               user_id BIGINT NOT NULL,
                               is_read BOOLEAN DEFAULT FALSE,
-                              CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+                              statement_info_id BIGINT,
+                              forgot_password_info_id BIGINT,
+                              CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+                              CONSTRAINT fk_statement_info FOREIGN KEY (statement_info_id) REFERENCES statement_info(id) ON DELETE CASCADE,
+                              CONSTRAINT fk_forgot_password_info FOREIGN KEY (forgot_password_info_id) REFERENCES forgot_password_info(id) ON DELETE CASCADE
 );
 
 
@@ -93,5 +119,10 @@ CREATE TABLE file_data (
     file_info_id BIGINT UNIQUE,
     CONSTRAINT fk_file_info FOREIGN KEY (file_info_id) REFERENCES file_info(id) ON DELETE CASCADE
 );
+
+
+
+
+
 
 

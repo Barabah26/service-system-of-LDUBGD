@@ -257,6 +257,7 @@ const SuperAdminPage = () => {
                                         <option value="">Оберіть роль</option>
                                         <option value="SUPER_ADMIN">SUPER_ADMIN</option>
                                         <option value="ADMIN">ADMIN</option>
+                                        <option value="TECH_ADMIN">TECH_ADMIN</option>
                                     </select>
                                 </div>
                                 <button type="submit" className="btn btn-primary">
