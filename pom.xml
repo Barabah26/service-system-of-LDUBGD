@@ -24,6 +24,7 @@
         <module>statement-service</module>
         <module>serviceRegistry</module>
         <module>auth-service</module>
+        <module>forgot-password-service</module>
     </modules>
 
     <properties>
