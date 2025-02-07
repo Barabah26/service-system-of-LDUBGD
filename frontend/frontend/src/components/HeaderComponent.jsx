@@ -14,7 +14,7 @@ const parseJwt = (token) => {
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const jsonPayload = decodeURIComponent(
       atob(base64)
-        .split('') 
+        .split('')
         .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
         .join('')
     );
@@ -52,7 +52,7 @@ const HeaderComponent = () => {
             const token = localStorage.getItem('accessToken');
             if (token && userId) {
               const response = await fetch(
-                `http://localhost:9080/api/notifications?userId=${userId}`, // Використовуємо userId для запиту
+                `http://localhost:8070/api/notifications?userId=${userId}`, // Використовуємо userId для запиту
                 {
                   headers: {
                     Authorization: `Bearer ${token}`,
@@ -106,8 +106,20 @@ const HeaderComponent = () => {
   };
 
   const handleSelectType = (type) => {
-    navigate(`/statement-registration?type=${type}`); // Перехід на сторінку з вибраним типом довідки
+    if (
+      type === 'Довідка з місця навчання' ||
+      type === 'Довідка для військкомату (Форма 20)' ||
+      type === 'Довідка (Форма 9)'
+    ) {
+      navigate(`/statement-registration?type=${type}`); // Перехід на сторінку для довідки
+    } else if (
+      type === 'Пароль до журналу' ||
+      type === 'Пароль до віртуального університету'
+    ) {
+      navigate(`/forgot-password-registration?type=${type}`); // Перехід на сторінку для паролів
+    }
   };
+
 
   const handleMyStatements = () => {
     navigate('/student-statements'); // Перехід на сторінку "Мої довідки"
@@ -118,7 +130,7 @@ const HeaderComponent = () => {
     if (token) {
       try {
         const response = await fetch(
-          `http://localhost:9080/api/notifications/${notificationId}/read`,
+          `http://localhost:8080/api/notifications/${notificationId}/read`,
           {
             method: 'POST',
             headers: {
@@ -143,7 +155,7 @@ const HeaderComponent = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="py-3 shadow-sm">
       <Container>
-        <Navbar.Brand href="#" className="d-flex align-items-center">
+        <Navbar.Brand href="/user-info" className="d-flex align-items-center">
           <FaUniversity className="me-2" size={30} />
           <span className="fw-bold text-uppercase">Львівський державний університет безпеки життєдіяльності</span>
         </Navbar.Brand>
@@ -166,6 +178,12 @@ const HeaderComponent = () => {
               <NavDropdown.Item onClick={() => handleSelectType('Довідка (Форма 9)')}>
                 Довідка (Форма 9)
               </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleSelectType('Пароль до журналу')}>
+                Пароль до журналу
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => handleSelectType('Пароль до віртуального університету')}>
+                Пароль до віртуального університету
+              </NavDropdown.Item>
             </NavDropdown>
 
             {/* Кнопка "Сповіщення" */}
@@ -183,7 +201,7 @@ const HeaderComponent = () => {
               {notifications.length > 0 ? (
                 notifications.map((notification, index) => (
                   <NavDropdown.Item key={index} className="d-flex justify-content-between">
-                    <span>Довідка готова, перевірте електронну пошту або зверніться в деканат!</span>
+                    <span>{notification.message}</span>
                     <FaTrashAlt
                       size={18}
                       className="text-danger"
@@ -195,6 +213,7 @@ const HeaderComponent = () => {
               ) : (
                 <NavDropdown.Item>Немає нових сповіщень</NavDropdown.Item>
               )}
+
             </NavDropdown>
 
             {/* Кнопка "Мої довідки" */}

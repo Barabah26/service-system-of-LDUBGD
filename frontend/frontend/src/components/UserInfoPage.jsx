@@ -33,7 +33,19 @@ const StudentInfoPage = () => {
   }, []);
 
   const handleNavigate = (type) => {
-    navigate(`/statement-registration?type=${type}`);  // Add query parameter with type
+    // Check the type and navigate accordingly
+    if (
+      type === 'Довідка з місця навчання' ||
+      type === 'Довідка для військкомату (Форма 20)' ||
+      type === 'Довідка (Форма 9)'
+    ) {
+      navigate(`/statement-registration?type=${type}`);  // Navigate to statement registration
+    } else if (
+      type === 'Пароль до журналу' ||
+      type === 'Пароль до віртуального університету'
+    ) {
+      navigate(`/forgot-password-registration?type=${type}`);  // Navigate to forgot password registration
+    }
   };
 
   if (loading) {
@@ -52,6 +64,8 @@ const StudentInfoPage = () => {
     { label: 'Замовити довідку з місця навчання', type: 'Довідка з місця навчання' },
     { label: 'Замовити довідку для військкомату(Форма 20)', type: 'Довідка для військкомату (Форма 20)' },
     { label: 'Довідка(Форма 9)', type: 'Довідка (Форма 9)' },
+    { label: 'Пароль до журналу', type: 'Пароль до журналу' },
+    { label: 'Пароль до віртуального університету', type: 'Пароль до віртуального університету' },
   ];
 
   return (
@@ -87,6 +101,5 @@ const StudentInfoPage = () => {
     </div>
   );
 };
-
 
 export default StudentInfoPage;
