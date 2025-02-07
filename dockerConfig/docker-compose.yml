@@ -167,6 +167,15 @@ services:
       JWT_REFRESH_SECRET: "${JWT_REFRESH_SECRET}"
       SPRING_SECURITY_JWT_SECRET: "${JWT_SECRET}"
 
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ../frontend/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+
 volumes:
-  db_data:  # Зберігає дані бази даних між перезапусками контейнерів
+  db_data:
 
