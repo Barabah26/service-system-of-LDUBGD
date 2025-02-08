@@ -67,12 +67,6 @@ public class JwtService {
         throw new AuthException("JWT token is invalid");
     }
 
-    public JwtResponse generateAdminTokens(Admin admin) {
-        String accessToken = jwtProvider.generateAccessTokenAdmin(admin);
-        String refreshToken = jwtProvider.generateRefreshTokenAdmin(admin);
-        return new JwtResponse(accessToken, refreshToken, "ADMIN");
-    }
-
     public boolean validateAccessToken(@NonNull String accessToken) {
         return jwtProvider.validateAccessToken(accessToken);
     }

@@ -116,22 +116,22 @@ const StatementsPage = () => {
           {/* Виведення заявок */}
           <div>
             {statements.length === 0 ? (
-              <p>No statements found</p>
+              <p>Покищо запити на створення довідок відсутні</p>
             ) : (
               <div className="row">
                 {statements.map((statement) => (
                   <div key={statement.id} className="col-sm-6 col-md-4 col-lg-3 mb-3">  {/* Використовуємо колонки для різних екранів */}
                     <Card>
                       <Card.Body>
-                        <Card.Title>{statement.fullName}</Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted">{statement.groupName}</Card.Subtitle>
-                        <Card.Text>Тип заявки: {statement.typeOfStatement}</Card.Text>
+                        <Card.Title><strong>{statement.fullName}</strong></Card.Title>
+                        <Card.Subtitle className="mb-2 text-muted"><strong>{statement.groupName}</strong></Card.Subtitle>
+                        <Card.Text><strong>Тип заявки:</strong> {statement.typeOfStatement}</Card.Text>
                         <Collapse in={openStatement === statement.id}>
                           <div>
-                            <p>Дата народження: {statement.yearBirthday}</p>
-                            <p>Номер телефону: {statement.phoneNumber}</p>
-                            <p>Статус: {statement.status}</p>
-                            <p>Факультет: {statement.faculty}</p>
+                            <p><strong>Дата народження:</strong> {statement.yearBirthday}</p>
+                            <p><strong>Номер телефону:</strong> {statement.phoneNumber}</p>
+                            <p><strong>Статус:</strong> {statement.status}</p>
+                            <p><strong>Факультет:</strong> {statement.faculty}</p>
                           </div>
                         </Collapse>
                         {/* Кнопка переміщається під інформацією */}
@@ -151,20 +151,20 @@ const StatementsPage = () => {
           {/* Виведення заявок на скидання пароля */}
           <div style={{ marginTop: '40px' }}>
             {forgotPasswords.length === 0 ? (
-              <p>No forgot password requests found</p>
+              <p>Покищо запити на скидання паролю відсутні</p>
             ) : (
               <div className="row">
                 {forgotPasswords.map((forgotPassword) => (
                   <div key={forgotPassword.id} className="col-sm-6 col-md-4 col-lg-3 mb-3">  {/* Використовуємо колонки для різних екранів */}
                     <Card>
                       <Card.Body>
-                        <Card.Title>{forgotPassword.fullName}</Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted">{forgotPassword.groupName}</Card.Subtitle>
-                        <Card.Text>Тип заявки: {forgotPassword.typeOfForgotPassword}</Card.Text>
+                        <Card.Title><strong>{forgotPassword.fullName}</strong></Card.Title>
+                        <Card.Subtitle className="mb-2 text-muted"><strong>{forgotPassword.groupName}</strong></Card.Subtitle>
+                        <Card.Text><strong>Тип заявки:</strong> {forgotPassword.typeOfForgotPassword}</Card.Text>
                         <Collapse in={openForgotPassword === forgotPassword.id}>
                           <div>
-                            <p>Статус: {forgotPassword.status}</p>
-                            <p>Факультет: {forgotPassword.faculty}</p>
+                            <p><strong>Статус:</strong> {forgotPassword.status}</p>
+                            <p><strong>Факультет:</strong> {forgotPassword.faculty}</p>
                           </div>
                         </Collapse>
                         {/* Кнопка переміщається під інформацією */}

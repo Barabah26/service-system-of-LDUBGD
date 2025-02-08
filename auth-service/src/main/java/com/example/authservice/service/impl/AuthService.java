@@ -70,25 +70,5 @@ public class AuthService {
         }
     }
 
-
-    public boolean revokeToken(@NonNull String accessToken) {
-        if (jwtProvider.validateAccessToken(accessToken)) {
-            final Claims claims = jwtProvider.getAccessClaims(accessToken);
-            final String login = claims.getSubject();
-            List<String> tokens = jwtService.getAccessStorage().get(login);
-            if (tokens != null) {
-                tokens.remove(accessToken);
-                if (tokens.isEmpty()) {
-                    jwtService.getAccessStorage().remove(login);
-                } else {
-                    jwtService.getAccessStorage().put(login, tokens);
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 }
 
