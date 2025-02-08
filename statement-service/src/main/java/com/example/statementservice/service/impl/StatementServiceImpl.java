@@ -139,17 +139,6 @@ public class StatementServiceImpl implements StatementService {
     }
 
     @Override
-    @Transactional
-    public void deleteStatementIfReady(Long statementId, StatementStatus status, String faculty) {
-        List<Object[]> results = statementInfoRepository.findStatementInfoByStatusAndFaculty(status.name(), faculty);
-        if (!results.isEmpty()){
-            statementInfoRepository.deleteStatementIfReady(status.name(), statementId, faculty);
-        } else {
-            throw new RecourseNotFoundException("Statements are not found");
-        }
-    }
-
-    @Override
     public List<StatementDto> searchByName(String name) {
         return statementInfoRepository.findByNameContaining(name).stream().map(this::mapToStatementDto).collect(Collectors.toList());
     }
