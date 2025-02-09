@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/api/admin")
+@RequestMapping("/auth/admin")
 public class SuperAdminController {
 
     private final SuperAdminService adminService;

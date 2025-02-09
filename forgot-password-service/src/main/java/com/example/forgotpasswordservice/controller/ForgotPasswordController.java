@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/forgot-password")
+@RequestMapping("/forgot-password")
 @RequiredArgsConstructor
 public class ForgotPasswordController {
     private final ForgotPasswordService forgotPasswordService;
