@@ -5,8 +5,40 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
-          lower-case-service-id: true
+          enabled: true  # Вмикає автоматичне визначення сервісів у Eureka
+          lower-case-service-id: true  # Перетворює імена сервісів на нижній регістр
+      routes:
+
+        - id: fileservice
+          uri: lb://fileservice  # Замість конкретного шляху, вказуємо ім'я сервісу Eureka
+          predicates:
+            - Path=/file/**  # Призначаємо правило для всіх запитів, що починаються з /file/
+
+        - id: emailservice
+          uri: lb://emailservice
+          predicates:
+            - Path=/email/**  # Призначаємо правило для всіх запитів, що починаються з /email/
+
+        - id: notificationservice
+          uri: lb://notificationservice
+          predicates:
+            - Path=/notifications/**  # Призначаємо правило для всіх запитів, що починаються з /notifications/
+
+        - id: statementservice
+          uri: lb://statementservice
+          predicates:
+            - Path=/statements/**  # Призначаємо правило для всіх запитів, що починаються з /statements/
+
+        - id: forgotpasswordservice
+          uri: lb://forgotpasswordservice
+          predicates:
+            - Path=/forgot-password/**  # Призначаємо правило для всіх запитів, що починаються з /forgot-password/
+
+        - id: authservice
+          uri: lb://authservice
+          predicates:
+            - Path=/auth/**
+
 eureka:
   client:
     service-url:
