@@ -11,7 +11,6 @@ public interface StatementService {
     List<StatementDto> getStatementsInfoWithStatusPending();
     void updateStatementStatus(Long statementId, StatementStatus status);
     List<StatementDto> getStatementsInfoByStatusAndFaculty(StatementStatus status, String faculty);
-    void deleteStatementIfReady(Long statementId, StatementStatus status, String faculty);
     List<StatementDto> searchByName(String name);
     List<StatementDto> findStatementInfoByStatementFullName(String fullName);
     List<StatementDto> findStatementInfoByStatementFullNameAndStatus(String fullName, StatementStatus status);

@@ -18,7 +18,6 @@ spring:
   profiles:
     active: prod
 
-# Production profile configuration
 ---
 spring:
   application:

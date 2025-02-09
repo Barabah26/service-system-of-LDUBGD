@@ -7,21 +7,10 @@ jwt:
 server:
   port: 8080
 
-#---
-#spring:
-#  security:
-#    user:
-#      name: a
-#      password: a
-#
-#---
-
-
 spring:
   profiles:
     active: prod
 
-# Production profile configuration
 ---
 spring:
   application:

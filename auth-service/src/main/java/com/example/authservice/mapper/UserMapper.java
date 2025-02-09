@@ -31,18 +31,4 @@ public class UserMapper {
         return user;
     }
 
-
-    public UserDtoRequest toDto(User user) {
-        if (user == null) {
-            return null;
-        }
-
-        UserDtoRequest userDtoRequest = new UserDtoRequest();
-        userDtoRequest.setName(user.getName());
-        userDtoRequest.setEmail(user.getEmail());
-        userDtoRequest.setLogin(user.getLogin());
-        userDtoRequest.setPassword(user.getPassword());
-
-        return userDtoRequest;
-    }
 }
