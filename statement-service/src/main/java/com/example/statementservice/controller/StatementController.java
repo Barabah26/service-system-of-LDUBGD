@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/statements")
+@RequestMapping("/statements")
 @RequiredArgsConstructor
 public class StatementController {
 
