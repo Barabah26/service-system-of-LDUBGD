@@ -23,4 +23,4 @@ emailService:
   url: ${EMAIL_SERVICE_URL}
 
 server:
-  port: ${NOTIFICATION_SERVICE_PORT}
+  port: 8080

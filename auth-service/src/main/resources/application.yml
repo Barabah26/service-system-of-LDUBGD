@@ -5,7 +5,7 @@ jwt:
 
 
 server:
-  port: ${AUTH_SERVICE_PORT}
+  port: 8080
 
 spring:
   profiles:
@@ -46,7 +46,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_SERVER_URL}
   instance:
     prefer-ip-address: true
     hostname: localhost

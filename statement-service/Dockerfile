@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /crm_system
 
 # Копіюємо jar-файл, який буде виконуватись
-COPY target/fileService-0.0.1-SNAPSHOT.jar fileService.jar
+COPY target/statement-service-0.0.1-SNAPSHOT.jar statement-service.jar
 
 # Вказуємо команду для запуску програми
-ENTRYPOINT ["java", "-jar", "fileService.jar"]
+ENTRYPOINT ["java", "-jar", "statement-service.jar"]

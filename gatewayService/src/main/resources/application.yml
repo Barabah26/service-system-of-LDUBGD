@@ -1,16 +1,76 @@
 spring:
   application:
-    name: gatewayService
+    name: gateway-service
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowed-origins:
+              - http://localhost:3000
+            allowed-methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+              - OPTIONS
+            allowed-headers: "*"
+            allow-credentials: true
+
+
       discovery:
         locator:
-          enabled: true
-          lower-case-service-id: true
+          enabled: true  # Вмикає автоматичне визначення сервісів у Eureka
+          lower-case-service-id: true  # Перетворює імена сервісів на нижній регістр
+
+
+
+      routes:
+
+        - id: fileservice
+          uri: lb://fileservice  # Замість конкретного шляху, вказуємо ім'я сервісу Eureka
+          predicates:
+            - Path=/file/**  # Призначаємо правило для всіх запитів, що починаються з /file/
+
+        - id: emailservice
+          uri: lb://emailservice
+          predicates:
+            - Path=/email/**  # Призначаємо правило для всіх запитів, що починаються з /email/
+
+        - id: notificationservice
+          uri: lb://notificationservice
+          predicates:
+            - Path=/notifications/**  # Призначаємо правило для всіх запитів, що починаються з /notifications/
+
+        - id: statementservice
+          uri: lb://statementservice
+          predicates:
+            - Path=/statements/**  # Призначаємо правило для всіх запитів, що починаються з /statements/
+
+        - id: forgotpasswordservice
+          uri: lb://forgotpasswordservice
+          predicates:
+            - Path=/forgot-password/**  # Призначаємо правило для всіх запитів, що починаються з /forgot-password/
+
+        - id: authservice
+          uri: lb://authservice
+          predicates:
+            - Path=/auth/**
+
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_SERVER_URL}
+
+
   instance:
     prefer-ip-address: true
     hostname: localhost
+
+server:
+  port: 8080
