@@ -15,7 +15,7 @@ const StudentInfoPage = () => {
       try {
         const token = localStorage.getItem('accessToken');
 
-        const response = await axios.get('http://localhost:9000/api/auth/profile', {
+        const response = await axios.get('http://localhost:8080/auth/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -24,7 +24,7 @@ const ForgotPasswordRegistrationForm = () => {
     const fetchUserInfo = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get('http://localhost:9000/api/auth/profile', {
+        const response = await axios.get('http://localhost:8080/auth/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -55,7 +55,7 @@ const ForgotPasswordRegistrationForm = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('accessToken');
-      await axios.post('http://localhost:8095/api/forgot-password/createForgotPasswordStatement', formData, {
+      await axios.post('http://localhost:8080/forgot-password/createForgotPasswordStatement', formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
