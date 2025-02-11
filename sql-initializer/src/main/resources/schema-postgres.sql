@@ -5,8 +5,8 @@ DROP TABLE IF EXISTS statement CASCADE;
 DROP TABLE IF EXISTS notification CASCADE;
 DROP TABLE IF EXISTS file_data CASCADE;
 DROP TABLE IF EXISTS file_info CASCADE;
-DROP TABLE IF EXISTS forgot_password_info CASCADE;
 DROP TABLE IF EXISTS forgot_password CASCADE;
+DROP TABLE IF EXISTS forgot_password_info CASCADE;
 DROP SEQUENCE IF EXISTS hibernate_sequence;
 
 -- Створення послідовності для генерації значень ID
@@ -82,12 +82,18 @@ CREATE TABLE forgot_password (
 );
 
 CREATE TABLE forgot_password_info (
-                                      id BIGINT NOT NULL,
+                                      id BIGINT PRIMARY KEY,
                                       is_ready BOOLEAN,
                                       statement_status VARCHAR(255),
-                                      PRIMARY KEY (id),
-                                      FOREIGN KEY (id) REFERENCES forgot_password(id)
+                                      CONSTRAINT fk_forgot_password
+                                          FOREIGN KEY (id)
+                                              REFERENCES forgot_password (id)
+                                              ON DELETE CASCADE
 );
+
+
+
+
 
 CREATE TABLE notification (
                               id BIGSERIAL PRIMARY KEY,

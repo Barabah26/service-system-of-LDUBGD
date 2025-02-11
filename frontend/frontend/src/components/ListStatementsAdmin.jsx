@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Table, Button, Container, Row, Col, Form, Alert, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
+import API_ENDPOINTS from './apiConfig'; 
+
 
 const ListStatementComponent = () => {
   // Стан для заявок на довідки та для заявок на забутий пароль
@@ -39,7 +41,7 @@ const ListStatementComponent = () => {
     setLoading(true);
     const token = localStorage.getItem('accessToken');
     try {
-      const response = await axios.get('http://localhost:8080/statements/statusAndFaculty', {
+      const response = await axios.get(API_ENDPOINTS.STATEMENTS.STATUS_AND_FACULTY, {
         params: {
           status: selectedStatus || undefined,
           faculty: selectedFaculty || undefined,
@@ -66,7 +68,7 @@ const ListStatementComponent = () => {
     setLoading(true);
     const token = localStorage.getItem('accessToken');
     try {
-      const response = await axios.get('http://localhost:8080/forgot-password/statusAndFaculty', {
+      const response = await axios.get(API_ENDPOINTS.FORGOT_PASSWORD.STATUS_AND_FACULTY, {
         params: {
           status: selectedStatus || undefined,
           faculty: selectedFaculty || undefined,
@@ -105,12 +107,12 @@ const ListStatementComponent = () => {
     const token = localStorage.getItem('accessToken');
     try {
       if (selectedRequestType === 'statements') {
-        await axios.put(`http://localhost:8080/statements/${id}/in-progress`, {}, {
+        await axios.put(API_ENDPOINTS.STATEMENTS.IN_PROGRESS(id), {}, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchStatements();
       } else if (selectedRequestType === 'forgotPassword') {
-        await axios.put(`http://localhost:8080/forgot-password/${id}/in-progress`, {}, {
+        await axios.put(API_ENDPOINTS.FORGOT_PASSWORD.IN_PROGRESS(id), {}, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchForgotPassword();
@@ -126,12 +128,12 @@ const ListStatementComponent = () => {
     const token = localStorage.getItem('accessToken');
     try {
       if (selectedRequestType === 'statements') {
-        await axios.put(`http://localhost:8080/statements/${id}/ready`, {}, {
+        await axios.put(API_ENDPOINTS.STATEMENTS.READY(id), {}, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchStatements();
       } else if (selectedRequestType === 'forgotPassword') {
-        await axios.put(`http://localhost:8080/forgot-password/${id}/ready`, {}, {
+        await axios.put(API_ENDPOINTS.FORGOT_PASSWORD.READY(id), {}, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchForgotPassword();
@@ -157,7 +159,7 @@ const ListStatementComponent = () => {
     const token = localStorage.getItem('accessToken');
     try {
       // Припускаємо, що API для завантаження файлу однакове для обох типів
-      await axios.post('http://localhost:8080/file/upload', formData, {
+      await axios.post(API_ENDPOINTS.FILE.UPLOAD, formData, {
         params: { id },
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -193,7 +195,7 @@ const ListStatementComponent = () => {
     }
     const token = localStorage.getItem('accessToken');
     try {
-      await axios.post(`http://localhost:8080/notifications/ready`, null, {
+      await axios.post(API_ENDPOINTS.NOTIFICATION.READ(id), null, {
         params: { userId, message },
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -208,7 +210,7 @@ const ListStatementComponent = () => {
     if (!window.confirm("Ви впевнені, що хочете надіслати ці дані?")) return;
 
     try {
-      const response = await axios.put(`http://localhost:8080/forgot-password/${statementId}`, {
+      const response = await axios.put(API_ENDPOINTS.FORGOT_PASSWORD.SEND_DATA(statementId), {
         login,
         password,
       });
@@ -513,7 +515,7 @@ const ListStatementComponent = () => {
                                     handleSaveData(forgotPassword.id, messageMap[forgotPassword.id]?.login, messageMap[forgotPassword.id]?.password)
                                   }
                                 >
-                                  Надіслати
+                                  Зберегти
                                 </Button>
                               </>
                             )}

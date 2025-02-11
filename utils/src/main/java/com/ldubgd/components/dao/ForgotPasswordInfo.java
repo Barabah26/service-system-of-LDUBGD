@@ -29,6 +29,6 @@ public class ForgotPasswordInfo {
     @OneToOne
     @MapsId
     @JsonBackReference
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", nullable = false)
     private ForgotPassword forgotPassword;
 }

@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Table, Button, Container, Row, Col, Form, Alert, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
+import API_ENDPOINTS from './apiConfig'; 
+
 
 const TechAdminPage = () => {
   const [forgotPasswords, setForgotPasswords] = useState([]);
@@ -25,7 +27,7 @@ const TechAdminPage = () => {
     setLoading(true);
     const token = localStorage.getItem('accessToken');
     try {
-      const response = await axios.get('http://localhost:8080/forgot-password/status', {
+      const response = await axios.get(API_ENDPOINTS.FORGOT_PASSWORD.STATUS, {
         params: {
           status: selectedStatus || undefined,
         },
@@ -58,7 +60,7 @@ const TechAdminPage = () => {
     if (!window.confirm("Ви впевнені, що хочете змінити статус на 'В обробці'?")) return;
     const token = localStorage.getItem('accessToken');
     try {
-      await axios.put(`http://localhost:8080/forgot-password/${id}/in-progress`, {}, {
+      await axios.put(API_ENDPOINTS.FORGOT_PASSWORD.IN_PROGRESS(id), {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSuccessMessage("Статус заявки змінено на 'В процесі' успішно!");
@@ -72,7 +74,7 @@ const TechAdminPage = () => {
     if (!window.confirm("Ви впевнені, що хочете змінити статус на 'Готово'?")) return;
     const token = localStorage.getItem('accessToken');
     try {
-      await axios.put(`http://localhost:8080/forgot-password/${id}/ready`, {}, {
+      await axios.put(API_ENDPOINTS.FORGOT_PASSWORD.READY(id), {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSuccessMessage("Статус заявки змінено на 'Готово' успішно!");
@@ -96,7 +98,7 @@ const TechAdminPage = () => {
     if (!window.confirm("Ви впевнені, що хочете надіслати ці дані?")) return;
   
     try {
-      const response = await axios.put(`http://localhost:8080/forgot-password/${statementId}`, {
+      const response = await axios.put(API_ENDPOINTS.FORGOT_PASSWORD.SEND_DATA(statementId), {
         login,
         password,
       });
@@ -222,7 +224,7 @@ const TechAdminPage = () => {
                                 handleSaveData(statement.id, messageMap[statement.id]?.login, messageMap[statement.id]?.password)
                               }
                             >
-                              Надіслати
+                              Зберегти
                             </Button>
                           </>
                         )}

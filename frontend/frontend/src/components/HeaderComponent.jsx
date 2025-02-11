@@ -5,7 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaUniversity } from 'react-icons/fa'; // Іконка університету
 import { BsPersonCircle } from 'react-icons/bs'; // Іконка для аватара користувача
 import { IoMdNotifications } from 'react-icons/io'; // Іконка для сповіщень
-import { FaTrashAlt } from 'react-icons/fa'; // Іконка для видалення
+import { FaTrashAlt } from 'react-icons/fa'; // Іконка для видалення'
+import API_ENDPOINTS from './apiConfig'; 
 
 // Функція для розбору токена
 const parseJwt = (token) => {
@@ -52,7 +53,7 @@ const HeaderComponent = () => {
             const token = localStorage.getItem('accessToken');
             if (token && userId) {
               const response = await fetch(
-                `http://localhost:8080/notifications?userId=${userId}`, // Використовуємо userId для запиту
+                API_ENDPOINTS.NOTIFICATION.FIND_BY_USER_ID(userId),
                 {
                   headers: {
                     Authorization: `Bearer ${token}`,
@@ -130,7 +131,7 @@ const HeaderComponent = () => {
     if (token) {
       try {
         const response = await fetch(
-          `http://localhost:8080/notifications/${notificationId}/read`,
+          API_ENDPOINTS.NOTIFICATION.READ(notificationId),
           {
             method: 'POST',
             headers: {

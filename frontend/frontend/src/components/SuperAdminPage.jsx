@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
+import API_ENDPOINTS from './apiConfig'; 
+
 
 const SuperAdminPage = () => {
     const [admins, setAdmins] = useState([]);
@@ -27,7 +29,7 @@ const SuperAdminPage = () => {
     const fetchAdmins = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            const response = await axios.get('http://localhost:8080/auth/admin/allAdmins', {
+            const response = await axios.get(API_ENDPOINTS.AUTH.ALL_ADMINS, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setAdmins(response.data); // Виправлено на setAdmins
@@ -45,7 +47,7 @@ const SuperAdminPage = () => {
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            const response = await axios.get('http://localhost:8080/auth/admin/allUsers', {
+            const response = await axios.get(API_ENDPOINTS.AUTH.ALL_USERS, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setUsers(response.data);
@@ -73,7 +75,7 @@ const SuperAdminPage = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.post('http://localhost:8080/auth/admin/register', newAdmin, { // Виправлено newUser на newAdmin
+            await axios.post(API_ENDPOINTS.AUTH.REGISTER_ADMIN, newAdmin, { 
                 headers: { Authorization: `Bearer ${token}` },
             });
             setSuccessMessage('Адміністратор зареєстрований успішно');
@@ -101,7 +103,7 @@ const SuperAdminPage = () => {
         if (confirmAction) {
             const token = localStorage.getItem('accessToken');
             axios
-                .delete(`http://localhost:8080/auth/admin/deleteByLogin/${login}`, { // Виправлено синтаксис шаблонного рядка
+                .delete(API_ENDPOINTS.AUTH.DELETE_BY_LOGIN(login), { // Виправлено синтаксис шаблонного рядка
                     headers: { Authorization: `Bearer ${token}` }
                 })
                 .then(() => {
@@ -126,7 +128,7 @@ const SuperAdminPage = () => {
         if (confirmAction) {
             const token = localStorage.getItem('accessToken');
             axios
-                .delete(`http://localhost:8080/auth/admin/deleteUserByLogin/${login}`, {
+                .delete(API_ENDPOINTS.AUTH.DELETE_USER_BY_LOGIN(login), {
                     headers: { Authorization: `Bearer ${token}` }
                 })
                 .then(() => {
@@ -138,7 +140,7 @@ const SuperAdminPage = () => {
                         localStorage.removeItem('refreshToken');
                         navigate('/admin-login');
                     } else {
-                        setError('Failed to delete admin');
+                        setError('Failed to delete user');
                     }
                 });
         }
@@ -153,7 +155,7 @@ const SuperAdminPage = () => {
         try {
             const token = localStorage.getItem('accessToken');
             const updateAdminDto = { newPassword: newPassword };
-            await axios.put(`http://localhost:8080/auth/admin/updateByLogin/${editingAdmin.login}`, updateAdminDto, { // Виправлено на editingAdmin
+            await axios.put(API_ENDPOINTS.AUTH.UPDATE_BY_LOGIN(editingAdmin.login), updateAdminDto, { // Виправлено на editingAdmin
                 headers: { Authorization: `Bearer ${token}` }
             });
             setSuccessMessage('Password updated successfully');
@@ -179,7 +181,7 @@ const SuperAdminPage = () => {
         try {
             const token = localStorage.getItem('accessToken');
             const updateUserDto = { newPassword: newPassword };
-            await axios.put(`http://localhost:8080/auth/admin/updateUserPasswordByLogin/${editingUser.login}`, updateUserDto, { // Виправлено на editingAdmin
+            await axios.put(API_ENDPOINTS.AUTH.UPDATE_USER_PASSWORD_BY_LOGIN(editingUser.login), updateUserDto, { // Виправлено на editingAdmin
                 headers: { Authorization: `Bearer ${token}` }
             });
             setSuccessMessage('Password updated successfully');

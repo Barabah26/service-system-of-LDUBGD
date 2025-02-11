@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Data
-@Table(name = "forgotPassword")
+@Table(name = "forgot_password")
 public class ForgotPassword {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +32,7 @@ public class ForgotPassword {
     private User user;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "forgotPassword", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "forgotPassword", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private ForgotPasswordInfo forgotPasswordInfo;
 }
+
