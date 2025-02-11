@@ -1,6 +1,7 @@
 import axios from 'axios';
+import API_ENDPOINTS from '../components/apiConfig'; 
 
-const API_BASE_URL = 'http://localhost:8080/auth';
+const API_BASE_URL = API_ENDPOINTS.AUTH.AUTH;
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
 });

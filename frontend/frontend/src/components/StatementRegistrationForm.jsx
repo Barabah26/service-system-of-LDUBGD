@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Button, Container, Alert, Row, Col } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
+import API_ENDPOINTS from './apiConfig'; 
+
 
 const StatementRegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -28,7 +30,7 @@ const StatementRegistrationForm = () => {
     const fetchUserInfo = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get('http://localhost:8080/auth/profile', {
+        const response = await axios.get(API_ENDPOINTS.AUTH.PROFILE, {
           headers: { Authorization: `Bearer ${token}` },
         });
   
@@ -64,7 +66,7 @@ const StatementRegistrationForm = () => {
   
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await axios.post('http://localhost:8080/statements/createStatement', formData, {
+      const response = await axios.post(API_ENDPOINTS.STATEMENTS.CREATE_STATEMENT, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
   

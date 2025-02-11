@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Button, Container, Alert, Row, Col, Card } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
+import API_ENDPOINTS from './apiConfig'; 
 
 const ForgotPasswordRegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ const ForgotPasswordRegistrationForm = () => {
     const fetchUserInfo = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get('http://localhost:8080/auth/profile', {
+        const response = await axios.get(API_ENDPOINTS.AUTH.PROFILE, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -55,7 +56,7 @@ const ForgotPasswordRegistrationForm = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('accessToken');
-      await axios.post('http://localhost:8080/forgot-password/createForgotPasswordStatement', formData, {
+      await axios.post(API_ENDPOINTS.FORGOT_PASSWORD.CREATE_STATEMENT, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       

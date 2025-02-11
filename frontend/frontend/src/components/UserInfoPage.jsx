@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';  // Import useNavigate instead of useHistory
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import API_ENDPOINTS from './apiConfig'; 
+
 
 const StudentInfoPage = () => {
   const [student, setStudent] = useState(null);
@@ -15,7 +17,7 @@ const StudentInfoPage = () => {
       try {
         const token = localStorage.getItem('accessToken');
 
-        const response = await axios.get('http://localhost:8080/auth/profile', {
+        const response = await axios.get(API_ENDPOINTS.AUTH.PROFILE, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
