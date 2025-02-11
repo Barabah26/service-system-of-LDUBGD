@@ -27,7 +27,7 @@ const SuperAdminPage = () => {
     const fetchAdmins = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            const response = await axios.get('http://localhost:9000/api/admin/allAdmins', {
+            const response = await axios.get('http://localhost:8080/auth/admin/allAdmins', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setAdmins(response.data); // Виправлено на setAdmins
@@ -45,7 +45,7 @@ const SuperAdminPage = () => {
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            const response = await axios.get('http://localhost:9000/api/admin/allUsers', {
+            const response = await axios.get('http://localhost:8080/auth/admin/allUsers', {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setUsers(response.data);
@@ -73,7 +73,7 @@ const SuperAdminPage = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.post('http://localhost:9000/api/admin/register', newAdmin, { // Виправлено newUser на newAdmin
+            await axios.post('http://localhost:8080/auth/admin/register', newAdmin, { // Виправлено newUser на newAdmin
                 headers: { Authorization: `Bearer ${token}` },
             });
             setSuccessMessage('Адміністратор зареєстрований успішно');
@@ -101,7 +101,7 @@ const SuperAdminPage = () => {
         if (confirmAction) {
             const token = localStorage.getItem('accessToken');
             axios
-                .delete(`http://localhost:9000/api/admin/deleteByLogin/${login}`, { // Виправлено синтаксис шаблонного рядка
+                .delete(`http://localhost:8080/auth/admin/deleteByLogin/${login}`, { // Виправлено синтаксис шаблонного рядка
                     headers: { Authorization: `Bearer ${token}` }
                 })
                 .then(() => {
@@ -126,7 +126,7 @@ const SuperAdminPage = () => {
         if (confirmAction) {
             const token = localStorage.getItem('accessToken');
             axios
-                .delete(`http://localhost:9000/api/admin/deleteUserByLogin/${login}`, { 
+                .delete(`http://localhost:8080/auth/admin/deleteUserByLogin/${login}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 })
                 .then(() => {
@@ -153,7 +153,7 @@ const SuperAdminPage = () => {
         try {
             const token = localStorage.getItem('accessToken');
             const updateAdminDto = { newPassword: newPassword };
-            await axios.put(`http://localhost:9000/api/admin/updateByLogin/${editingAdmin.login}`, updateAdminDto, { // Виправлено на editingAdmin
+            await axios.put(`http://localhost:8080/auth/admin/updateByLogin/${editingAdmin.login}`, updateAdminDto, { // Виправлено на editingAdmin
                 headers: { Authorization: `Bearer ${token}` }
             });
             setSuccessMessage('Password updated successfully');
@@ -179,7 +179,7 @@ const SuperAdminPage = () => {
         try {
             const token = localStorage.getItem('accessToken');
             const updateUserDto = { newPassword: newPassword };
-            await axios.put(`http://localhost:9000/api/admin/updateUserPasswordByLogin/${editingUser.login}`, updateUserDto, { // Виправлено на editingAdmin
+            await axios.put(`http://localhost:8080/auth/admin/updateUserPasswordByLogin/${editingUser.login}`, updateUserDto, { // Виправлено на editingAdmin
                 headers: { Authorization: `Bearer ${token}` }
             });
             setSuccessMessage('Password updated successfully');

@@ -72,7 +72,7 @@ const RegistrationForm = () => {
 
     if (validateForm()) {
       try {
-        const response = await axios.post('http://localhost:9000/api/register', formData);
+        const response = await axios.post('http://localhost:8080/auth/register', formData);
         setServerMessage('Registration successful!');
         setErrors({});
         setTimeout(() => {

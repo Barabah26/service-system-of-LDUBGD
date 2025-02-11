@@ -39,7 +39,7 @@ const ListStatementComponent = () => {
     setLoading(true);
     const token = localStorage.getItem('accessToken');
     try {
-      const response = await axios.get('http://localhost:9080/api/statements/statusAndFaculty', {
+      const response = await axios.get('http://localhost:8080/statements/statusAndFaculty', {
         params: {
           status: selectedStatus || undefined,
           faculty: selectedFaculty || undefined,
@@ -66,7 +66,7 @@ const ListStatementComponent = () => {
     setLoading(true);
     const token = localStorage.getItem('accessToken');
     try {
-      const response = await axios.get('http://localhost:8095/api/forgot-password/statusAndFaculty', {
+      const response = await axios.get('http://localhost:8080/forgot-password/statusAndFaculty', {
         params: {
           status: selectedStatus || undefined,
           faculty: selectedFaculty || undefined,
@@ -105,12 +105,12 @@ const ListStatementComponent = () => {
     const token = localStorage.getItem('accessToken');
     try {
       if (selectedRequestType === 'statements') {
-        await axios.put(`http://localhost:9080/api/statements/${id}/in-progress`, {}, {
+        await axios.put(`http://localhost:8080/statements/${id}/in-progress`, {}, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchStatements();
       } else if (selectedRequestType === 'forgotPassword') {
-        await axios.put(`http://localhost:8095/api/forgot-password/${id}/in-progress`, {}, {
+        await axios.put(`http://localhost:8080/forgot-password/${id}/in-progress`, {}, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchForgotPassword();
@@ -126,12 +126,12 @@ const ListStatementComponent = () => {
     const token = localStorage.getItem('accessToken');
     try {
       if (selectedRequestType === 'statements') {
-        await axios.put(`http://localhost:9080/api/statements/${id}/ready`, {}, {
+        await axios.put(`http://localhost:8080/statements/${id}/ready`, {}, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchStatements();
       } else if (selectedRequestType === 'forgotPassword') {
-        await axios.put(`http://localhost:8095/api/forgot-password/${id}/ready`, {}, {
+        await axios.put(`http://localhost:8080/forgot-password/${id}/ready`, {}, {
           headers: { Authorization: `Bearer ${token}` },
         });
         fetchForgotPassword();
@@ -157,7 +157,7 @@ const ListStatementComponent = () => {
     const token = localStorage.getItem('accessToken');
     try {
       // Припускаємо, що API для завантаження файлу однакове для обох типів
-      await axios.post('http://localhost:8050/file/upload', formData, {
+      await axios.post('http://localhost:8080/file/upload', formData, {
         params: { id },
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -193,7 +193,7 @@ const ListStatementComponent = () => {
     }
     const token = localStorage.getItem('accessToken');
     try {
-      await axios.post(`http://localhost:8095/api/notifications/ready`, null, {
+      await axios.post(`http://localhost:8080/notifications/ready`, null, {
         params: { userId, message },
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -208,7 +208,7 @@ const ListStatementComponent = () => {
     if (!window.confirm("Ви впевнені, що хочете надіслати ці дані?")) return;
 
     try {
-      const response = await axios.put(`http://localhost:8095/api/forgot-password/${statementId}`, {
+      const response = await axios.put(`http://localhost:8080/forgot-password/${statementId}`, {
         login,
         password,
       });

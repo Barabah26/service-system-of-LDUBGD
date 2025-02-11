@@ -28,7 +28,7 @@ const StatementRegistrationForm = () => {
     const fetchUserInfo = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get('http://localhost:9000/api/auth/profile', {
+        const response = await axios.get('http://localhost:8080/auth/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
   
@@ -64,7 +64,7 @@ const StatementRegistrationForm = () => {
   
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await axios.post('http://localhost:9080/api/statements/createStatement', formData, {
+      const response = await axios.post('http://localhost:8080/statements/createStatement', formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
   

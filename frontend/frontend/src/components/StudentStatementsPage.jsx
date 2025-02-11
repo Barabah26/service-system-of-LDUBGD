@@ -49,7 +49,7 @@ const StatementsPage = () => {
     setLoading(true);
     try {
       // Запит до API для отримання довідок для користувача за його повним іменем
-      const response = await axios.get(`http://localhost:9080/api/statements/findByFullName`, {
+      const response = await axios.get(`http://localhost:8080/statements/findByFullName`, {
         params: { fullName: userFullName }, // Передаємо fullName як параметр запиту
         headers: {
           Authorization: `Bearer ${token}` // Додаємо токен до заголовка
@@ -81,7 +81,7 @@ const StatementsPage = () => {
     setLoading(true);
     try {
       // Запит до API для отримання довідок для користувача за його userId
-      const response = await axios.get(`http://localhost:8095/api/forgot-password/findByUserId`, {
+      const response = await axios.get(`http://localhost:8080/forgot-password/findByUserId`, {
         params: { userId: userId }, // Передаємо userId як параметр запиту
         headers: {
           Authorization: `Bearer ${token}` // Додаємо токен до заголовка
