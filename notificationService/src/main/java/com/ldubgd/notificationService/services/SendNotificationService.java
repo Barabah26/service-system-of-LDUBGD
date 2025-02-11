@@ -32,7 +32,34 @@ public class SendNotificationService {
             String hashedId = cryptoTool.hashOf(statementId);
             URI uri = UriComponentsBuilder
                     .fromUriString(emailServiceUrl)
-                    .path("/email/send")
+                    .path("/email/send/statement")
+                    .queryParam("id", hashedId)
+                    .build()
+                    .toUri();
+
+            System.out.println("Sending notification to: " + uri);
+
+            webClientBuilder.build()
+                    .patch()
+                    .uri(uri)
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                    .retrieve()
+                    .toBodilessEntity()
+                    .doOnSuccess(response -> System.out.println("Notification sent successfully"))
+                    .doOnError(error -> System.err.println("Error while sending notification: " + error.getMessage()))
+                    .block();
+        } catch (Exception e) {
+            System.err.println("Exception occurred while sending notification: " + e.getMessage());
+        }
+    }
+
+    public void sendNotificationAboutForgotPassword(Long statementId) {
+        try {
+            String hashedId = cryptoTool.hashOf(statementId);
+            URI uri = UriComponentsBuilder
+                    .fromUriString(emailServiceUrl)
+                    .path("/email/send/forgot-password")
                     .queryParam("id", hashedId)
                     .build()
                     .toUri();

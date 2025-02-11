@@ -90,18 +90,20 @@ public class NotificationService {
         List<ForgotPasswordInfo> forgotPasswordInfos = forgotPasswordInfoRepository
                 .findForgotPasswordInfosByIsReadyAndStatementStatus(false, StatementStatus.READY);
 
-        forgotPasswordInfos.forEach(forgotPassword -> {
-            ForgotPassword forgotPasswordEntity = forgotPassword.getForgotPassword();
+        forgotPasswordInfos.forEach(forgotPasswordInfo -> {
+            ForgotPassword forgotPasswordEntity = forgotPasswordInfo.getForgotPassword();
             User user = forgotPasswordEntity.getUser();
 
             String message = "Ваша заявка на відновлення пароля готова! Перевірте електронну пошту або зверніться в деканат!";
 
             // Перевіряємо, чи існує сповіщення для цього користувача та цієї конкретної заявки
-            boolean alreadyExists = notificationRepository.existsByUserIdAndForgotPasswordInfoId(user.getUserId(), forgotPassword.getId());
+            boolean alreadyExists = notificationRepository.existsByUserIdAndForgotPasswordInfoId(user.getUserId(), forgotPasswordInfo.getId());
 
             // Якщо сповіщення ще не існує, створюємо його
             if (!alreadyExists) {
-                createNotification(user.getUserId(), message, null, forgotPassword);
+                // Відправляємо сповіщення про готовність заявки на відновлення пароля
+                sendNotificationService.sendNotificationAboutForgotPassword(forgotPasswordEntity.getId());
+                createNotification(user.getUserId(), message, null, forgotPasswordInfo);
             }
         });
     }

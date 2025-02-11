@@ -1,7 +1,11 @@
 package com.ldubgd.emailService.services;
 
+import com.ldubgd.components.dao.ForgotPassword;
+import com.ldubgd.components.dao.ForgotPasswordInfo;
 import com.ldubgd.components.dao.Statement;
 import com.ldubgd.emailService.repositories.FileInfoRepository;
+import com.ldubgd.emailService.repositories.ForgotPasswordInfoRepository;
+import com.ldubgd.emailService.repositories.ForgotPasswordRepository;
 import com.ldubgd.emailService.repositories.StatementRepository;
 import com.ldubgd.utils.CryptoTool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +35,10 @@ public class EmailSenderService {
     @Autowired
     private StatementRepository statementRepository;
 
+    @Autowired
+    private ForgotPasswordRepository forgotPasswordRepository;
+
+
     @Transactional(rollbackFor = Exception.class)
     public boolean  sendEmailAboutStatementStatus(Long idOfStatement){
 
@@ -50,7 +58,7 @@ public class EmailSenderService {
             String urlOfFile=new StringBuilder(fileServiceUrl).append("/file/download?id=").append(cryptoTool.hashOf(idOfStatement)).toString();
             texOfEmail = generateNotificationMessageWithFile(statement,urlOfFile);
         }else {
-            texOfEmail = generateNotificationMessage(statement);
+            texOfEmail = generateNotificationMessageForStatement(statement);
         }
 
 
@@ -69,6 +77,39 @@ public class EmailSenderService {
     }
 
 
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean  sendEmailAboutForgotPasswordStatus(Long idOfStatement){
+
+        ForgotPassword  forgotPassword;
+
+        try {
+            forgotPassword = forgotPasswordRepository.findById(idOfStatement).orElseThrow(() -> new RuntimeException("Statement not found"));
+        }  catch (Exception e) {
+            System.err.println("Exception occurred while sending notification: " + e.getMessage());
+            return false;
+        }
+
+
+        String texOfEmail = generateNotificationMessageForForgotPassword(forgotPassword);
+
+
+
+        try {
+            sendEmail(forgotPassword.getUser().getEmail(), "Сповіщення про статус заявки", texOfEmail);
+        } catch (Exception e) {
+            System.err.println("Exception occurred while sending notification: " + e.getMessage());
+            return false;
+        }
+
+        forgotPassword.getForgotPasswordInfo().setIsReady(true);
+
+        forgotPasswordRepository.save(forgotPassword);
+        return true;
+    }
+
+
+
     private void sendEmail(String toEmail, String subject, String body){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(emailFrom);
@@ -78,9 +119,21 @@ public class EmailSenderService {
         mailSender.send(message);
     }
 
+    private String generateNotificationMessageForForgotPassword(ForgotPassword forgotPassword) {
+        StringBuilder messageBuilder = new StringBuilder();
+
+        messageBuilder.append("Ваша заявка: '")
+                .append(forgotPassword.getTypeOfForgotPassword())
+                .append("' готова!\n\n")
+                .append("Деталі заявки:\n")
+                .append("- Логін: ").append(forgotPassword.getLogin())
+                .append("\n")
+                .append("- Пароль: ").append(forgotPassword.getPassword());
+        return messageBuilder.toString();
+    }
 
 
-    private String generateNotificationMessage(Statement statement) {
+    private String generateNotificationMessageForStatement(Statement statement) {
         StringBuilder messageBuilder = new StringBuilder();
 
         messageBuilder.append("Ваша заявка: '")
@@ -98,7 +151,7 @@ public class EmailSenderService {
 
     private String generateNotificationMessageWithFile(Statement statement,String url) {
 
-        return new StringBuilder(generateNotificationMessage(statement))
+        return new StringBuilder(generateNotificationMessageForStatement(statement))
                 .append("Файл заявки: ")
                 .append(url).toString();
     }
