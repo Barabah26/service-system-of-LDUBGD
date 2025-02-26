@@ -43,7 +43,7 @@ services:
       context: ../sql-initializer
       dockerfile: ../sql-initializer/Dockerfile
     ports:
-      - "9080:9080"  # Відображаємо зовнішній порт 9080 на внутрішній порт 9080 контейнера
+      - "9090:9080"  # Відображаємо зовнішній порт 9080 на внутрішній порт 9080 контейнера
     environment:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
       SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"  # Використання змінної з .env

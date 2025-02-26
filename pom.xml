@@ -39,7 +39,7 @@
         <springdoc.version>2.1.0</springdoc.version>
         <jjwt.version>0.11.5</jjwt.version>
         <java.jwt.version>4.3.0</java.jwt.version>
-        <com.ldubgd.utils.version>1.0-SNAPSHOT</com.ldubgd.utils.version>
+        <com.ldubgd.utils.version>1.0.0-SNAPSHOT</com.ldubgd.utils.version>
 
     </properties>
 
