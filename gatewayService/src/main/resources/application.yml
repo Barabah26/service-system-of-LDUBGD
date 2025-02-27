@@ -10,9 +10,8 @@ spring:
         add-to-simple-url-handler-mapping: true
         cors-configurations:
           '[/**]':
-            allowed-origins:
-              - http://localhost:3000
-              - http://10.138.10.111:3000
+            allowed-origin-patterns:
+              - "*"
             allowed-methods:
               - GET
               - POST
