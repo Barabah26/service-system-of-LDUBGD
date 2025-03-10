@@ -50,13 +50,13 @@ const MainPage = () => {
                     >
                         СЕРВІС ПОСЛУГ ДЕКАНАТУ ДЛЯ АДМІНІСТРАТОРІВ
                     </button>
-                    <button
+                    {/* <button
                         className="btn btn-outline-light mb-3"
                         onClick={() => window.open("https://t.me/ldubgdDekanat_bot", "_blank")}
                     >
 
                         ЧАТ-БОТ ДЛЯ ЗАМОВЛЕННЯ ДОВІДОК
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </div>

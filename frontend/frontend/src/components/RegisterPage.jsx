@@ -180,8 +180,7 @@ const RegistrationForm = () => {
                   value={formData.role}
                   onChange={handleChange}
                 >
-                  <option value="STUDENT">STUDENT</option>
-                  <option value="EMPLOYEE">EMPLOYEE</option>
+                  <option value="STUDENT">СТУДЕНТ</option>
                 </select>
                 {errors.role && <div className="invalid-feedback">{errors.role}</div>}
               </div>

@@ -262,7 +262,7 @@ const ListStatementComponent = () => {
       {/* Контейнер для заявок на довідки */}
       {selectedRequestType === 'statements' && (
         <Container className="students-container">
-          <h2 className="my-4">Список заявок</h2>
+      
 
           {/* Поле для пошуку */}
           <Row className="mb-3">
