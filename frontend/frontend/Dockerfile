@@ -12,7 +12,6 @@ RUN npm run build
 
 # Етап розгортання з Nginx
 FROM nginx:alpine
-
 # Копіюємо зібраний додаток у стандартну директорію Nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
