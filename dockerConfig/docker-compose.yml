@@ -1,171 +1,171 @@
 services:
-  database:
-    container_name: crm-db
-    env_file:
-      - ./.env
-    image: postgres:14
-    environment:
-      POSTGRES_DB: "${DATABASE_NAME}"
-      POSTGRES_USER: "${DATABASE_USERNAME}"
-      POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    ports:
-      - "${DATABASE_PORT}:5432"
-
-  serviceRegistry:
-    container_name: service-registry
-    build:
-      context: ../serviceRegistry      # Шлях до директорії з Dockerfile для fileService
-      dockerfile: ../serviceRegistry/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
-    image: service-registry:latest
-    ports:
-      - "8761:8761"
-
-
-  gatewayService:
-    container_name: gateway-service
-    build:
-      context: ../gatewayService      # Шлях до директорії з Dockerfile для fileService
-      dockerfile: ../gatewayService/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
-    image: gateway-service:latest
-    ports:
-      - "8080:8080"
-    environment:
-      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
-
-#  sql-initializer:
+#  database:
+#    container_name: crm-db
 #    env_file:
-#      - .env  # Вказуємо шлях до файлу .env
-#    container_name: sql-initializer
-#    image: sql-initializer:latest
-#    build:
-#      context: ../sql-initializer
-#      dockerfile: ../sql-initializer/Dockerfile
+#      - ./.env
+#    image: postgres:14
+#    environment:
+#      POSTGRES_DB: "${DATABASE_NAME}"
+#      POSTGRES_USER: "${DATABASE_USERNAME}"
+#      POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
+#    volumes:
+#      - db_data:/var/lib/postgresql/data
 #    ports:
-#      - "9090:9080"  # Відображаємо зовнішній порт 9080 на внутрішній порт 9080 контейнера
+#      - "${DATABASE_PORT}:5432"
+#
+#  serviceRegistry:
+#    container_name: service-registry
+#    build:
+#      context: ../serviceRegistry      # Шлях до директорії з Dockerfile для fileService
+#      dockerfile: ../serviceRegistry/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
+#    image: service-registry:latest
+#    ports:
+#      - "8761:8761"
+#
+#
+#  gatewayService:
+#    container_name: gateway-service
+#    build:
+#      context: ../gatewayService      # Шлях до директорії з Dockerfile для fileService
+#      dockerfile: ../gatewayService/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
+#    image: gateway-service:latest
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
+#
+##  sql-initializer:
+##    env_file:
+##      - .env  # Вказуємо шлях до файлу .env
+##    container_name: sql-initializer
+##    image: sql-initializer:latest
+##    build:
+##      context: ../sql-initializer
+##      dockerfile: ../sql-initializer/Dockerfile
+##    ports:
+##      - "9090:9080"  # Відображаємо зовнішній порт 9080 на внутрішній порт 9080 контейнера
+##    environment:
+##      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
+##      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"  # Використання змінної з .env
+##      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"  # Використання змінної з .env
+#
+#
+#  fileService:
+#    container_name: file-service
+#    build:
+#      context: ../fileService      # Шлях до директорії з Dockerfile для fileService
+#      dockerfile: ../fileService/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
+#    image: file-service:latest
+#    env_file:
+#      - ./.env
+#    ports:
+#      - "${FILE_SERVICE_PORT}:8080"
 #    environment:
 #      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
-#      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"  # Використання змінної з .env
-#      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"  # Використання змінної з .env
-
-
-  fileService:
-    container_name: file-service
-    build:
-      context: ../fileService      # Шлях до директорії з Dockerfile для fileService
-      dockerfile: ../fileService/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
-    image: file-service:latest
-    env_file:
-      - ./.env
-    ports:
-      - "${FILE_SERVICE_PORT}:8080"
-    environment:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
-      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
-      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
-      SALT: "${SALT}"
-
-
-  emailService:
-    container_name: email-service
-    build:
-      context: ../emailService      # Шлях до директорії з Dockerfile для fileService
-      dockerfile: ../emailService/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
-    image: email-service:latest
-    env_file:
-      - ./.env
-    ports:
-      - "${EMAIL_SERVICE_PORT}:8080"
-    environment:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
-      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
-      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
-      SPRING_MAIL_USERNAME: "${EMAIL_OF_EMAIL_SENDER}"
-      SPRING_MAIL_PASSWORD: "${PASSWORD_OF_EMAIL_SENDER}"
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
-      FILESERVICE_URL: "${FILE_SERVICE_URL}"
-      SALT: "${SALT}"
-
-
-  notificationService:
-    container_name: notification-service
-    build:
-      context: ../notificationService      # Шлях до директорії з Dockerfile для fileService
-      dockerfile: ../notificationService/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
-    image: notification-service:latest
-    env_file:
-      - ./.env
-    ports:
-      - "${NOTIFICATION_SERVICE_PORT}:8080"
-    environment:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
-      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
-      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
-      EMAILSERVICE_URL: "${EMAIL_SERVICE_URL}"
-      SALT: "${SALT}"
-
-
-  authService:
-    container_name: auth-service
-    build:
-      context: ../auth-service
-      dockerfile: ../auth-service/Dockerfile
-    image: auth-service:latest
-    env_file:
-      - ./.env
-    ports:
-      - "${AUTH_SERVICE_PORT}:8080"
-    environment:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
-      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
-      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
-      JWT_ACCESS_SECRET: "${JWT_ACCESS_SECRET}"
-      JWT_REFRESH_SECRET: "${JWT_REFRESH_SECRET}"
-
-
-  statementService:
-    container_name: statement-service
-    build:
-      context: ../statement-service
-      dockerfile: ../statement-service/Dockerfile
-    image: statement-service:latest
-    env_file:
-      - ./.env
-    ports:
-      - "${STATEMENT_SERVICE_PORT}:8080"
-    environment:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
-      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
-      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
-      JWT_ACCESS_SECRET: "${JWT_ACCESS_SECRET}"
-      JWT_REFRESH_SECRET: "${JWT_REFRESH_SECRET}"
-      SPRING_SECURITY_JWT_SECRET: "${JWT_SECRET}"
-
-
-
-  forgotPasswordService:
-    container_name: forgot-password-service
-    build:
-      context: ../forgot-password-service
-      dockerfile: ../forgot-password-service/Dockerfile
-    image: forgot-password-service:latest
-    env_file:
-      - ./.env
-    ports:
-      - "${FORGOT_PASSWORD_SERVICE_PORT}:8080"
-    environment:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
-      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
-      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
-      JWT_ACCESS_SECRET: "${JWT_ACCESS_SECRET}"
-      JWT_REFRESH_SECRET: "${JWT_REFRESH_SECRET}"
-      SPRING_SECURITY_JWT_SECRET: "${JWT_SECRET}"
+#      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
+#      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
+#      SALT: "${SALT}"
+#
+#
+#  emailService:
+#    container_name: email-service
+#    build:
+#      context: ../emailService      # Шлях до директорії з Dockerfile для fileService
+#      dockerfile: ../emailService/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
+#    image: email-service:latest
+#    env_file:
+#      - ./.env
+#    ports:
+#      - "${EMAIL_SERVICE_PORT}:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
+#      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
+#      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
+#      SPRING_MAIL_USERNAME: "${EMAIL_OF_EMAIL_SENDER}"
+#      SPRING_MAIL_PASSWORD: "${PASSWORD_OF_EMAIL_SENDER}"
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
+#      FILESERVICE_URL: "${FILE_SERVICE_URL}"
+#      SALT: "${SALT}"
+#
+#
+#  notificationService:
+#    container_name: notification-service
+#    build:
+#      context: ../notificationService      # Шлях до директорії з Dockerfile для fileService
+#      dockerfile: ../notificationService/Dockerfile         # Ім’я Dockerfile (якщо він називається інакше, скоригуйте)
+#    image: notification-service:latest
+#    env_file:
+#      - ./.env
+#    ports:
+#      - "${NOTIFICATION_SERVICE_PORT}:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
+#      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
+#      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
+#      EMAILSERVICE_URL: "${EMAIL_SERVICE_URL}"
+#      SALT: "${SALT}"
+#
+#
+#  authService:
+#    container_name: auth-service
+#    build:
+#      context: ../auth-service
+#      dockerfile: ../auth-service/Dockerfile
+#    image: auth-service:latest
+#    env_file:
+#      - ./.env
+#    ports:
+#      - "${AUTH_SERVICE_PORT}:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
+#      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
+#      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
+#      JWT_ACCESS_SECRET: "${JWT_ACCESS_SECRET}"
+#      JWT_REFRESH_SECRET: "${JWT_REFRESH_SECRET}"
+#
+#
+#  statementService:
+#    container_name: statement-service
+#    build:
+#      context: ../statement-service
+#      dockerfile: ../statement-service/Dockerfile
+#    image: statement-service:latest
+#    env_file:
+#      - ./.env
+#    ports:
+#      - "${STATEMENT_SERVICE_PORT}:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
+#      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
+#      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
+#      JWT_ACCESS_SECRET: "${JWT_ACCESS_SECRET}"
+#      JWT_REFRESH_SECRET: "${JWT_REFRESH_SECRET}"
+#      SPRING_SECURITY_JWT_SECRET: "${JWT_SECRET}"
+#
+#
+#
+#  forgotPasswordService:
+#    container_name: forgot-password-service
+#    build:
+#      context: ../forgot-password-service
+#      dockerfile: ../forgot-password-service/Dockerfile
+#    image: forgot-password-service:latest
+#    env_file:
+#      - ./.env
+#    ports:
+#      - "${FORGOT_PASSWORD_SERVICE_PORT}:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
+#      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"
+#      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
+#      JWT_ACCESS_SECRET: "${JWT_ACCESS_SECRET}"
+#      JWT_REFRESH_SECRET: "${JWT_REFRESH_SECRET}"
+#      SPRING_SECURITY_JWT_SECRET: "${JWT_SECRET}"
 
 
   frontend:
