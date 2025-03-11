@@ -3,22 +3,10 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+
+
   server: {
-    host: true,
-    port: 3000,
-    strictPort: true,
-    watch: {
-      usePolling: true
-    }
-  },
-  build: {
-    chunkSizeWarningLimit: 1600,
-    rollupOptions: {
-      output: {
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash][extname]'
-      }
-    }
-  },
+    port: 3000
+  }
+
 })
