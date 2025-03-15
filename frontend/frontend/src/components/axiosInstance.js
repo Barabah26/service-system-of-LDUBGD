@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://10.138.10.111:8080/auth'; // Adjust URL as per your setup
+const API_BASE_URL = 'https://10.138.10.111/auth'; // Adjust URL as per your setup
 
 // Create an instance of axios
 const axiosInstance = axios.create({
