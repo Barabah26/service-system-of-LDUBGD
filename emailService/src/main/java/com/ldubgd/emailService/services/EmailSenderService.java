@@ -23,9 +23,6 @@ public class EmailSenderService {
     @Value("${spring.mail.username}")
     private String emailFrom;
 
-    @Value("${fileService.url}")
-    private String fileServiceUrl;
-
     @Autowired
     private CryptoTool cryptoTool;
 
@@ -55,7 +52,7 @@ public class EmailSenderService {
         String texOfEmail;
 
         if(fileInfoRepository.existsByStatementId(statement.getId())){
-            String urlOfFile=new StringBuilder(fileServiceUrl).append("/file/download?id=").append(cryptoTool.hashOf(idOfStatement)).toString();
+            String urlOfFile=new StringBuilder("dovidka.ldubgd.edu.ua/api/file/download?id=").append(cryptoTool.hashOf(idOfStatement)).toString();
             texOfEmail = generateNotificationMessageWithFile(statement,urlOfFile);
         }else {
             texOfEmail = generateNotificationMessageForStatement(statement);
