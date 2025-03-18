@@ -1,4 +1,4 @@
-const BASE_URL = 'https://10.138.10.111/api';
+const BASE_URL = 'https://dovidka.ldubgd.edu.ua/api';
 
 const API_ENDPOINTS = {
   STATEMENTS: {
