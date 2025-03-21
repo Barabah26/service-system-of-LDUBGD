@@ -32,42 +32,47 @@ public class FileController {
     public ResponseEntity<?> getFile(@RequestParam("id") String hashId) {
         log.info("Отримано запит на завантаження файлу з hashId: {}", hashId);
 
+        // Перетворення hashId у числове значення
         Long statementId;
         try {
             statementId = cryptoTool.idOf(hashId);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ex) {
             log.error("Невірний формат hashId: {}", hashId);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Не вірний формат id");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Невірний формат id");
         }
 
-        FileInfo doc;
+        // Отримання інформації про файл за id заявки
+        FileInfo fileInfo;
         try {
-            doc = fileService.getFile(statementId);
-            log.info("Файл успішно знайдено: {}", doc.getFileName());
-        } catch (RuntimeException e) {
-            log.error("Помилка при отриманні файлу: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("файл не знайдено");
+            fileInfo = fileService.getFile(statementId);
+            log.info("Файл знайдено: {}", fileInfo.getFileName());
+        } catch (RuntimeException ex) {
+            log.error("Помилка при отриманні файлу: {}", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Файл не знайдено");
         }
 
+        // Налаштування HTTP заголовків
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(doc.getFileType()));
+        headers.setContentType(MediaType.parseMediaType(fileInfo.getFileType()));
 
         String encodedFilename;
         try {
-            encodedFilename = URLEncoder.encode(doc.getFileName(), StandardCharsets.UTF_8.toString());
+            encodedFilename = URLEncoder.encode(fileInfo.getFileName(), StandardCharsets.UTF_8.toString());
             log.debug("Закодовано ім'я файлу: {}", encodedFilename);
-        } catch (UnsupportedEncodingException e) {
-            log.error("Помилка при кодуванні імені файлу: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("помилка сервера");
+        } catch (UnsupportedEncodingException ex) {
+            log.error("Помилка при кодуванні імені файлу: {}", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Помилка сервера");
         }
 
         headers.setContentDispositionFormData("attachment", encodedFilename);
+        log.info("Підготовлено відповідь для завантаження файлу: {}", encodedFilename);
 
-        log.info("Формування відповіді з файлом: {}", encodedFilename);
+        // Повернення файлу як byte[]
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(doc.getFileData().getData());
+                .body(fileInfo.getFileData().getData());
     }
+
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("id") Long statementId, @RequestParam("file") MultipartFile file) {

@@ -19,8 +19,12 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Копіюємо кастомний конфіг у Nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Відкриваємо порт 80
-EXPOSE 80
+# Копіюємо SSL-сертифікат і приватний ключ (з папки ssl)
+COPY ssl /etc/nginx/ssl
+
+# Відкриваємо порти 80 та 443
+EXPOSE 80 443
 
 # Запускаємо Nginx
 CMD ["nginx", "-g", "daemon off;"]
+

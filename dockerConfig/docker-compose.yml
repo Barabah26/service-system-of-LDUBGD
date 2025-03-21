@@ -34,22 +34,6 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: "${EUREKA_SERVER_URL}"
 
-#  sql-initializer:
-#    env_file:
-#      - .env  # Вказуємо шлях до файлу .env
-#    container_name: sql-initializer
-#    image: sql-initializer:latest
-#    build:
-#      context: ../sql-initializer
-#      dockerfile: ../sql-initializer/Dockerfile
-#    ports:
-#      - "9090:9080"  # Відображаємо зовнішній порт 9080 на внутрішній порт 9080 контейнера
-#    environment:
-#      SPRING_DATASOURCE_URL: "jdbc:postgresql://database:${DATABASE_PORT}/${DATABASE_NAME}"
-#      SPRING_DATASOURCE_USERNAME: "${DATABASE_USERNAME}"  # Використання змінної з .env
-#      SPRING_DATASOURCE_PASSWORD: "${DATABASE_PASSWORD}"  # Використання змінної з .env
-
-
   fileService:
     container_name: file-service
     build:
@@ -175,6 +159,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+      - "443:443"
 
 volumes:
   db_data:

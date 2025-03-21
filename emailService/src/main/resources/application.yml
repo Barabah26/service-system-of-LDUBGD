@@ -32,5 +32,3 @@ salt: ${SALT}
 server:
   port: 8080
 
-fileService:
-    url: ${FILE_SERVICE_URL}
