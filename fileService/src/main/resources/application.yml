@@ -25,3 +25,8 @@ eureka:
 
 salt: ${SALT}
 
+logging:
+  level:
+    root: info
+    com.netflix.discovery: warn
+    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: error

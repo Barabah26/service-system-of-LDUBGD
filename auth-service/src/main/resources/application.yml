@@ -32,10 +32,14 @@ spring:
       hibernate:
         generate_statistics: false
     show-sql: false
-  logging:
-    level:
-      org: info
-      com: off
+
+logging:
+  level:
+    org: info
+    com: off
+    com.netflix.discovery: warn
+    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: error
+
 ---
 spring:
   jpa:

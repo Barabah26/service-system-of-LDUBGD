@@ -24,3 +24,9 @@ emailService:
 
 server:
   port: 8080
+
+logging:
+  level:
+    root: info
+    com.netflix.discovery: warn
+    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: error
