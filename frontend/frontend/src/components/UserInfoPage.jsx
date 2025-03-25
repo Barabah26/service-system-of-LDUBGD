@@ -71,7 +71,8 @@ const StudentInfoPage = () => {
   return (
       <div className="container my-5">
         <div className="row mt-4">
-          <div className="col-md-8">
+          {/* Використовуємо колонки, які автоматично підлаштовуються під екран */}
+          <div className="col-12 col-md-8">
             <div className="card">
               <div className="card-body">
                 <h2 className="card-title">Загальна інформація</h2>
@@ -83,11 +84,9 @@ const StudentInfoPage = () => {
               </div>
             </div>
 
-            {/* Додаємо інструкцію */}
             <div className="card mt-4">
               <div className="card-body">
                 <h4 className="card-title">Інструкція для користувачів</h4>
-
                 <h5>Як замовити довідки?</h5>
                 <ul>
                   <li>Через <strong>"Корисні посилання"</strong> – натисніть потрібний пункт.</li>
@@ -104,15 +103,13 @@ const StudentInfoPage = () => {
                 <ul>
                   <li><strong>"Сповіщення"</strong> – повідомлення про готовність довідок та заявок на скидання пароля.</li>
                   <li><strong>"Мої довідки"</strong> – перегляд статусу заявок.</li>
-                  <li><strong>Електронна пошта</strong> – перевіряйте пошту для отримання довідок. У листі також можна скачати файл з готовою довідкою.
-                  </li>
+                  <li><strong>Електронна пошта</strong> – перевіряйте пошту для отримання довідок. У листі також можна скачати файл з готовою довідкою.</li>
                 </ul>
               </div>
             </div>
           </div>
 
-          {/* Корисні посилання */}
-          <div className="col-md-4">
+          <div className="col-12 col-md-4">
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title">Корисні посилання</h5>
