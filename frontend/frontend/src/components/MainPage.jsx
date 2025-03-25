@@ -8,15 +8,17 @@ const MainPage = () => {
     return (
         <div
             style={{
-                position: "relative", // To place the overlay above the background
+                position: "relative",
                 backgroundImage: `url(${backgroundImage})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 minHeight: "100vh",
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
                 color: "#fff",
+                padding: "20px"
             }}
         >
             {/* Dark Overlay */}
@@ -27,7 +29,7 @@ const MainPage = () => {
                     left: 0,
                     width: "100%",
                     height: "100%",
-                    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent black
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
                     zIndex: 1,
                 }}
             ></div>
@@ -38,25 +40,12 @@ const MainPage = () => {
                     ЛЬВІВСЬКИЙ ДЕРЖАВНИЙ УНІВЕРСИТЕТ БЕЗПЕКИ ЖИТТЄДІЯЛЬНОСТІ
                 </h1>
                 <div className="d-flex flex-column align-items-center">
-                    <button
-                        className="btn btn-outline-light mb-3"
-                        onClick={() => navigate("/student-login")}
-                    >
+                    <button className="btn btn-outline-light mb-3" onClick={() => navigate("/student-login")}>
                         СЕРВІС ПОСЛУГ ДЕКАНАТУ ДЛЯ СТУДЕНТІВ
                     </button>
-                    <button
-                        className="btn btn-outline-light mb-3"
-                        onClick={() => navigate("/admin-login")} 
-                    >
+                    <button className="btn btn-outline-light mb-3" onClick={() => navigate("/admin-login")}>
                         СЕРВІС ПОСЛУГ ДЕКАНАТУ ДЛЯ АДМІНІСТРАТОРІВ
                     </button>
-                    {/* <button
-                        className="btn btn-outline-light mb-3"
-                        onClick={() => window.open("https://t.me/ldubgdDekanat_bot", "_blank")}
-                    >
-
-                        ЧАТ-БОТ ДЛЯ ЗАМОВЛЕННЯ ДОВІДОК
-                    </button> */}
                 </div>
             </div>
         </div>

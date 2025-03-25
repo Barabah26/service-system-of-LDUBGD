@@ -15,6 +15,7 @@ import StudentStatementsPage from './components/StudentStatementsPage';
 import SuperAdminPage from './components/SuperAdminPage';
 import ForgotPasswordRegistrationForm from "./components/ForgotPasswordRegistartionForm";
 import TechAdminPage from "./components/TechAdminPage";
+import Instructions from "./components/Instructions.jsx";
 
 
 
@@ -105,6 +106,14 @@ function App() {
                             <ListStatementsAdmin />
                         </PrivateRoute>
                     } />
+                <Route
+                    path="/instruction"
+                    element={
+                        <PrivateRoute>
+                            <Instructions />
+                        </PrivateRoute>
+                    }
+                />
 
             </Routes>
         </Router>
