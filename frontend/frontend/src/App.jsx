@@ -106,14 +106,7 @@ function App() {
                             <ListStatementsAdmin />
                         </PrivateRoute>
                     } />
-                <Route
-                    path="/instruction"
-                    element={
-                        <PrivateRoute>
-                            <Instructions />
-                        </PrivateRoute>
-                    }
-                />
+                <Route path="/instruction" element={<Instructions />} />
 
             </Routes>
         </Router>
