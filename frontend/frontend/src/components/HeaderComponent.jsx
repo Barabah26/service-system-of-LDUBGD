@@ -8,7 +8,6 @@ import { IoMdNotifications } from 'react-icons/io';
 import { FaTrashAlt } from 'react-icons/fa';
 import API_ENDPOINTS from './apiConfig';
 
-
 const parseJwt = (token) => {
   try {
     const base64Url = token.split('.')[1];
@@ -146,9 +145,9 @@ const HeaderComponent = () => {
         <Container fluid>
           <Navbar.Brand href="/user-info" className="d-flex align-items-center">
             <FaUniversity className="me-2" size={30} />
-            <span className="fw-bold text-uppercase">
-            Львівський державний університет безпеки життєдіяльності
-          </span>
+            <span className="fw-bold text-uppercase d-none d-lg-inline">
+    Львівський державний університет безпеки життєдіяльності
+  </span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">

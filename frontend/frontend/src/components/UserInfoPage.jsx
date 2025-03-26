@@ -15,13 +15,11 @@ const StudentInfoPage = () => {
     const fetchStudentInfo = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-
         const response = await axios.get(API_ENDPOINTS.AUTH.PROFILE, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
         setStudent(response.data);
       } catch (error) {
         setError('Не вдалося отримати інформацію про студента');
@@ -35,29 +33,29 @@ const StudentInfoPage = () => {
 
   const handleNavigate = (type) => {
     if (
-        type === 'Довідка з місця навчання' ||
-        type === 'Довідка для військкомату (Форма 20)' ||
-        type === 'Довідка (Форма 9)'
+      type === 'Довідка з місця навчання' ||
+      type === 'Довідка для військкомату (Форма 20)' ||
+      type === 'Довідка (Форма 9)'
     ) {
       navigate(`/statement-registration?type=${type}`);
     } else if (
-        type === 'Пароль до журналу' ||
-        type === 'Пароль до віртуального університету'
+      type === 'Пароль до журналу' ||
+      type === 'Пароль до віртуального університету'
     ) {
       navigate(`/forgot-password-registration?type=${type}`);
     }
   };
 
   if (loading) {
-    return <div>Завантаження...</div>;
+    return <div className="text-center py-5">Завантаження...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="text-center py-5 text-danger">{error}</div>;
   }
 
   if (!student) {
-    return <div>Студент не знайдений</div>;
+    return <div className="text-center py-5">Студент не знайдений</div>;
   }
 
   const links = [
@@ -69,62 +67,74 @@ const StudentInfoPage = () => {
   ];
 
   return (
-      <div className="container my-5">
-        <div className="row mt-4">
-          {/* Використовуємо колонки, які автоматично підлаштовуються під екран */}
-          <div className="col-12 col-md-8">
-            <div className="card">
-              <div className="card-body">
-                <h2 className="card-title">Загальна інформація</h2>
-                <p><strong>Університет:</strong> Львівський державний університет безпеки життєдіяльності</p>
-                <p><strong>Факультет:</strong> {student.faculty}</p>
-                <p><strong>Спеціальність:</strong> {student.specialty}</p>
-                <p><strong>Ступінь / Освітньо-професійний ступінь:</strong> {student.degree}</p>
-                <p><strong>Група:</strong> {student.group}</p>
-              </div>
-            </div>
-
-            <div className="card mt-4">
-              <div className="card-body">
-                <h4 className="card-title">Інструкція для користувачів</h4>
-                <h5>Як замовити довідки?</h5>
-                <ul>
-                  <li>Через <strong>"Корисні посилання"</strong> – натисніть потрібний пункт.</li>
-                  <li>Через <strong>"Послуги"</strong> – оберіть довідку та заповніть заявку.</li>
-                </ul>
-
-                <h5>Як відновити пароль?</h5>
-                <ul>
-                  <li>Через <strong>"Корисні посилання"</strong> – натисніть на пункт "Пароль до журналу" або "Пароль до віртуального університету".</li>
-                  <li>Через <strong>"Послуги"</strong> – оберіть відновлення пароля.</li>
-                </ul>
-
-                <h5>Як дізнатися про статус?</h5>
-                <ul>
-                  <li><strong>"Сповіщення"</strong> – повідомлення про готовність довідок та заявок на скидання пароля.</li>
-                  <li><strong>"Мої довідки"</strong> – перегляд статусу заявок.</li>
-                  <li><strong>Електронна пошта</strong> – перевіряйте пошту для отримання довідок. У листі також можна скачати файл з готовою довідкою.</li>
-                </ul>
-              </div>
+    <div className="container my-3 my-md-5">
+      <div className="row">
+        {/* Секція основної інформації */}
+        <div className="col-12 col-md-8 mb-4 mb-md-0">
+          <div className="card shadow-sm">
+            <div className="card-body p-3 p-md-4">
+              <h2 className="card-title h4 h3-md mb-3">Загальна інформація</h2>
+              <p className="mb-2"><strong>Університет:</strong> Львівський державний університет безпеки життєдіяльності</p>
+              <p className="mb-2"><strong>Факультет:</strong> {student.faculty}</p>
+              <p className="mb-2"><strong>Спеціальність:</strong> {student.specialty}</p>
+              <p className="mb-2"><strong>Ступінь:</strong> {student.degree}</p>
+              <p className="mb-2"><strong>Група:</strong> {student.group}</p>
             </div>
           </div>
 
-          <div className="col-12 col-md-4">
-            <div className="card">
-              <div className="card-body">
-                <h5 className="card-title">Корисні посилання</h5>
-                <ul className="list-group list-group-flush">
-                  {links.map((link, index) => (
-                      <li key={index} className="list-group-item">
-                        <a href="#" onClick={() => handleNavigate(link.type)}>{link.label}</a>
-                      </li>
-                  ))}
-                </ul>
-              </div>
+          {/* Секція інструкцій */}
+          <div className="card shadow-sm mt-4">
+            <div className="card-body p-3 p-md-4">
+              <h4 className="card-title h5 h4-md mb-3">Інструкція для користувачів</h4>
+              <h5 className="h6 mb-2">Як замовити довідки?</h5>
+              <ul className="list-unstyled ms-3">
+                <li className="mb-1">Через <strong>"Корисні посилання"</strong> – натисніть потрібний пункт.</li>
+                <li className="mb-1">Через <strong>"Послуги"</strong> – оберіть довідку та заповніть заявку.</li>
+              </ul>
+
+              <h5 className="h6 mb-2">Як відновити пароль?</h5>
+              <ul className="list-unstyled ms-3">
+                <li className="mb-1">Через <strong>"Корисні посилання"</strong> – натисніть "Пароль до журналу" або "Пароль до віртуального університету".</li>
+                <li className="mb-1">Через <strong>"Послуги"</strong> – оберіть відновлення пароля.</li>
+              </ul>
+
+              <h5 className="h6 mb-2">Як дізнатися про статус?</h5>
+              <ul className="list-unstyled ms-3">
+                <li className="mb-1"><strong>"Сповіщення"</strong> – повідомлення про готовність.</li>
+                <li className="mb-1"><strong>"Мої довідки"</strong> – перегляд статусу заявок.</li>
+                <li className="mb-1"><strong>Електронна пошта</strong> – перевіряйте пошту для отримання довідок.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Секція корисних посилань */}
+        <div className="col-12 col-md-4">
+          <div className="card shadow-sm">
+            <div className="card-body p-3 p-md-4">
+              <h5 className="card-title h6 h5-md mb-3">Корисні посилання</h5>
+              <ul className="list-group list-group-flush">
+                {links.map((link, index) => (
+                  <li key={index} className="list-group-item p-2">
+                    <a
+                      href="#"
+                      className="d-block text-decoration-none text-primary"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleNavigate(link.type);
+                      }}
+                      style={{ padding: '0.5rem 0' }} // Збільшена область натискання
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
       </div>
+    </div>
   );
 };
 
