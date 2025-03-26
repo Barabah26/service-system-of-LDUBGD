@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FaUniversity } from 'react-icons/fa'; // Іконка університету
-import { BsPersonCircle } from 'react-icons/bs'; // Іконка для аватара користувача
-import { IoMdNotifications } from 'react-icons/io'; // Іконка для сповіщень
-import { FaTrashAlt } from 'react-icons/fa'; // Іконка для видалення'
+import { FaUniversity } from 'react-icons/fa';
+import { BsPersonCircle } from 'react-icons/bs';
+import { IoMdNotifications } from 'react-icons/io';
+import { FaTrashAlt } from 'react-icons/fa';
 import API_ENDPOINTS from './apiConfig';
+
 
 const parseJwt = (token) => {
   try {
@@ -20,7 +21,7 @@ const parseJwt = (token) => {
     );
     return JSON.parse(jsonPayload);
   } catch (error) {
-    console.error('Помилка при розборі JWT:', error);
+    console.error('Error parsing JWT:', error);
     return null;
   }
 };
@@ -58,14 +59,11 @@ const HeaderComponent = () => {
                     },
                   }
               );
-
               if (response.ok) {
                 const data = await response.json();
-
                 const newNotifications = data.filter(
                     (notification) => !processedNotifications.has(notification.id)
                 );
-
                 if (newNotifications.length > 0) {
                   setNotifications((prevNotifications) => [
                     ...prevNotifications,
@@ -73,19 +71,18 @@ const HeaderComponent = () => {
                   ]);
                   setProcessedNotifications((prevProcessed) => {
                     const updated = new Set(prevProcessed);
-                    newNotifications.forEach(notification => updated.add(notification.id));
+                    newNotifications.forEach((notification) =>
+                        updated.add(notification.id)
+                    );
                     return updated;
                   });
                 }
-              } else {
-                console.error('Помилка: статус не OK');
               }
             }
           } catch (error) {
-            console.error('Помилка при отриманні сповіщень:', error);
+            console.error('Error fetching notifications:', error);
           }
         };
-
         fetchNotifications();
       }, 1000);
 
@@ -137,21 +134,21 @@ const HeaderComponent = () => {
           const updatedNotifications = [...notifications];
           updatedNotifications.splice(index, 1);
           setNotifications(updatedNotifications);
-        } else {
-          console.error('Не вдалося позначити сповіщення як прочитане');
         }
       } catch (error) {
-        console.error('Помилка при видаленні сповіщення:', error);
+        console.error('Error deleting notification:', error);
       }
     }
   };
 
   return (
       <Navbar bg="dark" variant="dark" expand="lg" className="py-3 shadow-sm">
-        <Container>
+        <Container fluid>
           <Navbar.Brand href="/user-info" className="d-flex align-items-center">
             <FaUniversity className="me-2" size={30} />
-            <span className="fw-bold text-uppercase">Львівський державний університет безпеки життєдіяльності</span>
+            <span className="fw-bold text-uppercase">
+            Львівський державний університет безпеки життєдіяльності
+          </span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">

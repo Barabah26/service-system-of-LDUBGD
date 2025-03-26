@@ -37,8 +37,10 @@ const MainPage = () => {
             {/* Page Content */}
             <div className="text-center container" style={{ position: "relative", zIndex: 2 }}>
                 <h1 className="mb-5">
-                    ЛЬВІВСЬКИЙ ДЕРЖАВНИЙ УНІВЕРСИТЕТ БЕЗПЕКИ ЖИТТЄДІЯЛЬНОСТІ
+                    ЦИФРОВИЙ УНІВЕРСИТЕТ
+                    <div>ЛДУБЖД</div>
                 </h1>
+
                 <div className="d-flex flex-column align-items-center">
                     <button className="btn btn-outline-light mb-3" onClick={() => navigate("/student-login")}>
                         СЕРВІС ПОСЛУГ ДЕКАНАТУ ДЛЯ СТУДЕНТІВ
