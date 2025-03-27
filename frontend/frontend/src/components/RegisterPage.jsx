@@ -55,12 +55,12 @@ const RegistrationForm = () => {
     if (!formData.dateBirth) {
       newErrors.dateBirth = 'Birth date cannot be blank';
     } else if (!/^\d{2}-\d{2}-\d{4}$/.test(formData.dateBirth)) {
-      newErrors.dateBirth = 'Birth date must be in format DD-MM-YYYY';
+      newErrors.dateBirth = 'Дата народження має бути у форматі ДД-ММ-РРРР';
     }
     if (!formData.phoneNumber) {
       newErrors.phoneNumber = 'Phone number cannot be blank';
     } else if (!/^\+380\d{9}$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = 'Phone number must be valid (e.g., +380123456789)';
+      newErrors.phoneNumber = 'Номер телефону має бути дійсним (наприклад, +380123456789)';
     }
 
 
@@ -79,14 +79,14 @@ const RegistrationForm = () => {
     if (validateForm()) {
       try {
         const response = await axios.post(API_ENDPOINTS.AUTH.REGISTER, formData);
-        setServerMessage('Registration successful!');
+        setServerMessage('Реєстрація успішна!');
         setErrors({});
         setTimeout(() => {
           navigate('/student-login');
         }, 1000);
       } catch (error) {
         setServerMessage(
-            error.response?.data || 'An error occurred during registration. Please try again.'
+            error.response?.data || 'Під час реєстрації сталася помилка. Спробуйте ще раз.'
         );
       }
     }
