@@ -83,7 +83,7 @@ const HeaderComponent = () => {
           }
         };
         fetchNotifications();
-      }, 1000);
+      }, 1000000);
 
       return () => clearInterval(interval);
     }
