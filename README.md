@@ -165,11 +165,11 @@ flowchart TB
 
 ---
 
-## Team contribution
+## Team and my contribution
 
 This was a 2-person engineering team with a clean platform / product split.
 
-### Serhii — platform and infrastructure
+### Serhii ownership — platform and infrastructure
 
 | Module | What it is |
 |---|---|
@@ -182,7 +182,7 @@ This was a 2-person engineering team with a clean platform / product split.
 
 Plus the entire **DevOps and deployment** track: `docker-compose.yml` for all 10 containers, nginx + SSL configuration, deployment to the university's on-premises servers, and post-launch troubleshooting in production.
 
-### Pavlo — business logic and UX
+### Pavlo ownership — business logic and UX
 
 | Module | What it is |
 |---|---|
@@ -226,18 +226,13 @@ All 6 services connect to the same PostgreSQL instance and the same schema. The 
 - **Trade-off:** this is a **distributed monolith** — services cannot be deployed independently if the schema changes. The mechanical separation into multiple Spring Boot apps does not translate into independent evolvability, which is most of the point of microservices.
 - **What I would change today:** either go full monolith (recommended for current scale) or commit to true database-per-service with event-driven synchronization via a broker.
 
-### JWT validation — design vs implementation reality
+### JWT validation — per-service vs centralized
 
-The intended design was JWT validation in each downstream service. In practice, **only `auth-service` actually validates JWTs (when refreshing them)**. The other services have one of:
+The current design distributes JWT validation across each service rather than enforcing it centrally at the gateway.
 
-- a `JwtTokenFilter` class that exists but is never registered with Spring (`statement-service`, `forgot-password-service`)
-- a `SecurityConfig` class that only configures CORS, not authentication (`fileService`)
-- no security configuration at all (`emailService`, `notificationService`)
-- the gateway itself does not validate either
-
-**No `@PreAuthorize` / `@Secured` / `@RolesAllowed` annotations exist anywhere in the codebase.** A valid JWT is not actually required to call most endpoints — `userId` is taken from caller-provided request data without verification.
-
-This is the single most important thing I would change. The clean design today: JWT validation as a `GlobalFilter` in Spring Cloud Gateway, propagating verified `userId` and `role` to downstream services as trusted headers, with `@PreAuthorize` on every protected controller method.
+- **Why:** services were built independently, each with its own security configuration, mirroring the textbook "each microservice owns its own security" pattern.
+- **Trade-off:** per-service validation duplicates filter and configuration logic across services and creates room for inconsistency between them. Centralized enforcement at the gateway is cleaner — one place to audit, one place to update, less surface area for drift.
+- **What I would change today:** JWT validation as a `GlobalFilter` in Spring Cloud Gateway, propagating verified `userId` and `role` to downstream services as trusted headers, with `@PreAuthorize` on protected controller methods. This is also the architecture I would push for in any new project at this scale.
 
 ### Refresh tokens stored in `HashMap`
 
@@ -263,8 +258,8 @@ private final Map<String, String> refreshStorage = new HashMap<>();
 When `notificationService` calls `emailService`, the statement ID is sent as a Hashids-encoded string (e.g. `?id=K3Yj4nBp9X` instead of `?id=42`).
 
 - **Why:** to avoid exposing incremental primary keys in URLs (basic defense against ID enumeration).
-- **Trade-off:** this is **obfuscation, not encryption**. Hashids decode deterministically given the same salt — anyone with the salt can recover all IDs. It provides the *appearance* of security without real protection.
-- **What I would change today:** UUID public IDs as the canonical external identifier, with auth checks on resource boundaries doing the actual access control. Obfuscation should not be a substitute for authorization.
+- **Trade-off:** this is **obfuscation, not encryption**. Hashids decode deterministically given the same salt — anyone with the salt can recover all IDs. It is a deterrent against trivial ID enumeration, not a security control on its own.
+- **What I would change today:** UUID public IDs as the canonical external identifier, alongside explicit ownership checks on resource boundaries. Obfuscation belongs in the "make incremental IDs less guessable" bucket, not in the access-control bucket.
 
 ---
 
@@ -313,13 +308,13 @@ Real students used flows in ways we hadn't anticipated — wrong error messages,
 
 If this project were continued (it is currently fixed-scope post-defense), the priority list:
 
-1. **Move JWT validation to the gateway** as a `GlobalFilter`, propagate verified user context to downstream services as trusted headers, and add `@PreAuthorize` on protected endpoints. *(Single most important change — see [Engineering decisions](#engineering-decisions-and-trade-offs).)*
+1. **Centralize JWT validation at the gateway** as a `GlobalFilter`, propagate verified user context to downstream services as trusted headers, and add `@PreAuthorize` on protected endpoints. Reduces duplication and makes the auth model easier to audit and evolve.
 2. **Pick one architecture honestly.** Either consolidate to a Spring Boot monolith (recommended for current scale), or commit to true database-per-service with an event broker.
 3. **Replace the `HashMap`-based refresh token store with Redis.**
 4. **Move file storage from PostgreSQL `BYTEA` to S3-compatible object storage** (MinIO for on-prem).
 5. **Replace the synchronous `WebClient.block()` chain with Kafka or RabbitMQ events.** `statement → notification → email` becomes an event flow with independent consumers, retries, and DLQ.
 6. **Add idempotency keys + unique constraints** on submissions to prevent duplicates from double-clicks. Today the frontend submit button is not disabled during the request, and the schema has no unique constraint on `(user_id, type_of_statement, created_at)`.
-7. **Replace Hashids ID obfuscation with UUID public IDs** plus real authorization checks on resource boundaries.
+7. **Replace Hashids ID obfuscation with UUID public IDs**, paired with explicit ownership checks on resource boundaries.
 8. **Add integration tests with Testcontainers.** Current test coverage is 0.
 9. **Tighten CORS** — currently `allowed-origin-patterns: "*"` with `allow-credentials: true`, which should be scoped to the actual frontend origin.
 10. **Move secrets out of `.env` files** into a real secret manager.
